@@ -1,0 +1,54 @@
+@mixin vertical-align($for) {
+	> #{$for} {
+		padding: 10px 5px;
+		display: flex;
+		align-items: center;
+		gap: 5px;
+	}
+}
+
+.header {
+	background-color: var(--dark-extra-background);
+	border-bottom: 1px solid var(--dark-border);
+
+	.wrapper {
+		display: flex;
+		justify-content: space-between;
+		max-width: var(--main-width);
+		margin: 0 auto;
+		> div {
+			display: flex;
+			justify-content: center;
+			@include vertical-align(a);
+			:hover {
+				background-color: var(--primary-hover-2);
+			}
+		}
+
+		.search {
+			width: 30%;
+			min-width: 200px;
+			:hover {
+				background-color: transparent;
+			}
+			> input {
+				width: 100%;
+				margin: 7px 0px;
+				padding: 0px 5px;
+				font-size: 14px;
+				border: 1px solid var(--dark-border);
+				border-radius: var(--primary-border-radius);
+			}
+		}
+
+		.logo {
+			img {
+				border-radius: 25px;
+				background-color: white;
+			}
+		}
+
+		.any {
+		}
+	}
+}

@@ -1,0 +1,20 @@
+.auth {
+	display: flex;
+	justify-content: center;
+	background-color: var(--dark-extra-background);
+	border: 1px solid var(--dark-border);
+	border-radius: var(--primary-border-radius);
+	max-width: 320px;
+	padding: 20px;
+	margin: 0 auto;
+	form {
+		width: 80%;
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+
+		.heading {
+			text-align: center;
+		}
+	}
+}

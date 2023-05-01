@@ -1,0 +1,21 @@
+.layout {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	.header_wrapper {
+	}
+
+	.main_wrapper {
+		position: relative;
+		margin: 0 auto;
+		max-width: var(--main-width);
+		.main {
+			display: flex;
+			margin-top: 15px;
+
+			.center {
+				min-width: var(--center-width);
+			}
+		}
+	}
+}

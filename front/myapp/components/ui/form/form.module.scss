@@ -1,0 +1,26 @@
+.input {
+	font-size: 14px;
+	background-color: var(--dark-primary-background);
+	border-radius: var(--primary-border-radius);
+	padding: 8px;
+	&:focus {
+		border: 1px solid var(--primary-hover);
+		padding: 8px;
+		margin: -1px;
+	}
+}
+
+.button {
+	cursor: pointer;
+	text-align: center;
+	color: black;
+	background-color: white;
+	border-radius: var(--primary-border-radius);
+	padding: 8.5px 0px;
+}
+
+.error {
+	text-align: center;
+	height: 15px;
+	font-size: 12px;
+}

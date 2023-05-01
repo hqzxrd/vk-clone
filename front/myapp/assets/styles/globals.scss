@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700&family=Russo+One&display=swap');
+
+@import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
+
+:root {
+	--dark-primary: #e0ffff;
+	--primary-hover: #71aaeb;
+	--primary-hover-2: #333;
+	--dark-primary-background: #141414;
+	--dark-extra-background: #222222;
+	--dark-border: #424242;
+	--primary-border-radius: 8px;
+	--main-width: 1000px;
+	--center-width: 830px;
+}
+
+html,
+body {
+	padding: 0;
+	margin: 0;
+	background-color: var(--dark-primary-background);
+	color: var(--dark-primary);
+	font-family: 'Nunito Sans', sans-serif;
+}
+
+input,
+button {
+	all: unset;
+}
+
+a {
+	color: var(--dark-primary);
+	text-decoration: none;
+}

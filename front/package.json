@@ -1,0 +1,37 @@
+{
+  "name": "front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname localhost --port 12554",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
+    "@types/node": "18.15.13",
+    "@types/react": "18.0.38",
+    "@types/react-dom": "18.0.11",
+    "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
+    "classnames": "^2.3.2",
+    "js-cookie": "^3.0.5",
+    "next": "13.3.1",
+    "prop-types": "^15.8.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.9",
+    "react-query": "^3.39.3",
+    "react-redux": "^8.0.5",
+    "react-redux-toastr": "^7.6.11",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
+    "@types/js-cookie": "^3.0.3",
+    "@types/react-redux-toastr": "^7.6.2",
+    "prettier": "^2.8.8",
+    "sass": "^1.62.0"
+  }
+}
