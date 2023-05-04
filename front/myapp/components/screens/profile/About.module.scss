@@ -1,0 +1,26 @@
+.about {
+	display: flex;
+	flex-direction: column;
+	gap: 38.5px;
+	width: 100%;
+
+	> div {
+		> span {
+			font-size: 18px;
+			font-weight: bold;
+		}
+	}
+	.name {
+		text-align: center;
+		font-size: 24px;
+		font-weight: bold;
+	}
+	.status {
+		color: var(--primary-hover);
+	}
+
+	.info {
+		display: flex;
+		gap: 10px;
+	}
+}

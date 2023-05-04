@@ -1,14 +1,13 @@
 import Header from './Header/Header'
 import Navigation from './Navigation/Navigation'
-import Sidebar from './Sidebar/Sidebar'
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useRef } from 'react'
 
 import IChildren from '@/utils/children.inteface'
 
 import styles from './Layout.module.scss'
 
-function isHideSidebar() {
+function isHideNavbar() {
 	const router = useRouter()
 	return router.pathname === '/register' || router.pathname === '/login' ? (
 		``
@@ -18,14 +17,16 @@ function isHideSidebar() {
 }
 
 const Layout: FC<IChildren> = ({ children }) => {
+	const ref = useRef<HTMLDivElement>(null)
+
 	return (
-		<div className={styles.layout}>
+		<div className={styles.layout} ref={ref}>
 			<div className={styles.header_wrapper}>
-				<Header />
+				<Header refForSetTheme={ref} />
 			</div>
 			<div className={styles.main_wrapper}>
 				<div className={styles.main}>
-					{isHideSidebar()}
+					<div className={styles.left}>{isHideNavbar()}</div>
 					<div className={styles.center}>{children}</div>
 				</div>
 			</div>

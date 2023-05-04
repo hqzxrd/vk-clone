@@ -8,8 +8,8 @@
 }
 
 .header {
-	background-color: var(--dark-extra-background);
-	border-bottom: 1px solid var(--dark-border);
+	background-color: var(--extra-background);
+	border-bottom: 1px solid var(--primary-border);
 
 	.wrapper {
 		display: flex;
@@ -18,10 +18,10 @@
 		margin: 0 auto;
 		> div {
 			display: flex;
-			justify-content: center;
+			align-items: center;
 			@include vertical-align(a);
 			:hover {
-				background-color: var(--primary-hover-2);
+				background-color: var(--primary-hover);
 			}
 		}
 
@@ -33,11 +33,20 @@
 			}
 			> input {
 				width: 100%;
-				margin: 7px 0px;
+				height: 70%;
 				padding: 0px 5px;
 				font-size: 14px;
-				border: 1px solid var(--dark-border);
+				border: 1px solid var(--primary-border);
 				border-radius: var(--primary-border-radius);
+			}
+		}
+
+		.theme {
+			cursor: pointer;
+			user-select: none;
+			padding: 0px 5px;
+			&:hover {
+				background-color: var(--primary-hover);
 			}
 		}
 

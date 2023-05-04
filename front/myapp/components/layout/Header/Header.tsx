@@ -1,10 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, RefObject } from 'react'
+
+import { setTheme } from '@/utils/setTheme'
 
 import styles from './Header.module.scss'
 
-const Header: FC = () => {
+interface props {
+	refForSetTheme: RefObject<HTMLDivElement>
+}
+
+const Header: FC<props> = ({ refForSetTheme }) => {
 	return (
 		<header className={styles.header}>
 			<div className={styles.wrapper}>
@@ -16,6 +22,9 @@ const Header: FC = () => {
 				</div>
 				<div className={styles.search}>
 					<input type="text" placeholder="Поиск" />
+				</div>
+				<div className={styles.theme} onClick={() => setTheme(refForSetTheme)}>
+					Тема
 				</div>
 				<div>
 					<Link href="/login">

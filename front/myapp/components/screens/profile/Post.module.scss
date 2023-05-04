@@ -1,0 +1,47 @@
+.post {
+	background-color: var(--extra-background);
+	border: 1px solid var(--primary-border);
+	border-radius: var(--primary-border-radius);
+	padding: 20px;
+
+	.postHeader {
+		display: flex;
+		gap: 15px;
+		.postAvatar {
+			> img {
+				border: 1px solid var(--primary-border);
+				border-radius: 50%;
+				cursor: pointer;
+				user-select: none;
+			}
+		}
+
+		.whosePost {
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+			user-select: none;
+		}
+	}
+
+	.postMain {
+	}
+
+	.postPic {
+		margin-top: 10px;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		grid-auto-rows: max-content;
+		grid-auto-flow: dense;
+		grid-gap: 10px;
+
+		.postPicWrapper {
+			> img {
+				width: 100% !important;
+				position: relative !important;
+				max-height: 100% !important;
+				object-fit: cover;
+			}
+		}
+	}
+}

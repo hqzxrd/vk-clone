@@ -1,0 +1,21 @@
+.avatar {
+	img {
+		border: 1px solid var(--primary-border);
+		border-radius: var(--primary-border-radius);
+		padding: 3px;
+	}
+	> div {
+		cursor: pointer;
+		user-select: none;
+		text-align: center;
+		padding: 5px 0;
+		border: 1px solid var(--primary-border);
+		border-radius: var(--primary-border-radius);
+		&:hover {
+			background-color: var(--primary-border);
+		}
+	}
+	> div:last-child {
+		margin-top: 5px;
+	}
+}
