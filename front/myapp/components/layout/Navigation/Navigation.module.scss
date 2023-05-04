@@ -1,33 +1,3 @@
-// .nav_wrapper {
-// 	display: flex;
-// 	justify-content: flex-end;
-// 	margin-right: 5px;
-// 	> nav {
-// 		display: flex;
-// 		flex-direction: column;
-// 		border-right: 1px black solid;
-
-// 		> a {
-// 			> div {
-// cursor: pointer;
-// user-select: none;
-// display: flex;
-// padding: 5px;
-// border-radius: var(--primary-border-radius);
-// gap: 10px;
-// &:hover {
-// 	background-color: rgba(255, 255, 255, 0.08);
-// }
-
-// 				> div {
-// 					display: flex;
-// 					align-items: center;
-// 				}
-// 			}
-// 		}
-// 	}
-// }
-
 .nav_wrapper {
 	min-width: 170px;
 	> nav {
@@ -40,7 +10,7 @@
 				border-radius: var(--primary-border-radius);
 				gap: 10px;
 				&:hover {
-					background-color: rgba(255, 255, 255, 0.08);
+					background-color: var(--primary-hover);
 				}
 
 				> div {

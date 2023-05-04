@@ -3,24 +3,20 @@
 @import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 
 :root {
-	--dark-primary: #e0ffff;
-	--primary-hover: #71aaeb;
-	--primary-hover-2: #333;
-	--dark-primary-background: #141414;
-	--dark-extra-background: #222222;
-	--dark-border: #424242;
 	--primary-border-radius: 8px;
 	--main-width: 1000px;
 	--center-width: 830px;
 }
 
 html,
-body {
+body,
+#__next {
+	height: 100%;
+	overflow: hidden;
 	padding: 0;
 	margin: 0;
-	background-color: var(--dark-primary-background);
-	color: var(--dark-primary);
 	font-family: 'Nunito Sans', sans-serif;
+	transition: 0.3s;
 }
 
 input,
@@ -28,7 +24,11 @@ button {
 	all: unset;
 }
 
+textarea {
+	outline: none;
+}
+
 a {
-	color: var(--dark-primary);
+	color: var(--primary-color);
 	text-decoration: none;
 }
