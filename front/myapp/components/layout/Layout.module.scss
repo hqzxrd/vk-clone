@@ -17,15 +17,25 @@
 		.main {
 			display: flex;
 			justify-content: center;
-			margin-top: 15px;
+			margin-top: 55px;
 
 			.center {
 				max-width: var(--center-width);
 				min-width: 530px;
-				height: 100vh;
+				height: 100%;
 			}
 		}
 	}
+}
+
+.layout::-webkit-scrollbar {
+	width: 10px;
+}
+.layout::-webkit-scrollbar-track {
+	background: var(--primary-background);
+}
+.layout::-webkit-scrollbar-thumb {
+	background-color: var(--primary-scroll);
 }
 
 @media (max-width: 1000px) {

@@ -1,4 +1,6 @@
 .nav_wrapper {
+	position: sticky;
+	top: 55px;
 	min-width: 170px;
 	> nav {
 		> a {
