@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvConfigOptions } from './configs/env.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -24,7 +24,7 @@ import { MailModule } from './mail/mail.module';
     }),
     AuthModule,
     UserModule,
-    MailModule
+    MailModule,
   ]
 })
 export class AppModule {}
