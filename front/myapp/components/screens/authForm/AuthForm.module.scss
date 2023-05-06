@@ -11,10 +11,13 @@
 		width: 80%;
 		display: flex;
 		flex-direction: column;
-		gap: 15px;
+		gap: 8px;
 
 		.heading {
 			text-align: center;
+		}
+		.birth {
+			display: flex;
 		}
 	}
 }

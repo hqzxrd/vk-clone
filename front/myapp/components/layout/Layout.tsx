@@ -9,7 +9,8 @@ import styles from './Layout.module.scss'
 
 function isHideNavbar() {
 	const router = useRouter()
-	return router.pathname === '/register' || router.pathname === '/login' ? (
+	const path = router.pathname
+	return path === '/register' || path === '/login' || path === '/userinfo' ? (
 		``
 	) : (
 		<Navigation />

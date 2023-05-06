@@ -7,7 +7,7 @@ import { IAuthResponse, ITokens } from '@/store/user/user.interface'
 
 export const AuthService = {
 	async register(email: string, password: string) {
-		const res = await newAxios.post<IAuthResponse>(AuthUrl(`/register`), {
+		const res = await newAxios.post<IAuthResponse>(AuthUrl(`/registration`), {
 			email,
 			password,
 		})

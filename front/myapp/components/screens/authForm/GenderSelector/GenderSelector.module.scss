@@ -1,0 +1,34 @@
+.selector {
+	display: flex;
+	justify-content: center;
+	background-color: var(--primary-background);
+	border-radius: var(--primary-border-radius);
+	cursor: pointer;
+	user-select: none;
+
+	.select1 {
+		border: 1px solid var(--primary-border);
+		border-right: 1px solid var(--primary-border);
+		border-radius: var(--primary-border-radius) 0 0 var(--primary-border-radius);
+		text-align: center;
+		width: 100%;
+		padding: 10px;
+		transition: 0.1s;
+	}
+	.select2 {
+		border: 1px solid var(--primary-border);
+		border-left: none;
+		border-radius: 0 var(--primary-border-radius) var(--primary-border-radius) 0;
+		text-align: center;
+		width: 100%;
+		padding: 10px;
+		transition: 0.1s;
+	}
+
+	:last-child {
+		display: none;
+	}
+}
+.active {
+	background-color: var(--extra-background);
+}

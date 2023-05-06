@@ -1,9 +1,9 @@
 import React from 'react'
 
-import RegisterForm from '@/components/screens/authForm/RegisterForm'
+import CreateUserWrapper from '@/components/screens/authForm/CreateUserWrapper'
 
 const RegisterPage = () => {
-	return <RegisterForm />
+	return <CreateUserWrapper />
 }
 
 export default RegisterPage

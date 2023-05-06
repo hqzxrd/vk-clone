@@ -1,33 +1,24 @@
+import { IEmailPassordFields, propsForInput } from './auth.interface'
 import { FC } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler } from 'react-hook-form'
 
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
-
-import { useActions } from '@/hooks/useActions'
-
-import { IEmailPassord } from '@/store/user/user.interface'
 
 import styles from './AuthForm.module.scss'
 
 const validEmail =
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-const RegisterForm: FC = () => {
-	const {
-		register: reg,
-		handleSubmit,
-		formState,
-		reset,
-	} = useForm<IEmailPassord>({
-		mode: `onChange`,
-	})
-
-	const { register } = useActions()
-
-	const onSubmit: SubmitHandler<IEmailPassord> = (data: any) => {
-		register(data)
-		reset()
+const RegisterForm: FC<propsForInput> = ({
+	changeState,
+	reg,
+	handleSubmit,
+	formState,
+	watch,
+}) => {
+	const onSubmit: SubmitHandler<IEmailPassordFields> = () => {
+		changeState(2)
 	}
 
 	return (
@@ -45,6 +36,7 @@ const RegisterForm: FC = () => {
 					})}
 					error={formState.errors.email}
 				/>
+
 				<Input
 					placeholder="Пароль"
 					{...reg(`password`, {
@@ -55,6 +47,23 @@ const RegisterForm: FC = () => {
 						},
 					})}
 					error={formState.errors.password}
+				/>
+
+				<Input
+					placeholder="Подтвердите пароль"
+					{...reg(`confirm`, {
+						required: `Введите пароль`,
+						minLength: {
+							value: 8,
+							message: `Пароль должен быть более 8ми символвов`,
+						},
+						validate: (pass) => {
+							if (watch(`password`) != pass) {
+								return `Пароли не совпадают`
+							}
+						},
+					})}
+					error={formState.errors.confirm}
 				/>
 				<Button>Зарегистрироваться</Button>
 			</form>
