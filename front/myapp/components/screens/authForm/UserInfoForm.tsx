@@ -8,9 +8,6 @@ import { SubmitHandler } from 'react-hook-form'
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
 
-import { useActions } from '@/hooks/useActions'
-import { useAuth } from '@/hooks/useAuth'
-
 import { useAppDispatch } from '@/store/store'
 import { register } from '@/store/user/user.action'
 import { IUserDto } from '@/store/user/user.interface'

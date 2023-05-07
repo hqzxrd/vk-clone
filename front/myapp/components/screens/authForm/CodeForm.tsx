@@ -1,13 +1,10 @@
-import { IEmailPassordFields } from './auth.interface'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { toastr } from 'react-redux-toastr'
 
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
 
-import { useActions } from '@/hooks/useActions'
 import { useAuth } from '@/hooks/useAuth'
 
 import { useAppDispatch } from '@/store/store'

@@ -2,13 +2,9 @@ import { IEmailPassordFields } from './auth.interface'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { toastr } from 'react-redux-toastr'
 
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
-
-import { useActions } from '@/hooks/useActions'
-import { useAuth } from '@/hooks/useAuth'
 
 import { useAppDispatch } from '@/store/store'
 import { login } from '@/store/user/user.action'
@@ -19,15 +15,6 @@ import styles from './AuthForm.module.scss'
 const validEmail =
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-interface IAction {
-	payload: {
-		user: IAuthResponse
-	}
-	meta: {
-		requestStatus: string
-	}
-}
-
 const LoginForm: FC = () => {
 	const { register, handleSubmit, formState, reset } =
 		useForm<IEmailPassordFields>({
@@ -35,12 +22,10 @@ const LoginForm: FC = () => {
 		})
 	const dispatch = useAppDispatch()
 	const { push } = useRouter()
-	const { user } = useAuth()
 
 	const onSubmit: SubmitHandler<IEmailPassordFields> = async (data: any) => {
 		dispatch(login(data)).then((action) => {
 			if (action.meta.requestStatus === `fulfilled`) {
-				console.log(action)
 				const payload = action.payload as IAuthResponse
 				if (!payload.user.isAuth) {
 					push(`code`)

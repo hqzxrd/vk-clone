@@ -9,15 +9,6 @@ const initialState: IInitialState = {
 	isLoading: false,
 }
 
-interface FulfilledAction<ThunkArg, PromiseResult> {
-	type: string
-	payload: PromiseResult
-	meta: {
-		requestId: string
-		arg: ThunkArg
-	}
-}
-
 export const userSlice = createSlice({
 	name: `user`,
 	initialState,
@@ -50,7 +41,7 @@ export const userSlice = createSlice({
 		builder.addCase(code.pending, (state) => {
 			state.isLoading = true
 		})
-		builder.addCase(code.fulfilled, (state, { payload }) => {
+		builder.addCase(code.fulfilled, (state) => {
 			state.isLoading = false
 			state.user!.isAuth = true
 		})
