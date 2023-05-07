@@ -1,23 +1,23 @@
-import { newAxios } from '@/api/interceptors'
+import { baseAxios } from '@/api/interceptors'
 import Cookies from 'js-cookie'
 
 import { AuthUrl } from '@/config/api.config'
 
-import { IAuthResponse, ITokens } from '@/store/user/user.interface'
+import { IAuthResponse, ITokens, IUserDto } from '@/store/user/user.interface'
 
 export const AuthService = {
-	async register(email: string, password: string) {
-		const res = await newAxios.post<IAuthResponse>(AuthUrl(`/registration`), {
-			email,
-			password,
-		})
+	async register(user: IUserDto) {
+		const res = await baseAxios.post<IAuthResponse>(
+			AuthUrl(`/registration`),
+			user
+		)
 		if (res.data.accessToken) saveToStorage(res.data)
 
 		return res
 	},
 
 	async login(email: string, password: string) {
-		const res = await newAxios.post<IAuthResponse>(AuthUrl(`/login`), {
+		const res = await baseAxios.post<IAuthResponse>(AuthUrl(`/login`), {
 			email,
 			password,
 		})
@@ -34,7 +34,7 @@ export const AuthService = {
 	async getNewsTokens() {
 		const refreshToken = Cookies.get(`refreshToken`)
 
-		const res = await newAxios.post<IAuthResponse>(
+		const res = await baseAxios.post<IAuthResponse>(
 			AuthUrl(`/login/access-token`),
 			{ refreshToken },
 			{ headers: { 'Content-Type': `application/json` } }

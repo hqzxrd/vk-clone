@@ -1,11 +1,15 @@
 import BirthDateFields from './BirthDateFields/BirthDateFields'
 import GenderSelector from './GenderSelector/GenderSelector'
 import { IAuthFields, propsForInput } from './auth.interface'
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
+
+import { useActions } from '@/hooks/useActions'
+import { useAuth } from '@/hooks/useAuth'
 
 import { IUserDto } from '@/store/user/user.interface'
 
@@ -14,10 +18,13 @@ import styles from './AuthForm.module.scss'
 const nameRegExp = /^[a-zA-Zа-яА-Я]+$/g
 
 const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
-	const onSubmit: SubmitHandler<IAuthFields> = (data: IAuthFields) => {
+	const { register } = useActions()
+	const { push } = useRouter()
+	const { user } = useAuth()
+	const onSubmit: SubmitHandler<IAuthFields> = async (data: IAuthFields) => {
 		const birthday = `${data.year}-${data.month}-${data.day}`
 
-		const user: IUserDto = {
+		const userDto: IUserDto = {
 			email: data.email,
 			password: data.password,
 			name: data.name,
@@ -25,8 +32,11 @@ const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 			birthday,
 			gender: data.gender,
 		}
-		//tyt register
-		console.log(data)
+		register(userDto)
+
+		if (user && !user.isAuth) {
+			push(`auth/code`)
+		}
 	}
 
 	return (

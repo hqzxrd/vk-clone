@@ -27,10 +27,10 @@ const Header: FC<props> = ({ toggleTheme }) => {
 					Тема
 				</div>
 				<div>
-					<Link href="/login">
+					<Link href="/auth/login">
 						<div className={styles.sign}>Войти</div>
 					</Link>
-					<Link href="/register">
+					<Link href="/auth/register">
 						<div className={styles.sign}>Регистрация</div>
 					</Link>
 				</div>

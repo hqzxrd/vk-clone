@@ -13,7 +13,13 @@ function isHideNavbar() {
 	const router = useRouter()
 
 	const path = router.pathname
-	return path === '/register' || path === '/login' ? `` : <Navigation />
+	return path === '/auth/register' ||
+		path === '/auth/login' ||
+		path === '/auth/code' ? (
+		``
+	) : (
+		<Navigation />
+	)
 }
 
 const Layout: FC<IChildren> = ({ children }) => {

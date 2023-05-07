@@ -1,10 +1,6 @@
 export interface IUser {
-	id: number
+	isAuth: boolean
 	email: string
-	password: string
 	name: string
-	nickname: string
 	surname: string
-	birthday: string
-	avatarPath?: string
 }
