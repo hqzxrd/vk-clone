@@ -11,6 +11,8 @@ import Input from '@/components/ui/form/Input'
 import { useActions } from '@/hooks/useActions'
 import { useAuth } from '@/hooks/useAuth'
 
+import { useAppDispatch } from '@/store/store'
+import { register } from '@/store/user/user.action'
 import { IUserDto } from '@/store/user/user.interface'
 
 import styles from './AuthForm.module.scss'
@@ -18,9 +20,9 @@ import styles from './AuthForm.module.scss'
 const nameRegExp = /^[a-zA-Zа-яА-Я]+$/g
 
 const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
-	const { register } = useActions()
+	const dispatch = useAppDispatch()
 	const { push } = useRouter()
-	const { user } = useAuth()
+
 	const onSubmit: SubmitHandler<IAuthFields> = async (data: IAuthFields) => {
 		const birthday = `${data.year}-${data.month}-${data.day}`
 
@@ -32,11 +34,12 @@ const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 			birthday,
 			gender: data.gender,
 		}
-		register(userDto)
 
-		if (user && !user.isAuth) {
-			push(`auth/code`)
-		}
+		dispatch(register(userDto)).then((action) => {
+			if (action.meta.requestStatus === `fulfilled`) {
+				push(`code`)
+			}
+		})
 	}
 
 	return (

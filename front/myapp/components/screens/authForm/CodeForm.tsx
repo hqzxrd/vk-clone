@@ -1,4 +1,5 @@
 import { IEmailPassordFields } from './auth.interface'
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toastr } from 'react-redux-toastr'
@@ -7,6 +8,10 @@ import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
 
 import { useActions } from '@/hooks/useActions'
+import { useAuth } from '@/hooks/useAuth'
+
+import { useAppDispatch } from '@/store/store'
+import { code } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
 
@@ -18,15 +23,25 @@ const CodeForm: FC = () => {
 	const { register, handleSubmit, formState, reset } = useForm<code>({
 		mode: `onChange`,
 	})
+	const dispatch = useAppDispatch()
+	const { push } = useRouter()
+	const { user } = useAuth()
 
-	// const { code } = useActions()
-
-	const onSubmit: SubmitHandler<code> = (data: any) => {}
+	const onSubmit: SubmitHandler<code> = (data: code) => {
+		user &&
+			dispatch(code({ code: +data.code, email: user.email })).then((action) => {
+				if (action.meta.requestStatus === `fulfilled`) {
+					push(`/`)
+				}
+			})
+	}
 
 	return (
 		<section className={styles.auth}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<div className={styles.heading}>Код был отправлен на почту</div>
+				<div className={styles.heading}>
+					Код был отправлен на <strong>{user?.email}</strong>
+				</div>
 				<div className={styles.heading}>Проверьте папку спам!</div>
 				<Input
 					placeholder="Код"

@@ -10,28 +10,45 @@ import Input from '@/components/ui/form/Input'
 import { useActions } from '@/hooks/useActions'
 import { useAuth } from '@/hooks/useAuth'
 
+import { useAppDispatch } from '@/store/store'
+import { login } from '@/store/user/user.action'
+import { IAuthResponse } from '@/store/user/user.interface'
+
 import styles from './AuthForm.module.scss'
 
 const validEmail =
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+interface IAction {
+	payload: {
+		user: IAuthResponse
+	}
+	meta: {
+		requestStatus: string
+	}
+}
 
 const LoginForm: FC = () => {
 	const { register, handleSubmit, formState, reset } =
 		useForm<IEmailPassordFields>({
 			mode: `onChange`,
 		})
+	const dispatch = useAppDispatch()
 	const { push } = useRouter()
 	const { user } = useAuth()
-	const { login } = useActions()
 
-	const onSubmit: SubmitHandler<IEmailPassordFields> = (data: any) => {
-		login(data)
-
-		if (user && !user.isAuth) {
-			push(`/auth/code`)
-		} else {
-			push(`/`)
-		}
+	const onSubmit: SubmitHandler<IEmailPassordFields> = async (data: any) => {
+		dispatch(login(data)).then((action) => {
+			if (action.meta.requestStatus === `fulfilled`) {
+				console.log(action)
+				const payload = action.payload as IAuthResponse
+				if (!payload.user.isAuth) {
+					push(`code`)
+				} else {
+					push(`/`)
+				}
+			}
+		})
 	}
 
 	return (

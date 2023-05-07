@@ -1,4 +1,4 @@
-import { checkAuth, login, logout, register } from './user.action'
+import { checkAuth, code, login, logout, register } from './user.action'
 import { IInitialState } from './user.interface'
 import { createSlice } from '@reduxjs/toolkit'
 
@@ -7,6 +7,15 @@ import { getStoreLocal } from '@/utils/local-storage'
 const initialState: IInitialState = {
 	user: getStoreLocal(`user`),
 	isLoading: false,
+}
+
+interface FulfilledAction<ThunkArg, PromiseResult> {
+	type: string
+	payload: PromiseResult
+	meta: {
+		requestId: string
+		arg: ThunkArg
+	}
 }
 
 export const userSlice = createSlice({
@@ -38,10 +47,22 @@ export const userSlice = createSlice({
 			state.user = null
 		})
 		///
+		builder.addCase(code.pending, (state) => {
+			state.isLoading = true
+		})
+		builder.addCase(code.fulfilled, (state, { payload }) => {
+			state.isLoading = false
+			state.user!.isAuth = true
+		})
+		builder.addCase(code.rejected, (state) => {
+			state.isLoading = false
+		})
+		///
 		builder.addCase(logout.fulfilled, (state) => {
 			state.isLoading = false
 			state.user = null
 		})
+
 		builder.addCase(checkAuth.fulfilled, (state, { payload }) => {
 			state.user = payload.user
 		})

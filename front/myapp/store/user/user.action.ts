@@ -1,4 +1,4 @@
-import { IAuthResponse, IUserDto } from './user.interface'
+import { IAuthResponse, ICodeEmailDto, IUserDto } from './user.interface'
 import { AuthService } from '@/services/auth/auth.service'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { toastr } from 'react-redux-toastr'
@@ -27,7 +27,6 @@ export const login = createAsyncThunk<IAuthResponse, IUserDto>(
 		try {
 			const res = await AuthService.login(email, password)
 			toastr.success(`Вход`, `Успешно`)
-			console.log(res)
 
 			return res.data
 		} catch (error) {
@@ -40,6 +39,22 @@ export const login = createAsyncThunk<IAuthResponse, IUserDto>(
 export const logout = createAsyncThunk(`auth/logout`, () => {
 	AuthService.logout()
 })
+
+export const code = createAsyncThunk<number, ICodeEmailDto>(
+	`auth/code`,
+	async ({ code, email }, thunkApi) => {
+		try {
+			const res = await AuthService.code(code, email)
+			toastr.success(`Вход`, `Успешно`)
+			console.log(res)
+
+			return res.status
+		} catch (error) {
+			toastError(error)
+			return thunkApi.rejectWithValue(error)
+		}
+	}
+)
 
 export const checkAuth = createAsyncThunk<IAuthResponse, IUserDto>(
 	`auth/check-auth`,

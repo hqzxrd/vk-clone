@@ -1,4 +1,5 @@
 import { baseAxios } from '@/api/interceptors'
+import { IUser } from '@/types/user.types'
 import Cookies from 'js-cookie'
 
 import { AuthUrl } from '@/config/api.config'
@@ -29,6 +30,22 @@ export const AuthService = {
 	logout() {
 		removeTokensCookie()
 		localStorage.removeItem(`user`)
+	},
+
+	async code(code: number, email: string) {
+		const res = await baseAxios.post<IAuthResponse>(AuthUrl(`/code`), {
+			code,
+			email,
+		})
+
+		if (res.status === 204) {
+			const userStr = localStorage.getItem(`user`)
+			const user: IUser = userStr && JSON.parse(userStr)
+			user.isAuth = true
+			localStorage.setItem(`user`, JSON.stringify(user))
+		}
+
+		return res
 	},
 
 	async getNewsTokens() {

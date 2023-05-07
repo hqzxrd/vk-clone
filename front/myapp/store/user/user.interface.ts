@@ -26,6 +26,11 @@ export interface IUserInfoFields {
 
 export interface IUserDto extends IUserInfoFields, IEmailPassordFields {}
 
+export interface ICodeEmailDto {
+	code: number
+	email: string
+}
+
 export interface IAuthResponse extends ITokens {
 	user: IUser
 }
