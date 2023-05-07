@@ -65,9 +65,8 @@ export class AuthService {
   }
 
 
-  async codeVerification(code: number) {
-    await this.userService.setAuthByCode(code)
-    
+  async codeVerification(code: number, email: string) {
+    await this.userService.setAuthByCode(code, email)
   }
 
 

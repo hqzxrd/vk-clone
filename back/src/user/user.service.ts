@@ -3,7 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import { USER_NOT_FOUND } from './constants/auth.error.constants';
+import { INCORRECT_CODE } from './constants/user.error.constants';
+import { USER_NOT_FOUND } from 'src/auth/constants/auth.error.constants';
 
 @Injectable()
 export class UserService {
@@ -31,16 +32,18 @@ export class UserService {
     return user
   }
   
-  async setAuthByCode(code: number) {
+  async setAuthByCode(code: number, email: string) {
     const user = await this.userRepository.findOne({
-      where: {code}
+      where: {email}
     })
 
     if(!user) throw new BadRequestException(USER_NOT_FOUND)
+  
+    if(code !== user.code) throw new BadRequestException(INCORRECT_CODE)
 
     user.isAuth = true
     user.code = null
-
+    console.log(user)
     await this.userRepository.save(user)
   }
 }

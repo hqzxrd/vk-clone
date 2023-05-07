@@ -7,7 +7,8 @@ import fastifyCookie from '@fastify/cookie';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
+    {}
   );
   await app.register(fastifyCookie)
   app.setGlobalPrefix('api')

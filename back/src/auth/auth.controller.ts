@@ -8,6 +8,7 @@ import { RefreshJwtGuard } from './decorators/refresh-jwt.decorator';
 import { User } from 'src/user/decorator/user.decorator';
 import { Cookie } from './decorators/cookie.decorator';
 import { CookieSerializeOptions } from '@fastify/cookie';
+import { CodeVerifDto } from './dto/code-verif.dto';
 
 
 @Controller('auth')
@@ -70,8 +71,8 @@ export class AuthController {
   @Post('code')
   @UsePipes(new ValidationPipe())
   codeVerification(
-    @Body('code') code: number
+      @Body() {code, email}: CodeVerifDto 
   ) {
-    return this.authService.codeVerification(code)
+    return this.authService.codeVerification(code, email)
   }
 }
