@@ -2,15 +2,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FC, RefObject } from 'react'
 
-import { setTheme } from '@/utils/setTheme'
+import { useDarkTheme } from '@/hooks/useDarkTheme'
 
 import styles from './Header.module.scss'
 
 interface props {
-	refForSetTheme: RefObject<HTMLDivElement>
+	toggleTheme: () => void
 }
 
-const Header: FC<props> = ({ refForSetTheme }) => {
+const Header: FC<props> = ({ toggleTheme }) => {
 	return (
 		<header className={styles.header}>
 			<div className={styles.wrapper}>
@@ -23,14 +23,14 @@ const Header: FC<props> = ({ refForSetTheme }) => {
 				<div className={styles.search}>
 					<input type="text" placeholder="Поиск" />
 				</div>
-				<div className={styles.theme} onClick={() => setTheme(refForSetTheme)}>
+				<div className={styles.theme} onClick={() => toggleTheme()}>
 					Тема
 				</div>
 				<div>
-					<Link href="/login">
+					<Link href="/auth/login">
 						<div className={styles.sign}>Войти</div>
 					</Link>
-					<Link href="/register">
+					<Link href="/auth/register">
 						<div className={styles.sign}>Регистрация</div>
 					</Link>
 				</div>

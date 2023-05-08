@@ -1,12 +1,14 @@
+import { IEmailPassordFields } from './auth.interface'
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
 
-import { useActions } from '@/hooks/useActions'
-
-import { IEmailPassord } from '@/store/user/user.interface'
+import { useAppDispatch } from '@/store/store'
+import { login } from '@/store/user/user.action'
+import { IAuthResponse } from '@/store/user/user.interface'
 
 import styles from './AuthForm.module.scss'
 
@@ -14,15 +16,24 @@ const validEmail =
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const LoginForm: FC = () => {
-	const { register, handleSubmit, formState, reset } = useForm<IEmailPassord>({
-		mode: `onChange`,
-	})
+	const { register, handleSubmit, formState, reset } =
+		useForm<IEmailPassordFields>({
+			mode: `onChange`,
+		})
+	const dispatch = useAppDispatch()
+	const { push } = useRouter()
 
-	const { login } = useActions()
-
-	const onSubmit: SubmitHandler<IEmailPassord> = (data: any) => {
-		login(data)
-		reset()
+	const onSubmit: SubmitHandler<IEmailPassordFields> = async (data: any) => {
+		dispatch(login(data)).then((action) => {
+			if (action.meta.requestStatus === `fulfilled`) {
+				const payload = action.payload as IAuthResponse
+				if (!payload.user.isAuth) {
+					push(`code`)
+				} else {
+					push(`/`)
+				}
+			}
+		})
 	}
 
 	return (

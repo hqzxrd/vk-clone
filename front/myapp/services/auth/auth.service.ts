@@ -1,23 +1,24 @@
-import { newAxios } from '@/api/interceptors'
+import { baseAxios } from '@/api/interceptors'
+import { IUser } from '@/types/user.types'
 import Cookies from 'js-cookie'
 
 import { AuthUrl } from '@/config/api.config'
 
-import { IAuthResponse, ITokens } from '@/store/user/user.interface'
+import { IAuthResponse, ITokens, IUserDto } from '@/store/user/user.interface'
 
 export const AuthService = {
-	async register(email: string, password: string) {
-		const res = await newAxios.post<IAuthResponse>(AuthUrl(`/register`), {
-			email,
-			password,
-		})
+	async register(user: IUserDto) {
+		const res = await baseAxios.post<IAuthResponse>(
+			AuthUrl(`/registration`),
+			user
+		)
 		if (res.data.accessToken) saveToStorage(res.data)
 
 		return res
 	},
 
 	async login(email: string, password: string) {
-		const res = await newAxios.post<IAuthResponse>(AuthUrl(`/login`), {
+		const res = await baseAxios.post<IAuthResponse>(AuthUrl(`/login`), {
 			email,
 			password,
 		})
@@ -31,10 +32,26 @@ export const AuthService = {
 		localStorage.removeItem(`user`)
 	},
 
+	async code(code: number, email: string) {
+		const res = await baseAxios.post<IAuthResponse>(AuthUrl(`/code`), {
+			code,
+			email,
+		})
+
+		if (res.status === 204) {
+			const userStr = localStorage.getItem(`user`)
+			const user: IUser = userStr && JSON.parse(userStr)
+			user.isAuth = true
+			localStorage.setItem(`user`, JSON.stringify(user))
+		}
+
+		return res
+	},
+
 	async getNewsTokens() {
 		const refreshToken = Cookies.get(`refreshToken`)
 
-		const res = await newAxios.post<IAuthResponse>(
+		const res = await baseAxios.post<IAuthResponse>(
 			AuthUrl(`/login/access-token`),
 			{ refreshToken },
 			{ headers: { 'Content-Type': `application/json` } }

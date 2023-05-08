@@ -3,13 +3,19 @@ import Navigation from './Navigation/Navigation'
 import { useRouter } from 'next/router'
 import { FC, useRef } from 'react'
 
+import { useDarkTheme } from '@/hooks/useDarkTheme'
+
 import IChildren from '@/utils/children.inteface'
 
 import styles from './Layout.module.scss'
 
 function isHideNavbar() {
 	const router = useRouter()
-	return router.pathname === '/register' || router.pathname === '/login' ? (
+
+	const path = router.pathname
+	return path === '/auth/register' ||
+		path === '/auth/login' ||
+		path === '/auth/code' ? (
 		``
 	) : (
 		<Navigation />
@@ -19,10 +25,12 @@ function isHideNavbar() {
 const Layout: FC<IChildren> = ({ children }) => {
 	const ref = useRef<HTMLDivElement>(null)
 
+	const { theme, toggle } = useDarkTheme(ref)
+
 	return (
 		<div className={styles.layout} ref={ref}>
 			<div className={styles.header_wrapper}>
-				<Header refForSetTheme={ref} />
+				<Header toggleTheme={toggle} />
 			</div>
 			<div className={styles.main_wrapper}>
 				<div className={styles.main}>
