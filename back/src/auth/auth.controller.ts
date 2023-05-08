@@ -71,8 +71,17 @@ export class AuthController {
   @Post('code')
   @UsePipes(new ValidationPipe())
   codeVerification(
-      @Body() {code, email}: CodeVerifDto 
+      @Body() {code, email}: CodeVerifDto
   ) {
     return this.authService.codeVerification(code, email)
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('confirmation')
+  @UsePipes(new ValidationPipe())
+  confirmationEmail(
+    @Body() {email} : Pick<CodeVerifDto, 'email'>
+  ) {
+    return this.authService.confirmationEmail(email)
   }
 }

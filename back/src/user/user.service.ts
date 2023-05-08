@@ -46,4 +46,9 @@ export class UserService {
     console.log(user)
     await this.userRepository.save(user)
   }
+
+  async checkUser(email: string) {
+    const user = await this.userRepository.findOneBy({email})
+    return user
+  }
 }

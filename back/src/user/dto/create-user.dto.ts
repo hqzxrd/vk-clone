@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsEmail, IsEnum, IsNumber, IsString, MaxLength, MinLength } from "class-validator"
+import { IsBoolean, IsDate, IsDateString, IsEmail, IsEnum, IsNumber, IsString, MaxLength, MinLength } from "class-validator"
 import { Gender } from "../entities/user.entity"
 
 export class CreateUserDto {
@@ -17,8 +17,8 @@ export class CreateUserDto {
     @IsEmail()
     email: string
 
-    @IsNumber()
-    code: number
+    @IsBoolean()
+    isAuth: boolean
 
     @IsString()
     @MaxLength(30)

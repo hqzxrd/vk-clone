@@ -12,6 +12,7 @@ async function bootstrap() {
   );
   await app.register(fastifyCookie)
   app.setGlobalPrefix('api')
+  app.enableCors()
   const configService = app.get(ConfigService);
   const PORT = configService.get('PORT')
   

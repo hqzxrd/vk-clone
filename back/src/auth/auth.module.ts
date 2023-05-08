@@ -10,12 +10,14 @@ import { PassportModule } from '@nestjs/passport'
 import { AccessJwtStrategy } from './strategies/access.strategy';
 import { RefreshJwtStrategy } from './strategies/refresh.strategy';
 import { MailModule } from 'src/mail/mail.module';
+import { ConfirmationEntity } from './entities/confirmation.entity';
+import { ConfirmationService } from './service/confirmation.service';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService, TokenService, AccessJwtStrategy, RefreshJwtStrategy],
+  providers: [AuthService, TokenService, ConfirmationService, AccessJwtStrategy, RefreshJwtStrategy],
   imports: [
-    TypeOrmModule.forFeature([TokenEntity]),
+    TypeOrmModule.forFeature([TokenEntity, ConfirmationEntity]),
     JwtModule.register({}),
     UserModule,
     PassportModule,
