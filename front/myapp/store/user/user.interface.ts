@@ -14,6 +14,7 @@ export interface ITokens {
 
 export interface IInitialState {
 	user: IUser
+	isAutorized: boolean | null
 	isLoading: boolean
 }
 

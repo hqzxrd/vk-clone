@@ -1,4 +1,6 @@
+import AuthProvider from './AuthProvider/AuthProvider'
 import ReduxToast from './ReduxToast'
+import { TypeComponentAuth } from '@/types/auth.types'
 import { FC } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
@@ -7,16 +9,16 @@ import Layout from '@/components/layout/Layout'
 
 import { store } from '@/store/store'
 
-import IChildren from '@/utils/children.inteface'
-
 const queryClient = new QueryClient({})
 
-const MainProvider: FC<IChildren> = ({ children }) => {
+const MainProvider: FC<TypeComponentAuth> = ({ children, Component }) => {
 	return (
 		<Provider store={store}>
 			<QueryClientProvider client={queryClient}>
 				<ReduxToast />
-				<Layout>{children}</Layout>
+				<AuthProvider Component={Component}>
+					<Layout>{children}</Layout>
+				</AuthProvider>
 			</QueryClientProvider>
 		</Provider>
 	)

@@ -38,7 +38,9 @@ export const AuthService = {
 			AuthUrl(`/registration`),
 			user
 		)
-		if (res.data.accessToken) saveToStorage(res.data)
+		if (res.data.accessToken) {
+			saveToStorage(res.data)
+		}
 
 		return res
 	},
@@ -56,6 +58,7 @@ export const AuthService = {
 	logout() {
 		removeTokensCookie()
 		localStorage.removeItem(`user`)
+		localStorage.removeItem(`isAutorized`)
 	},
 
 	async getNewsTokens() {
@@ -76,6 +79,7 @@ export const AuthService = {
 const saveToStorage = (data: IAuthResponse) => {
 	saveTokenCookie(data)
 	localStorage.setItem(`user`, JSON.stringify(data.user))
+	localStorage.setItem(`isAutorized`, JSON.stringify(true))
 }
 
 const updateStorage = (str: string, prop: Partial<IUser>) => {
@@ -95,10 +99,10 @@ const updateStorage = (str: string, prop: Partial<IUser>) => {
 
 const saveTokenCookie = (data: ITokens) => {
 	Cookies.set(`AccessToken`, data.accessToken)
-	Cookies.set(`AccessToken`, data.refreshToken)
+	Cookies.set(`RefreshToken`, data.refreshToken)
 }
 
 const removeTokensCookie = () => {
 	Cookies.remove(`AccessToken`)
-	Cookies.remove(`AccessToken`)
+	Cookies.remove(`RefreshToken`)
 }

@@ -1,5 +1,11 @@
+import { NextPageAuth } from '@/types/auth.types'
+
 import Home from '@/components/screens/home/Home'
 
-export default function HomePage() {
+const HomePage: NextPageAuth = () => {
 	return <Home />
 }
+
+HomePage.isOnlyUser = true
+
+export default HomePage

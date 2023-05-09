@@ -21,6 +21,7 @@
 			margin-bottom: 50px;
 			.center {
 				max-width: var(--center-width);
+				width: 100%;
 				min-width: 530px;
 				height: 100%;
 			}
@@ -46,7 +47,6 @@
 			.main {
 				display: flex;
 				justify-content: center;
-				margin-top: 15px;
 
 				.left {
 					display: none;

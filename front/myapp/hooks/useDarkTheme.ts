@@ -13,8 +13,6 @@ export const useDarkTheme = (ref: RefObject<HTMLDivElement>) => {
 	}
 
 	useEffect(() => {
-		console.log(`aboba`)
-
 		if (!ref.current?.style) {
 			return
 		}

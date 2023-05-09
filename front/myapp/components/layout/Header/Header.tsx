@@ -1,16 +1,18 @@
+import AuthHeader from './AuthHeader'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC, RefObject } from 'react'
+import { FC } from 'react'
 
-import { useDarkTheme } from '@/hooks/useDarkTheme'
+import { useAuth } from '@/hooks/useAuth'
 
 import styles from './Header.module.scss'
 
-interface props {
+export interface props {
 	toggleTheme: () => void
 }
 
 const Header: FC<props> = ({ toggleTheme }) => {
+	const { isAutorized } = useAuth()
 	return (
 		<header className={styles.header}>
 			<div className={styles.wrapper}>
@@ -20,20 +22,18 @@ const Header: FC<props> = ({ toggleTheme }) => {
 						<div>ВКонтакте</div>
 					</Link>
 				</div>
-				<div className={styles.search}>
-					<input type="text" placeholder="Поиск" />
-				</div>
-				<div className={styles.theme} onClick={() => toggleTheme()}>
-					Тема
-				</div>
-				<div>
-					<Link href="/auth/login">
-						<div className={styles.sign}>Войти</div>
-					</Link>
-					<Link href="/auth/register#email">
-						<div className={styles.sign}>Регистрация</div>
-					</Link>
-				</div>
+				{isAutorized ? (
+					<AuthHeader toggleTheme={toggleTheme} />
+				) : (
+					<div>
+						<Link href="/auth/login">
+							<div className={styles.sign}>Войти</div>
+						</Link>
+						<Link href="/auth/register#email">
+							<div className={styles.sign}>Регистрация</div>
+						</Link>
+					</div>
+				)}
 			</div>
 		</header>
 	)

@@ -71,6 +71,8 @@ const CreateUserWrapper = () => {
 			/>
 		)
 	}
+
+	return <div>Ошибка</div>
 }
 
 export default CreateUserWrapper
