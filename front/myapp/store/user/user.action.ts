@@ -5,6 +5,35 @@ import { toastr } from 'react-redux-toastr'
 
 import { toastError } from '@/utils/toastError'
 
+export const confirmation = createAsyncThunk<
+	{ status: number; email: string },
+	{ email: string }
+>(`auth/confirmation`, async ({ email }, thunkApi) => {
+	try {
+		const res = await AuthService.confirmation(email)
+
+		return { status: res.status, email }
+	} catch (error) {
+		toastError(error)
+		return thunkApi.rejectWithValue(error)
+	}
+})
+
+export const code = createAsyncThunk<number, ICodeEmailDto>(
+	`auth/code`,
+	async ({ code, email }, thunkApi) => {
+		try {
+			const res = await AuthService.code(code, email)
+			console.log(res)
+
+			return res.status
+		} catch (error) {
+			toastError(error)
+			return thunkApi.rejectWithValue(error)
+		}
+	}
+)
+
 export const register = createAsyncThunk<IAuthResponse, IUserDto>(
 	`auth/registration`,
 	async (user, thunkApi) => {
@@ -39,22 +68,6 @@ export const login = createAsyncThunk<IAuthResponse, IUserDto>(
 export const logout = createAsyncThunk(`auth/logout`, () => {
 	AuthService.logout()
 })
-
-export const code = createAsyncThunk<number, ICodeEmailDto>(
-	`auth/code`,
-	async ({ code, email }, thunkApi) => {
-		try {
-			const res = await AuthService.code(code, email)
-			toastr.success(`Вход`, `Успешно`)
-			console.log(res)
-
-			return res.status
-		} catch (error) {
-			toastError(error)
-			return thunkApi.rejectWithValue(error)
-		}
-	}
-)
 
 export const checkAuth = createAsyncThunk<IAuthResponse, IUserDto>(
 	`auth/check-auth`,

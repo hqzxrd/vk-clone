@@ -22,7 +22,7 @@ const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 
 	const onSubmit: SubmitHandler<IAuthFields> = async (data: IAuthFields) => {
 		const birthday = `${data.year}-${data.month}-${data.day}`
-
+		console.log(data)
 		const userDto: IUserDto = {
 			email: data.email,
 			password: data.password,
@@ -33,9 +33,8 @@ const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 		}
 
 		dispatch(register(userDto)).then((action) => {
-			if (action.meta.requestStatus === `fulfilled`) {
-				push(`code`)
-			}
+			const status = action.meta.requestStatus
+			if (status === `fulfilled`) push(`/profile`)
 		})
 	}
 

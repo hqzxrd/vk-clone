@@ -13,7 +13,7 @@ export interface ITokens {
 }
 
 export interface IInitialState {
-	user: IUser | null
+	user: IUser
 	isLoading: boolean
 }
 

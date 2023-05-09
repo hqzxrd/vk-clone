@@ -30,7 +30,7 @@ const Header: FC<props> = ({ toggleTheme }) => {
 					<Link href="/auth/login">
 						<div className={styles.sign}>Войти</div>
 					</Link>
-					<Link href="/auth/register">
+					<Link href="/auth/register#email">
 						<div className={styles.sign}>Регистрация</div>
 					</Link>
 				</div>

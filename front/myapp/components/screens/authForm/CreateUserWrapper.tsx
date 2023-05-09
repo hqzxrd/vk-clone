@@ -1,11 +1,30 @@
-import RegisterForm from './RegisterForm'
-import UserInfoForm from './UserInfoForm'
+import RegisterCodeForm from './RegisterCodeForm'
+import EmailRegisterForm from './RegisterEmailForm'
+import RegisterInfoForm from './RegisterInfoForm'
+import PasswordRegisterForm from './RegisterPasswordForm'
 import { IAuthFields } from './auth.interface'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const CreateUserWrapper = () => {
-	const [state, setState] = useState<1 | 2>(1)
+	const { asPath, push } = useRouter()
+	const [state, setState] = useState<string>()
+
+	useEffect(() => {
+		const hash = asPath.split(`#`)[1]
+		if (
+			hash === `email` ||
+			hash === `code` ||
+			hash === `password` ||
+			hash === `info`
+		)
+			setState(hash)
+	}, [asPath])
+
+	useEffect(() => {
+		push(`register#email`)
+	}, [])
 
 	const {
 		register: reg,
@@ -16,27 +35,42 @@ const CreateUserWrapper = () => {
 		mode: `onChange`,
 	})
 
-	return (
-		<>
-			{state == 1 ? (
-				<RegisterForm
-					changeState={setState}
-					reg={reg}
-					handleSubmit={handleSubmit}
-					formState={formState}
-					watch={watch}
-				/>
-			) : (
-				<UserInfoForm
-					changeState={setState}
-					reg={reg}
-					handleSubmit={handleSubmit}
-					formState={formState}
-					watch={watch}
-				/>
-			)}
-		</>
-	)
+	if (state === `email`) {
+		return (
+			<EmailRegisterForm
+				reg={reg}
+				handleSubmit={handleSubmit}
+				formState={formState}
+				watch={watch}
+			/>
+		)
+	}
+
+	if (state === `code`) {
+		return <RegisterCodeForm />
+	}
+
+	if (state === `password`) {
+		return (
+			<PasswordRegisterForm
+				reg={reg}
+				handleSubmit={handleSubmit}
+				formState={formState}
+				watch={watch}
+			/>
+		)
+	}
+
+	if (state === `info`) {
+		return (
+			<RegisterInfoForm
+				reg={reg}
+				handleSubmit={handleSubmit}
+				formState={formState}
+				watch={watch}
+			/>
+		)
+	}
 }
 
 export default CreateUserWrapper

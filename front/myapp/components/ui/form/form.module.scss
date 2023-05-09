@@ -8,12 +8,15 @@
 		padding: 8px;
 		margin: -1px;
 	}
+	&::placeholder {
+		color: var(--secondary-color);
+	}
 }
 
 .button {
 	cursor: pointer;
 	text-align: center;
-	color: black;
+	color: var(--primary-button-color);
 	background-color: var(--primary-button);
 	border-radius: var(--primary-border-radius);
 	padding: 8.5px 0px;

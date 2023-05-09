@@ -25,21 +25,20 @@ const CodeForm: FC = () => {
 	const { user } = useAuth()
 
 	const onSubmit: SubmitHandler<code> = (data: code) => {
-		user &&
-			dispatch(code({ code: +data.code, email: user.email })).then((action) => {
-				if (action.meta.requestStatus === `fulfilled`) {
-					push(`/`)
-				}
-			})
+		dispatch(code({ code: +data.code, email: user.email })).then((action) => {
+			const status = action.meta.requestStatus
+			if (status === `fulfilled`) push(`register#password`)
+		})
 	}
 
 	return (
 		<section className={styles.auth}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<div className={styles.heading}>
-					Код был отправлен на <strong>{user?.email}</strong>
+				<div className={styles.heading}>Подтверждение почты</div>
+				<div className={styles.descr}>
+					Код был отправлен на <strong>{user.email}</strong>
 				</div>
-				<div className={styles.heading}>Проверьте папку спам!</div>
+				<div className={styles.descr}>Проверьте папку спам!</div>
 				<Input
 					placeholder="Код"
 					{...register(`code`, {
@@ -52,7 +51,7 @@ const CodeForm: FC = () => {
 					maxLength={6}
 					error={formState.errors.code}
 				/>
-				<Button>Ок</Button>
+				<Button>Продолжить</Button>
 			</form>
 		</section>
 	)

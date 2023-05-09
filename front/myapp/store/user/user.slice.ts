@@ -1,11 +1,26 @@
-import { checkAuth, code, login, logout, register } from './user.action'
+import {
+	checkAuth,
+	code,
+	confirmation,
+	login,
+	logout,
+	register,
+} from './user.action'
 import { IInitialState } from './user.interface'
+import { IUser } from '@/types/user.types'
 import { createSlice } from '@reduxjs/toolkit'
 
-import { getStoreLocal } from '@/utils/local-storage'
+import { getUserLocalStore } from '@/utils/local-storage'
+
+export const initialUser: IUser = {
+	isAuth: false,
+	email: ``,
+	name: ``,
+	surname: ``,
+}
 
 const initialState: IInitialState = {
-	user: getStoreLocal(`user`),
+	user: getUserLocalStore(`user`) || initialUser,
 	isLoading: false,
 }
 
@@ -14,6 +29,28 @@ export const userSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
+		builder.addCase(confirmation.pending, (state) => {
+			state.isLoading = true
+		})
+		builder.addCase(confirmation.fulfilled, (state, { payload }) => {
+			state.isLoading = false
+			state.user.email = payload.email
+		})
+		builder.addCase(confirmation.rejected, (state) => {
+			state.isLoading = false
+		})
+		///
+		builder.addCase(code.pending, (state) => {
+			state.isLoading = true
+		})
+		builder.addCase(code.fulfilled, (state) => {
+			state.isLoading = false
+			state.user.isAuth = true
+		})
+		builder.addCase(code.rejected, (state) => {
+			state.isLoading = false
+		})
+		///
 		builder.addCase(register.pending, (state) => {
 			state.isLoading = true
 		})
@@ -23,7 +60,7 @@ export const userSlice = createSlice({
 		})
 		builder.addCase(register.rejected, (state) => {
 			state.isLoading = false
-			state.user = null
+			state.user = initialUser
 		})
 		///
 		builder.addCase(login.pending, (state) => {
@@ -35,23 +72,12 @@ export const userSlice = createSlice({
 		})
 		builder.addCase(login.rejected, (state) => {
 			state.isLoading = false
-			state.user = null
-		})
-		///
-		builder.addCase(code.pending, (state) => {
-			state.isLoading = true
-		})
-		builder.addCase(code.fulfilled, (state) => {
-			state.isLoading = false
-			state.user!.isAuth = true
-		})
-		builder.addCase(code.rejected, (state) => {
-			state.isLoading = false
+			state.user = initialUser
 		})
 		///
 		builder.addCase(logout.fulfilled, (state) => {
 			state.isLoading = false
-			state.user = null
+			state.user = initialUser
 		})
 
 		builder.addCase(checkAuth.fulfilled, (state, { payload }) => {

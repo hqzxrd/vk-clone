@@ -8,7 +8,6 @@ import Input from '@/components/ui/form/Input'
 
 import { useAppDispatch } from '@/store/store'
 import { login } from '@/store/user/user.action'
-import { IAuthResponse } from '@/store/user/user.interface'
 
 import styles from './AuthForm.module.scss'
 
@@ -25,14 +24,8 @@ const LoginForm: FC = () => {
 
 	const onSubmit: SubmitHandler<IEmailPassordFields> = async (data: any) => {
 		dispatch(login(data)).then((action) => {
-			if (action.meta.requestStatus === `fulfilled`) {
-				const payload = action.payload as IAuthResponse
-				if (!payload.user.isAuth) {
-					push(`code`)
-				} else {
-					push(`/`)
-				}
-			}
+			const status = action.meta.requestStatus
+			if (status === `fulfilled`) push(`/profile`)
 		})
 	}
 

@@ -26,6 +26,7 @@ export const useDarkTheme = (ref: RefObject<HTMLDivElement>) => {
 			ref.current.style.setProperty(`--primary-hover`, `#f5f6f8`)
 			ref.current.style.setProperty(`--primary-scroll`, `#B5B8B1`)
 			ref.current.style.setProperty(`--primary-button`, `#447bba`)
+			ref.current.style.setProperty(`--primary-button-color`, `white`)
 		} else {
 			ref.current.style.setProperty(`--primary-color`, `#e0ffff`)
 			ref.current.style.setProperty(`--primary-background`, `#141414`)
@@ -34,6 +35,7 @@ export const useDarkTheme = (ref: RefObject<HTMLDivElement>) => {
 			ref.current.style.setProperty(`--primary-hover`, `#323232`)
 			ref.current.style.setProperty(`--primary-scroll`, `#222222`)
 			ref.current.style.setProperty(`--primary-button`, `white`)
+			ref.current.style.setProperty(`--primary-button-color`, `black`)
 		}
 	}, [theme])
 

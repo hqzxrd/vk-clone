@@ -5,8 +5,34 @@ import Cookies from 'js-cookie'
 import { AuthUrl } from '@/config/api.config'
 
 import { IAuthResponse, ITokens, IUserDto } from '@/store/user/user.interface'
+import { initialUser } from '@/store/user/user.slice'
 
 export const AuthService = {
+	async confirmation(email: string) {
+		const res = await baseAxios.post<IAuthResponse>(AuthUrl(`/confirmation`), {
+			email,
+		})
+
+		if (res.status === 204) {
+			updateStorage(`user`, { email })
+		}
+
+		return res
+	},
+
+	async code(code: number, email: string) {
+		const res = await baseAxios.post<IAuthResponse>(AuthUrl(`/code`), {
+			code,
+			email,
+		})
+
+		if (res.status === 204) {
+			updateStorage(`user`, { isAuth: true })
+		}
+
+		return res
+	},
+
 	async register(user: IUserDto) {
 		const res = await baseAxios.post<IAuthResponse>(
 			AuthUrl(`/registration`),
@@ -32,22 +58,6 @@ export const AuthService = {
 		localStorage.removeItem(`user`)
 	},
 
-	async code(code: number, email: string) {
-		const res = await baseAxios.post<IAuthResponse>(AuthUrl(`/code`), {
-			code,
-			email,
-		})
-
-		if (res.status === 204) {
-			const userStr = localStorage.getItem(`user`)
-			const user: IUser = userStr && JSON.parse(userStr)
-			user.isAuth = true
-			localStorage.setItem(`user`, JSON.stringify(user))
-		}
-
-		return res
-	},
-
 	async getNewsTokens() {
 		const refreshToken = Cookies.get(`refreshToken`)
 
@@ -63,14 +73,29 @@ export const AuthService = {
 	},
 }
 
-const saveTokenCookie = (data: ITokens) => {
-	Cookies.set(`AccessToken`, data.accessToken)
-	Cookies.set(`AccessToken`, data.refreshToken)
-}
-
 const saveToStorage = (data: IAuthResponse) => {
 	saveTokenCookie(data)
 	localStorage.setItem(`user`, JSON.stringify(data.user))
+}
+
+const updateStorage = (str: string, prop: Partial<IUser>) => {
+	const userStr = localStorage.getItem(`user`)
+	if (userStr) {
+		const user: IUser = { ...JSON.parse(userStr), ...prop }
+
+		localStorage.setItem(str, JSON.stringify(user))
+	} else {
+		const user: IUser = {
+			...initialUser,
+			...prop,
+		}
+		localStorage.setItem(str, JSON.stringify(user))
+	}
+}
+
+const saveTokenCookie = (data: ITokens) => {
+	Cookies.set(`AccessToken`, data.accessToken)
+	Cookies.set(`AccessToken`, data.refreshToken)
 }
 
 const removeTokensCookie = () => {

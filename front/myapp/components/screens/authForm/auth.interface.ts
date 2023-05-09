@@ -10,7 +10,6 @@ export interface propsRegInput {
 }
 
 export interface propsForInput extends propsRegInput {
-	changeState: React.Dispatch<React.SetStateAction<1 | 2>>
 	handleSubmit: UseFormHandleSubmit<IAuthFields>
 	formState: FormState<IAuthFields>
 	watch: UseFormWatch<IAuthFields>
