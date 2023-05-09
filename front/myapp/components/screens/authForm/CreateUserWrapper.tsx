@@ -7,8 +7,10 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { useAuth } from '@/hooks/useAuth'
+
 const CreateUserWrapper = () => {
-	const { asPath, push } = useRouter()
+	const { asPath, replace } = useRouter()
 	const [state, setState] = useState<string>()
 
 	useEffect(() => {
@@ -23,7 +25,7 @@ const CreateUserWrapper = () => {
 	}, [asPath])
 
 	useEffect(() => {
-		push(`register#email`)
+		replace(`register#email`)
 	}, [])
 
 	const {

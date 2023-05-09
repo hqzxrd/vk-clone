@@ -1,10 +1,12 @@
 import { IEmailPassordFields, propsForInput } from './auth.interface'
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
+
+import { useAuth } from '@/hooks/useAuth'
 
 import { useAppDispatch } from '@/store/store'
 import { confirmation } from '@/store/user/user.action'
@@ -16,12 +18,17 @@ const validEmail =
 
 const RegisterForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 	const dispatch = useAppDispatch()
-	const { push } = useRouter()
+	const { replace } = useRouter()
+	const { isAutorized } = useAuth()
+
+	useEffect(() => {
+		isAutorized && replace(`/profile`)
+	}, [])
 
 	const onSubmit: SubmitHandler<IEmailPassordFields> = (data) => {
 		dispatch(confirmation(data)).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) push(`register#code`)
+			if (status === `fulfilled`) replace(`register#code`)
 		})
 	}
 
@@ -43,34 +50,6 @@ const RegisterForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 					})}
 					error={formState.errors.email}
 				/>
-				{/* <Input
-					placeholder="Пароль"
-					{...reg(`password`, {
-						required: `Введите пароль`,
-						minLength: {
-							value: 8,
-							message: `Пароль должен быть более 8ми символвов`,
-						},
-					})}
-					error={formState.errors.password}
-				/>
-
-				<Input
-					placeholder="Подтвердите пароль"
-					{...reg(`confirm`, {
-						required: `Введите пароль`,
-						minLength: {
-							value: 8,
-							message: `Пароль должен быть более 8ми символвов`,
-						},
-						validate: (pass) => {
-							if (watch(`password`) != pass) {
-								return `Пароли не совпадают`
-							}
-						},
-					})}
-					error={formState.errors.confirm}
-				/> */}
 				<Button>Продолжить</Button>
 			</form>
 		</section>

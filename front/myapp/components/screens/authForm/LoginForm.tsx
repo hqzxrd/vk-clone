@@ -1,10 +1,13 @@
 import { IEmailPassordFields } from './auth.interface'
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
+
+import { useActions } from '@/hooks/useActions'
+import { useAuth } from '@/hooks/useAuth'
 
 import { useAppDispatch } from '@/store/store'
 import { login } from '@/store/user/user.action'
@@ -20,12 +23,17 @@ const LoginForm: FC = () => {
 			mode: `onChange`,
 		})
 	const dispatch = useAppDispatch()
-	const { push } = useRouter()
+	const { replace } = useRouter()
+	const { isAutorized } = useAuth()
+
+	useEffect(() => {
+		isAutorized && replace(`/profile`)
+	}, [])
 
 	const onSubmit: SubmitHandler<IEmailPassordFields> = async (data: any) => {
 		dispatch(login(data)).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) push(`/profile`)
+			if (status === `fulfilled`) replace(`/profile`)
 		})
 	}
 

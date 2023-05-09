@@ -21,13 +21,13 @@ const CodeForm: FC = () => {
 		mode: `onChange`,
 	})
 	const dispatch = useAppDispatch()
-	const { push } = useRouter()
+	const { replace } = useRouter()
 	const { user } = useAuth()
 
 	const onSubmit: SubmitHandler<code> = (data: code) => {
 		dispatch(code({ code: +data.code, email: user.email })).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) push(`register#password`)
+			if (status === `fulfilled`) replace(`register#password`)
 		})
 	}
 

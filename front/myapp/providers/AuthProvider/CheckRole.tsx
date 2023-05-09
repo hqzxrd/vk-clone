@@ -1,7 +1,8 @@
 import { TypeComponentAuth } from '@/types/auth.types'
 import { useRouter } from 'next/router'
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 
+import { useActions } from '@/hooks/useActions'
 import { useAuth } from '@/hooks/useAuth'
 
 const CheckRole: FC<TypeComponentAuth> = ({

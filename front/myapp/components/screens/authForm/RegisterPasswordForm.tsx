@@ -14,10 +14,10 @@ const PasswordRegisterForm: FC<propsForInput> = ({
 	formState,
 	watch,
 }) => {
-	const { push } = useRouter()
+	const { replace } = useRouter()
 
 	const onSubmit: SubmitHandler<IEmailPassordFields> = (data) => {
-		push(`register#info`)
+		replace(`register#info`)
 	}
 
 	return (

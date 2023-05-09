@@ -19,7 +19,7 @@ const nameRegExp = /^[a-zA-Zа-яА-Я]+$/g
 const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 	const [gender, setGender] = useState<TypeGender>(`male`)
 	const dispatch = useAppDispatch()
-	const { push } = useRouter()
+	const { replace } = useRouter()
 
 	const onSubmit: SubmitHandler<IAuthFields> = async (data: IAuthFields) => {
 		const modifiedDay = +data.day < 10 ? `0${data.day}` : data.day
@@ -38,7 +38,7 @@ const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 		console.log(gender, userDto)
 		dispatch(register(userDto)).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) push(`/profile`)
+			if (status === `fulfilled`) replace(`/profile`)
 		})
 	}
 
