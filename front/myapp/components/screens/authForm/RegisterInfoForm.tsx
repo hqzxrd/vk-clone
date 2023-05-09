@@ -22,7 +22,10 @@ const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 	const { push } = useRouter()
 
 	const onSubmit: SubmitHandler<IAuthFields> = async (data: IAuthFields) => {
-		const birthday = `${data.year}-${data.month}-${data.day}`
+		const modifiedDay = +data.day < 10 ? `0${data.day}` : data.day
+		const modifiedMonth = +data.month < 10 ? `0${data.month}` : data.month
+
+		const birthday = `${data.year}-${modifiedMonth}-${modifiedDay}`
 
 		const userDto: IUserDto = {
 			email: data.email,
