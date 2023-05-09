@@ -24,6 +24,8 @@ export interface IEmailPassordFields {
 	password: string
 }
 
+export type TypeGender = `male` | `female`
+
 export interface IUserInfoFields {
 	name: string
 	surname: string

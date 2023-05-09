@@ -1,14 +1,15 @@
-import { propsForInput, propsRegInput } from '../auth.interface'
+import { TypeGender } from '../auth.interface'
 import cn from 'classnames'
-import { FC, useState } from 'react'
-
-import Input from '@/components/ui/form/Input'
+import { Dispatch, FC, SetStateAction } from 'react'
 
 import styles from './GenderSelector.module.scss'
 
-const GenderSelector: FC<propsRegInput> = ({ reg }) => {
-	const [gender, setGender] = useState<`male` | `famale`>(`male`)
+interface props {
+	gender: TypeGender
+	setGender: Dispatch<SetStateAction<TypeGender>>
+}
 
+const GenderSelector: FC<props> = ({ gender, setGender }) => {
 	return (
 		<div className={styles.selector}>
 			<div
@@ -20,21 +21,14 @@ const GenderSelector: FC<propsRegInput> = ({ reg }) => {
 				Мужской
 			</div>
 			<div
-				className={cn(styles.select2, gender === `famale` && styles.active)}
+				className={cn(styles.select2, gender === `female` && styles.active)}
 				onClick={() => {
-					setGender(`famale`)
+					setGender(`female`)
 				}}
 			>
 				Женский
 			</div>
-			<div>
-				<Input
-					{...reg(`gender`)}
-					value={gender}
-					type="hidden"
-					placeholder="gender"
-				/>
-			</div>
+			<div></div>
 		</div>
 	)
 }

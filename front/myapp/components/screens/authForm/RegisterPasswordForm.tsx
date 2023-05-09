@@ -23,8 +23,8 @@ const PasswordRegisterForm: FC<propsForInput> = ({
 	return (
 		<section className={styles.auth}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<div className={styles.heading}>Придумайте пароль</div>
-				<div className={styles.descr}>Паролик</div>
+				<div className={styles.heading}>Регистрация ВКонтакте</div>
+				<div className={styles.descr}>Придумайте надёжный пароль</div>
 				<Input
 					placeholder="Пароль"
 					{...reg(`password`, {

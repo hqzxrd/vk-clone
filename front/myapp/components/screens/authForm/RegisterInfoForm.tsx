@@ -1,8 +1,8 @@
 import BirthDateFields from './BirthDateFields/BirthDateFields'
 import GenderSelector from './GenderSelector/GenderSelector'
-import { IAuthFields, propsForInput } from './auth.interface'
+import { IAuthFields, TypeGender, propsForInput } from './auth.interface'
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
 import Button from '@/components/ui/form/Button'
@@ -17,21 +17,22 @@ import styles from './AuthForm.module.scss'
 const nameRegExp = /^[a-zA-Zа-яА-Я]+$/g
 
 const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
+	const [gender, setGender] = useState<TypeGender>(`male`)
 	const dispatch = useAppDispatch()
 	const { push } = useRouter()
 
 	const onSubmit: SubmitHandler<IAuthFields> = async (data: IAuthFields) => {
 		const birthday = `${data.year}-${data.month}-${data.day}`
-		console.log(data)
+
 		const userDto: IUserDto = {
 			email: data.email,
 			password: data.password,
 			name: data.name,
 			surname: data.surname,
 			birthday,
-			gender: data.gender,
+			gender: gender,
 		}
-
+		console.log(gender, userDto)
 		dispatch(register(userDto)).then((action) => {
 			const status = action.meta.requestStatus
 			if (status === `fulfilled`) push(`/profile`)
@@ -41,7 +42,8 @@ const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 	return (
 		<section className={styles.auth}>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<div className={styles.heading}>Расскажите немного о себе</div>
+				<div className={styles.heading}>Регистрация ВКонтакте</div>
+				<div className={styles.descr}>Расскажите немного о себе</div>
 				<Input
 					placeholder="Имя"
 					{...reg(`name`, {
@@ -69,7 +71,7 @@ const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 					error={formState.errors.surname}
 				/>
 				<BirthDateFields formState={formState} reg={reg} />
-				<GenderSelector reg={reg} />
+				<GenderSelector gender={gender} setGender={setGender} />
 				<Button>Далее</Button>
 			</form>
 		</section>
