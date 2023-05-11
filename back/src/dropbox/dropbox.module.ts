@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common";
-import { DropBoxService } from "./dropbox.service";
+import { DropboxService } from "./dropbox.service";
 
 @Module({
-    providers: [DropBoxService],
-    exports: [DropBoxService]
+    providers: [DropboxService],
+    exports: [DropboxService]
 })
-export class DropBoxModule {}
+export class DropboxModule {}

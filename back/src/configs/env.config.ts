@@ -48,8 +48,13 @@ export class EnvironmentVariables {
 
     // * Dropbox
     @IsString()
-    DB_TOKEN: string
+    DROPBOX_REFRESH: string
 
+    @IsString()
+    DROPBOX_CLIENT_ID: string
+
+    @IsString()
+    DROPBOX_CLIENT_SECRET: string
 }
   
 
