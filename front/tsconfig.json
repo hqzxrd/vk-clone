@@ -20,7 +20,7 @@
     "incremental": true,
     "paths": {
       "@/*": [
-        "./myapp/*"
+        "./src/*"
       ]
     },
     "plugins": [

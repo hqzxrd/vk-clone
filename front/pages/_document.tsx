@@ -10,12 +10,6 @@ export default function Document() {
 					name="viewport"
 					content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"
 				/>
-				<meta
-					httpEquiv="Cache-Control"
-					content="no-cache, no-store, must-revalidate"
-				/>
-				<meta httpEquiv="Pragma" content="no-cache" />
-				<meta httpEquiv="Expires" content="0"></meta>
 			</Head>
 			<body>
 				<Main />

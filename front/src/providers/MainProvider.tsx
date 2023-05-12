@@ -9,17 +9,13 @@ import Layout from '@/components/layout/Layout'
 
 import { store } from '@/store/store'
 
-const queryClient = new QueryClient({})
-
 const MainProvider: FC<TypeComponentAuth> = ({ children, Component }) => {
 	return (
 		<Provider store={store}>
-			<QueryClientProvider client={queryClient}>
-				<ReduxToast />
-				<AuthProvider Component={Component}>
-					<Layout>{children}</Layout>
-				</AuthProvider>
-			</QueryClientProvider>
+			<ReduxToast />
+			<AuthProvider Component={Component}>
+				<Layout>{children}</Layout>
+			</AuthProvider>
 		</Provider>
 	)
 }

@@ -27,7 +27,6 @@ const initialState: IInitialState = {
 	isAutorized: getAutorizeStatusLocalStore(`isAutorized`),
 	isLoading: false,
 }
-
 export const userSlice = createSlice({
 	name: `user`,
 	initialState,
@@ -85,7 +84,6 @@ export const userSlice = createSlice({
 			state.user = initialUser
 			state.isAutorized = false
 		})
-
 		builder.addCase(checkAuth.fulfilled, (state, { payload }) => {
 			state.user = payload.user
 		})
