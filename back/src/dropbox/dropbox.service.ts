@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Dropbox } from "dropbox";
 import { randomUUID } from "crypto";
@@ -30,7 +30,12 @@ export class DropboxService {
     }
 
     async getFile(fileName: string) {
-        const file = await this.dbx.filesDownload({path: '/' + fileName}) as any
-        return file.result.fileBinary
+        try {
+            const file = await this.dbx.filesDownload({path: '/' + fileName}) as any
+            return file.result.fileBinary
+        }catch(e){
+            throw new NotFoundException()
+        }
+        
     }
 }
