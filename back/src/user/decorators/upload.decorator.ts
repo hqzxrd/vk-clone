@@ -10,15 +10,13 @@ class UploadGuard implements CanActivate {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const request:  FastifyRequest = context.switchToHttp().getRequest()
-        const files = await request.saveRequestFiles()
-
+        const file = await request.file()
         const optionsFieldName = this.options.fieldName
         const optionsTypeFile = this.options.type
-        let file: MultipartFile
 
         if(optionsFieldName) {
-            file = files.find(file => file.fieldname == optionsFieldName)
-            if(!file) throw new BadRequestException(`File in field "${optionsFieldName}" is not loaded`)
+            
+            if(file.fieldname !== optionsFieldName) throw new BadRequestException(`File in field "${optionsFieldName}" is not loaded`)
 
             if(optionsTypeFile)  {
                 let boolean: Boolean
@@ -28,8 +26,7 @@ class UploadGuard implements CanActivate {
             }
             
         }
-
-       request.incomingFiles = file ? [file] : files
+       request.incomingFiles = [file]
        return true
     }
 }
