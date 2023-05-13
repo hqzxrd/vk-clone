@@ -1,5 +1,10 @@
-import { IAuthResponse, ICodeEmailDto, IUserDto } from './user.interface'
 import { AuthService } from '@/services/auth/auth.service'
+import {
+	ICodeEmailDto,
+	ILoginFields,
+	ILoginRegisterResponse,
+	IRegisterFieldsDto,
+} from '@/types/auth.types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { toastr } from 'react-redux-toastr'
 
@@ -34,23 +39,23 @@ export const code = createAsyncThunk<number, ICodeEmailDto>(
 	}
 )
 
-export const register = createAsyncThunk<IAuthResponse, IUserDto>(
-	`auth/registration`,
-	async (user, thunkApi) => {
-		try {
-			const res = await AuthService.register(user)
-			toastr.success(`Регистрация`, `Успешно`)
-			console.log(res.data)
+export const register = createAsyncThunk<
+	ILoginRegisterResponse,
+	IRegisterFieldsDto
+>(`auth/registration`, async (user, thunkApi) => {
+	try {
+		const res = await AuthService.register(user)
+		toastr.success(`Регистрация`, `Успешно`)
+		console.log(res.data)
 
-			return res.data
-		} catch (error) {
-			toastError(error)
-			return thunkApi.rejectWithValue(error)
-		}
+		return res.data
+	} catch (error) {
+		toastError(error)
+		return thunkApi.rejectWithValue(error)
 	}
-)
+})
 
-export const login = createAsyncThunk<IAuthResponse, IUserDto>(
+export const login = createAsyncThunk<ILoginRegisterResponse, ILoginFields>(
 	`auth/login`,
 	async ({ email, password }, thunkApi) => {
 		try {
@@ -69,7 +74,7 @@ export const logout = createAsyncThunk(`auth/logout`, () => {
 	AuthService.logout()
 })
 
-export const checkAuth = createAsyncThunk<IAuthResponse>(
+export const checkAuth = createAsyncThunk<ILoginRegisterResponse>(
 	`auth/check-auth`,
 	async (_, thunkApi) => {
 		try {

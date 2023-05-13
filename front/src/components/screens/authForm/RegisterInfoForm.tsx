@@ -1,6 +1,8 @@
 import BirthDateFields from './BirthDateFields/BirthDateFields'
 import GenderSelector from './GenderSelector/GenderSelector'
-import { IAuthFields, TypeGender, propsForInput } from './auth.interface'
+import { IRegisterFieldsClient, RegisterPropsHookForm } from './auth.interface'
+import { TypeGender } from '@/types/auth.types'
+import { IRegisterFieldsDto } from '@/types/auth.types'
 import { useRouter } from 'next/router'
 import { FC, useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
@@ -10,24 +12,29 @@ import Input from '@/components/ui/form/Input'
 
 import { useAppDispatch } from '@/store/store'
 import { register } from '@/store/user/user.action'
-import { IUserDto } from '@/store/user/user.interface'
 
 import styles from './AuthForm.module.scss'
 
 const nameRegExp = /^[a-zA-Zа-яА-Я]+$/g
 
-const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
+const UserInfoForm: FC<RegisterPropsHookForm> = ({
+	reg,
+	handleSubmit,
+	formState,
+}) => {
 	const [gender, setGender] = useState<TypeGender>(`male`)
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
 
-	const onSubmit: SubmitHandler<IAuthFields> = async (data: IAuthFields) => {
+	const onSubmit: SubmitHandler<IRegisterFieldsClient> = async (
+		data: IRegisterFieldsClient
+	) => {
 		const modifiedDay = +data.day < 10 ? `0${data.day}` : data.day
 		const modifiedMonth = +data.month < 10 ? `0${data.month}` : data.month
 
 		const birthday = `${data.year}-${modifiedMonth}-${modifiedDay}`
 
-		const userDto: IUserDto = {
+		const userDto: IRegisterFieldsDto = {
 			email: data.email,
 			password: data.password,
 			name: data.name,

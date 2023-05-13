@@ -7,7 +7,7 @@ import {
 	register,
 } from './user.action'
 import { IInitialState } from './user.interface'
-import { IUser } from '@/types/user.types'
+import { IUserDto } from '@/types/auth.types'
 import { createSlice } from '@reduxjs/toolkit'
 
 import {
@@ -15,7 +15,8 @@ import {
 	getUserLocalStore,
 } from '@/utils/local-storage'
 
-export const initialUser: IUser = {
+export const initialUser: IUserDto = {
+	id: 0,
 	isAuth: false,
 	email: ``,
 	name: ``,

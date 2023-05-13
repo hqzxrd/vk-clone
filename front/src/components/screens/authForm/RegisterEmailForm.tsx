@@ -1,4 +1,5 @@
-import { IEmailPassordFields, propsForInput } from './auth.interface'
+import { RegisterPropsHookForm } from './auth.interface'
+import { ILoginFields } from '@/types/auth.types'
 import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
@@ -15,7 +16,11 @@ import { confirmation } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
 
-const RegisterForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
+const RegisterForm: FC<RegisterPropsHookForm> = ({
+	reg,
+	handleSubmit,
+	formState,
+}) => {
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
 	const { isAutorized } = useAuth()
@@ -24,7 +29,7 @@ const RegisterForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 		isAutorized && replace(`/profile`)
 	}, [])
 
-	const onSubmit: SubmitHandler<IEmailPassordFields> = (data) => {
+	const onSubmit: SubmitHandler<ILoginFields> = (data) => {
 		dispatch(confirmation(data)).then((action) => {
 			const status = action.meta.requestStatus
 			if (status === `fulfilled`) replace(`/auth/register#code`)

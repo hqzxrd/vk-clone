@@ -1,21 +1,13 @@
-import { IAuthFields, UserFields, propsRegInput } from '../auth.interface'
+import { BirthDateComponentProps } from '../auth.interface'
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react'
-import { FieldValues, FormState, UseFormRegister, set } from 'react-hook-form'
 
 import Input from '@/components/ui/form/Input'
 
+import { YEAR_REGEX } from '@/shared/regex'
+
 import styles from './BirthDate.module.scss'
 
-export interface BirthDateProps<> extends propsRegInput {
-	formState: FormState<UserFields>
-}
-
-const yearRegExp = /^(19[2-9]\d|20[0-1]\d|202[0-3])$/
-
-const BirthDateFields: FC<BirthDateProps> = ({
-	formState,
-	reg,
-}) => {
+const BirthDateFields: FC<BirthDateComponentProps> = ({ formState, reg }) => {
 	const [day, setDay] = useState(``)
 	const [month, setMonth] = useState(``)
 
@@ -69,7 +61,7 @@ const BirthDateFields: FC<BirthDateProps> = ({
 					placeholder="Год"
 					{...reg(`year`, {
 						pattern: {
-							value: yearRegExp,
+							value: YEAR_REGEX,
 							message: `Введите корректный год рождения`,
 						},
 						required: `Обязательные поля`,

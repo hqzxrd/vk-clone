@@ -1,4 +1,4 @@
-import { IEmailPassordFields } from './auth.interface'
+import { ILoginFields } from '@/types/auth.types'
 import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -16,7 +16,7 @@ import { login } from '@/store/user/user.action'
 import styles from './AuthForm.module.scss'
 
 const LoginForm: FC = () => {
-	const { register, handleSubmit, formState } = useForm<IEmailPassordFields>({
+	const { register, handleSubmit, formState } = useForm<ILoginFields>({
 		mode: `onChange`,
 	})
 	const dispatch = useAppDispatch()
@@ -27,7 +27,7 @@ const LoginForm: FC = () => {
 		isAutorized && replace(`/users/profile`)
 	}, [])
 
-	const onSubmit: SubmitHandler<IEmailPassordFields> = async (data: any) => {
+	const onSubmit: SubmitHandler<ILoginFields> = async (data: any) => {
 		dispatch(login(data)).then((action) => {
 			const status = action.meta.requestStatus
 			if (status === `fulfilled`) replace(`/users/profile`)

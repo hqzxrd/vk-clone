@@ -2,7 +2,7 @@ import RegisterCodeForm from './RegisterCodeForm'
 import EmailRegisterForm from './RegisterEmailForm'
 import RegisterInfoForm from './RegisterInfoForm'
 import PasswordRegisterForm from './RegisterPasswordForm'
-import { IAuthFields } from './auth.interface'
+import { IRegisterFieldsClient } from './auth.interface'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -31,7 +31,7 @@ const CreateUserWrapper = () => {
 		handleSubmit,
 		formState,
 		watch,
-	} = useForm<IAuthFields>({
+	} = useForm<IRegisterFieldsClient>({
 		mode: `onChange`,
 	})
 
