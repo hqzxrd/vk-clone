@@ -7,9 +7,9 @@ const Navigation: FC = () => {
 	return (
 		<div className={style.nav_wrapper}>
 			<nav>
-				<Link href="/profile">
+				<Link href="/users/profile">
 					<div>
-						<div>
+						<div className={style.icon}>
 							<svg
 								fill="none"
 								height="20"
@@ -30,7 +30,7 @@ const Navigation: FC = () => {
 				</Link>
 				<Link href="/messanger">
 					<div>
-						<div>
+						<div className={style.icon}>
 							<svg
 								width="20"
 								height="20"
@@ -66,7 +66,7 @@ const Navigation: FC = () => {
 				</Link>
 				<Link href="/friends">
 					<div>
-						<div>
+						<div className={style.icon}>
 							<svg
 								width="20"
 								height="20"

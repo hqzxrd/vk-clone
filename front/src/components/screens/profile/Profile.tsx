@@ -1,6 +1,6 @@
-import CreatePost from './CreatePost'
-import Info from './Info'
-import Post from './Post'
+import CreatePost from './CreatePost/CreatePost'
+import Info from './Info/Info'
+import Post from './Post/Post'
 
 import styles from './Profile.module.scss'
 

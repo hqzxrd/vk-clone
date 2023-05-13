@@ -7,8 +7,6 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { useAuth } from '@/hooks/useAuth'
-
 const CreateUserWrapper = () => {
 	const { asPath, replace } = useRouter()
 	const [state, setState] = useState<string>()

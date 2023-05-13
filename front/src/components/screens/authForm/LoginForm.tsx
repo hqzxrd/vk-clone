@@ -6,34 +6,31 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
 
-import { useActions } from '@/hooks/useActions'
 import { useAuth } from '@/hooks/useAuth'
+
+import { EMAIL_REGEX } from '@/shared/regex'
 
 import { useAppDispatch } from '@/store/store'
 import { login } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
 
-const validEmail =
-	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
 const LoginForm: FC = () => {
-	const { register, handleSubmit, formState, reset } =
-		useForm<IEmailPassordFields>({
-			mode: `onChange`,
-		})
+	const { register, handleSubmit, formState } = useForm<IEmailPassordFields>({
+		mode: `onChange`,
+	})
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
 	const { isAutorized } = useAuth()
 
 	useEffect(() => {
-		isAutorized && replace(`/profile`)
+		isAutorized && replace(`/users/profile`)
 	}, [])
 
 	const onSubmit: SubmitHandler<IEmailPassordFields> = async (data: any) => {
 		dispatch(login(data)).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) replace(`/profile`)
+			if (status === `fulfilled`) replace(`/users/profile`)
 		})
 	}
 
@@ -46,7 +43,7 @@ const LoginForm: FC = () => {
 					{...register(`email`, {
 						required: `Введите почту`,
 						pattern: {
-							value: validEmail,
+							value: EMAIL_REGEX,
 							message: `Неверная почта`,
 						},
 					})}

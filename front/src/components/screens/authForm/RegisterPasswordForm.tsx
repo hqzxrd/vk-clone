@@ -17,7 +17,7 @@ const PasswordRegisterForm: FC<propsForInput> = ({
 	const { replace } = useRouter()
 
 	const onSubmit: SubmitHandler<IEmailPassordFields> = (data) => {
-		replace(`register#info`)
+		replace(`/auth/register#info`)
 	}
 
 	return (

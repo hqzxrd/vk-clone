@@ -35,7 +35,14 @@ export interface IUserInfoFields {
 	gender: string
 }
 
+export interface IUserExInfoField {
+	city?: string
+	status?: string
+}
+
 export interface IAuthFields
 	extends IEmailPassordFields,
 		IUserInfoFields,
 		IConfirmField {}
+
+export interface UserFields extends IAuthFields, IUserExInfoField {}

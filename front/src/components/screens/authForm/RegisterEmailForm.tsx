@@ -8,13 +8,12 @@ import Input from '@/components/ui/form/Input'
 
 import { useAuth } from '@/hooks/useAuth'
 
+import { EMAIL_REGEX } from '@/shared/regex'
+
 import { useAppDispatch } from '@/store/store'
 import { confirmation } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
-
-const validEmail =
-	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const RegisterForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 	const dispatch = useAppDispatch()
@@ -28,7 +27,7 @@ const RegisterForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 	const onSubmit: SubmitHandler<IEmailPassordFields> = (data) => {
 		dispatch(confirmation(data)).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) replace(`register#code`)
+			if (status === `fulfilled`) replace(`/auth/register#code`)
 		})
 	}
 
@@ -44,7 +43,7 @@ const RegisterForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 					{...reg(`email`, {
 						required: `Введите почту`,
 						pattern: {
-							value: validEmail,
+							value: EMAIL_REGEX,
 							message: `Неверная почта`,
 						},
 					})}

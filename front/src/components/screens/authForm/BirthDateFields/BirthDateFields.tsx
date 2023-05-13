@@ -1,18 +1,21 @@
-import { IAuthFields, propsRegInput } from '../auth.interface'
+import { IAuthFields, UserFields, propsRegInput } from '../auth.interface'
 import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react'
-import { FormState, UseFormRegister, set } from 'react-hook-form'
+import { FieldValues, FormState, UseFormRegister, set } from 'react-hook-form'
 
 import Input from '@/components/ui/form/Input'
 
 import styles from './BirthDate.module.scss'
 
-interface props extends propsRegInput {
-	formState: FormState<IAuthFields>
+export interface BirthDateProps<> extends propsRegInput {
+	formState: FormState<UserFields>
 }
 
 const yearRegExp = /^(19[2-9]\d|20[0-1]\d|202[0-3])$/
 
-const BirthDateFields: FC<props> = ({ formState, reg }) => {
+const BirthDateFields: FC<BirthDateProps> = ({
+	formState,
+	reg,
+}) => {
 	const [day, setDay] = useState(``)
 	const [month, setMonth] = useState(``)
 

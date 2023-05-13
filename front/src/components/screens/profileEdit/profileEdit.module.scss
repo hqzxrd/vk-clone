@@ -1,0 +1,48 @@
+.auth {
+	display: flex;
+	justify-content: center;
+	background-color: var(--extra-background);
+	border: 1px solid var(--primary-border);
+	border-radius: var(--primary-border-radius);
+	max-width: 320px;
+	padding: 20px;
+	margin: 0 auto;
+	form {
+		// width: 80%;
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+
+		.heading {
+			text-align: center;
+		}
+
+		.info {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 10px;
+			border-bottom: 1px solid var(--primary-border);
+			padding: 10px 0;
+			> img {
+				border-radius: 50%;
+			}
+		}
+
+		> :nth-child(3) {
+			margin-top: 10px;
+		}
+
+		.link {
+			a {
+				color: var(--primary-button-color);
+			}
+			cursor: pointer;
+			text-align: center;
+			background-color: var(--primary-button);
+			border-radius: var(--primary-border-radius);
+			padding: 8.5px 0px;
+			margin-bottom: 10px;
+		}
+	}
+}

@@ -1,5 +1,5 @@
-import About from './About'
-import Avatar from './Avatar'
+import About from '../About/About'
+import Avatar from '../Avatar/Avatar'
 
 import styles from './Info.module.scss'
 

@@ -38,7 +38,7 @@ const UserInfoForm: FC<propsForInput> = ({ reg, handleSubmit, formState }) => {
 		console.log(gender, userDto)
 		dispatch(register(userDto)).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) replace(`/profile`)
+			if (status === `fulfilled`) replace(`/users/profile`)
 		})
 	}
 

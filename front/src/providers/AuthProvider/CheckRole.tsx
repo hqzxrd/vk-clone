@@ -17,7 +17,7 @@ const CheckRole: FC<TypeComponentAuth> = ({
 	if (isAutorized && isOnlyUser) {
 		return <Children />
 	} else {
-		pathname !== `/404` && replace(`auth/login`)
+		pathname !== `/404` && replace(`/auth/login`)
 	}
 
 	return <div></div>

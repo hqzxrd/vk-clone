@@ -7,7 +7,7 @@ interface props {
 	value: number
 }
 
-const About_Count: FC<props> = ({ name, value }) => {
+const AboutCount: FC<props> = ({ name, value }) => {
 	return (
 		<div className={styles.user_info_counter}>
 			<div>{value}</div>
@@ -16,4 +16,4 @@ const About_Count: FC<props> = ({ name, value }) => {
 	)
 }
 
-export default About_Count
+export default AboutCount

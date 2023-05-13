@@ -4,12 +4,12 @@ import { Dispatch, FC, SetStateAction } from 'react'
 
 import styles from './GenderSelector.module.scss'
 
-interface props {
+export interface GenderSelectorProps {
 	gender: TypeGender
 	setGender: Dispatch<SetStateAction<TypeGender>>
 }
 
-const GenderSelector: FC<props> = ({ gender, setGender }) => {
+const GenderSelector: FC<GenderSelectorProps> = ({ gender, setGender }) => {
 	return (
 		<div className={styles.selector}>
 			<div

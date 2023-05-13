@@ -14,6 +14,9 @@
 				&:hover {
 					background-color: var(--primary-hover);
 				}
+				.icon {
+					color: var(--primary-button);
+				}
 
 				> div {
 					display: flex;

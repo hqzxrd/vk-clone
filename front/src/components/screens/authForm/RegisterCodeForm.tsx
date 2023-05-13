@@ -27,7 +27,7 @@ const CodeForm: FC = () => {
 	const onSubmit: SubmitHandler<code> = (data: code) => {
 		dispatch(code({ code: +data.code, email: user.email })).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) replace(`register#password`)
+			if (status === `fulfilled`) replace(`/auth/register#password`)
 		})
 	}
 
