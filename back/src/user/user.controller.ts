@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseInterceptors, ParseIntPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AccessJwtGuard } from 'src/auth/decorators/access-jwt.decorator';
 import { User } from './decorators/user.decorator';
@@ -20,5 +20,12 @@ export class UserController {
   ) {
     const url = await this.userService.uploadAvatar(id, file)
     return {url}
+  }
+
+  @Get(':id')
+  getOne(
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.userService.byId(id)
   }
 }
