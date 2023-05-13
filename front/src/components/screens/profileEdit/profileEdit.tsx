@@ -1,11 +1,6 @@
 import BirthDateFields from '../authForm/BirthDateFields/BirthDateFields'
 import GenderSelector from '../authForm/GenderSelector/GenderSelector'
-import {
-	IAuthFields,
-	IUserExInfoField,
-	TypeGender,
-	UserFields,
-} from '../authForm/auth.interface'
+import { TypeGender, UserFields } from '../authForm/auth.interface'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC, useState } from 'react'
