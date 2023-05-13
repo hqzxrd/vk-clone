@@ -30,7 +30,12 @@ export class UserService {
 
   async byId(id: number) {
     const user = await this.userRepository.findOne({
-      where: {id}
+      where: {id},
+      select: [
+        'avatar', 'birthday', 'city', 
+        'createDate', 'name', 'nickname', 
+        'status', 'gender', 'email', 'id'
+      ]
     })
     return user
   }
