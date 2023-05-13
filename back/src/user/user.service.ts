@@ -69,4 +69,15 @@ export class UserService {
 
     return filename
   }
+
+  async getAll() {
+    const users = await this.userRepository.find({
+      select: [ 
+        'avatar', 'birthday', 'city', 
+        'createDate', 'name', 'nickname', 
+        'status', 'gender',  'id'
+      ]
+    })
+    return users
+  }
 }

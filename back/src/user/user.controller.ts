@@ -28,4 +28,9 @@ export class UserController {
   ) {
     return this.userService.byId(id)
   }
+
+  @Get()
+  getAll() {
+    return this.userService.getAll()
+  }
 }
