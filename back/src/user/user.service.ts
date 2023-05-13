@@ -7,6 +7,7 @@ import { INCORRECT_CODE } from './constants/user.error.constants';
 import { USER_NOT_FOUND } from 'src/auth/constants/auth.error.constants';
 import { DropboxService } from 'src/dropbox/dropbox.service';
 import { MultipartFile } from '@fastify/multipart';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -79,5 +80,11 @@ export class UserService {
       ]
     })
     return users
+  }
+
+  async update(id: number, dto: UpdateUserDto) {
+    const user = await this.byId(id)
+    if(!user) throw new UnauthorizedException()
+    return await this.userRepository.save({...user, ...dto})
   }
 }
