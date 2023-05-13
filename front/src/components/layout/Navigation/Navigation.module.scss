@@ -1,0 +1,28 @@
+.nav_wrapper {
+	position: sticky;
+	top: 55px;
+	min-width: 170px;
+	> nav {
+		> a {
+			> div {
+				cursor: pointer;
+				user-select: none;
+				display: flex;
+				padding: 5px;
+				border-radius: var(--primary-border-radius);
+				gap: 10px;
+				&:hover {
+					background-color: var(--primary-hover);
+				}
+				.icon {
+					color: var(--primary-button);
+				}
+
+				> div {
+					display: flex;
+					align-items: center;
+				}
+			}
+		}
+	}
+}
