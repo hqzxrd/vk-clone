@@ -5,7 +5,7 @@ import { LoginDto } from './dto/login.dto';
 import { FastifyReply } from 'fastify';
 import { REFRESH_TOKEN_COOKIE } from './constants/auth.constants';
 import { RefreshJwtGuard } from './decorators/refresh-jwt.decorator';
-import { User } from 'src/user/decorator/user.decorator';
+import { User } from 'src/user/decorators/user.decorator';
 import { Cookie } from './decorators/cookie.decorator';
 import { CookieSerializeOptions } from '@fastify/cookie';
 import { CodeVerifDto } from './dto/code-verif.dto';

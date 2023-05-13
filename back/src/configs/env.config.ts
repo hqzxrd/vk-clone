@@ -46,6 +46,15 @@ export class EnvironmentVariables {
     @IsString()
     REFRESH_JWT_SECRET: string
 
+    // * Dropbox
+    @IsString()
+    DROPBOX_REFRESH: string
+
+    @IsString()
+    DROPBOX_CLIENT_ID: string
+
+    @IsString()
+    DROPBOX_CLIENT_SECRET: string
 }
   
 

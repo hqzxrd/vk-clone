@@ -1,15 +1,19 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { INCORRECT_CODE } from './constants/user.error.constants';
 import { USER_NOT_FOUND } from 'src/auth/constants/auth.error.constants';
+import { DropboxService } from 'src/dropbox/dropbox.service';
+import { MultipartFile } from '@fastify/multipart';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>
+    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
+    private readonly dropboxService: DropboxService
   ){}
   
   async byEmail(email: string) {
@@ -27,7 +31,12 @@ export class UserService {
 
   async byId(id: number) {
     const user = await this.userRepository.findOne({
-      where: {id}
+      where: {id},
+      select: [
+        'avatar', 'birthday', 'city', 
+        'createDate', 'name', 'nickname', 
+        'status', 'gender', 'email', 'id'
+      ]
     })
     return user
   }
@@ -45,6 +54,38 @@ export class UserService {
     user.code = null
     console.log(user)
     await this.userRepository.save(user)
+  }
+
+
+  async uploadAvatar(id: number, file: MultipartFile) {
+    const user = await this.userRepository.findOne({
+      where: {id}
+    })
+    if(!user) throw new UnauthorizedException()
+
+    const filename = await this.dropboxService.uploadFile(file)
+    
+    user.avatar = filename
+    await this.userRepository.save(user)
+
+    return filename
+  }
+
+  async getAll() {
+    const users = await this.userRepository.find({
+      select: [ 
+        'avatar', 'birthday', 'city', 
+        'createDate', 'name', 'nickname', 
+        'status', 'gender',  'id'
+      ]
+    })
+    return users
+  }
+
+  async update(id: number, dto: UpdateUserDto) {
+    const user = await this.byId(id)
+    if(!user) throw new UnauthorizedException()
+    return await this.userRepository.save({...user, ...dto})
   }
 
   async checkUser(email: string) {

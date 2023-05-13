@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { getMailerConfig } from './configs/mailer.config';
 import { MailModule } from './mail/mail.module';
+import { DropboxModule } from './dropbox/dropbox.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MailModule } from './mail/mail.module';
     AuthModule,
     UserModule,
     MailModule,
+    DropboxModule
   ]
 })
 export class AppModule {}
