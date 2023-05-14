@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { Dropbox } from "dropbox";
 import { randomUUID } from "crypto";
 import { MultipartFile } from "@fastify/multipart";
+import { MulterFile } from "@webundsoehne/nest-fastify-file-upload";
 
 
 @Injectable()
@@ -19,13 +20,12 @@ export class DropboxService {
     }
 
 
-    async uploadFile(file: MultipartFile){
-        const type = file.filename.split('.').pop()
-        const folder = file.mimetype.split('/')[0]
+    async uploadFile(file: MulterFile){
+        const type = file.originalname.split('.').pop()
+        const [folder] = file.mimetype.split('/')
         const fileName = randomUUID()
         const filePath = `${folder}/${fileName}.${type}`
-        const buffer = await file.toBuffer()
-        await this.dbx.filesUpload({path: '/' + filePath, contents: buffer})
+        await this.dbx.filesUpload({path: '/' + filePath, contents: file.buffer})
         return filePath
     }
 

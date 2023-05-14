@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { FindOptionsSelectByString, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { DropboxService } from 'src/dropbox/dropbox.service';
 import { MultipartFile } from '@fastify/multipart';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RegistrationDto } from 'src/auth/dto/registration.dto';
+import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 
 @Injectable()
 export class UserService {
@@ -41,7 +42,7 @@ export class UserService {
     return user
   }
 
-  async uploadAvatar(id: number, file: MultipartFile) {
+  async uploadAvatar(id: number, file: MulterFile) {
     const user = await this.userRepository.findOne({
       where: {id}
     })
