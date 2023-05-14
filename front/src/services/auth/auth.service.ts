@@ -31,10 +31,6 @@ export const AuthService = {
 			email,
 		})
 
-		if (res.status === 204) {
-			updateStorage(`user`, { isAuth: true })
-		}
-
 		return res
 	},
 

@@ -1,28 +1,43 @@
 import AboutCount from '../AboutCount/AboutCount'
+import { IUser } from '@/types/user.types'
+
+import { useProfile } from '@/hooks/useProfile'
 
 import styles from './About.module.scss'
 
 const About = () => {
+	const { isLoading, data } = useProfile()
+
+	const getGender = (data: IUser | undefined) => {
+		if (!data) {
+			return `Ошибка`
+		}
+
+		if (data.gender === `female`) {
+			return `Женский`
+		} else {
+			return `Мужской`
+		}
+	}
+
 	return (
 		<div className={styles.about}>
 			<div className={styles.about_header}>
-				<div className={styles.name}>Василий Абобович</div>
-				<div className={styles.status}>
-					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa?
-				</div>
+				<div className={styles.name}>{`${data?.name} ${data?.surname}`}</div>
+				<div className={styles.status}>{data?.status}</div>
 			</div>
 
 			<div className={styles.about_field}>
 				<div>Город:</div>
-				<div>Бобруйск</div>
+				<div>{data?.city}</div>
 			</div>
 			<div className={styles.about_field}>
 				<div>Пол:</div>
-				<div>Ламинат</div>
+				<div>{getGender(data)}</div>
 			</div>
 			<div className={styles.about_field}>
 				<div>Дата рождения:</div>
-				<div>13.05.2023</div>
+				<div>{data?.birthday}</div>
 			</div>
 
 			<div className={styles.info}>

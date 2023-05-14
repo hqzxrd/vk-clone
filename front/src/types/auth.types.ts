@@ -12,7 +12,6 @@ export type TypeComponentAuth = { Component: TypeRole } & IChildren
 
 export interface IUserDto {
 	id: number
-	isAuth: boolean
 	email: string
 	name: string
 	surname: string

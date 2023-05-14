@@ -3,6 +3,7 @@ import GenderSelector from './GenderSelector/GenderSelector'
 import { IRegisterFieldsClient, RegisterPropsHookForm } from './auth.interface'
 import { TypeGender } from '@/types/auth.types'
 import { IRegisterFieldsDto } from '@/types/auth.types'
+import { IUser } from '@/types/user.types'
 import { useRouter } from 'next/router'
 import { FC, useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
@@ -45,7 +46,10 @@ const UserInfoForm: FC<RegisterPropsHookForm> = ({
 		console.log(gender, userDto)
 		dispatch(register(userDto)).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) replace(`/users/profile`)
+
+			const payload = action.payload as { user: IUser }
+			const id = payload.user.id
+			if (status === `fulfilled`) replace(`/users/${id}`)
 		})
 	}
 

@@ -1,4 +1,5 @@
 import { ILoginFields } from '@/types/auth.types'
+import { IUser } from '@/types/user.types'
 import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -20,7 +21,7 @@ const LoginForm: FC = () => {
 		mode: `onChange`,
 	})
 	const dispatch = useAppDispatch()
-	const { replace } = useRouter()
+	const { replace, isReady } = useRouter()
 	const { isAutorized } = useAuth()
 
 	useEffect(() => {
@@ -30,7 +31,9 @@ const LoginForm: FC = () => {
 	const onSubmit: SubmitHandler<ILoginFields> = async (data: any) => {
 		dispatch(login(data)).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) replace(`/users/profile`)
+			const payload = action.payload as { user: IUser }
+			const id = payload.user.id
+			if (status === `fulfilled`) replace(`/users/${id}`)
 		})
 	}
 
