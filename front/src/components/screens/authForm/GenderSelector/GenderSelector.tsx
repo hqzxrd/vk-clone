@@ -1,4 +1,4 @@
-import { TypeGender } from '../auth.interface'
+import { TypeGender } from '@/types/auth.types'
 import cn from 'classnames'
 import { Dispatch, FC, SetStateAction } from 'react'
 

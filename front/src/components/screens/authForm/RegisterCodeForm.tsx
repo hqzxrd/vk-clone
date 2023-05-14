@@ -17,7 +17,7 @@ interface code {
 }
 
 const CodeForm: FC = () => {
-	const { register, handleSubmit, formState, reset } = useForm<code>({
+	const { register, handleSubmit, formState } = useForm<code>({
 		mode: `onChange`,
 	})
 	const dispatch = useAppDispatch()

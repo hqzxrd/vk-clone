@@ -1,3 +1,4 @@
+import { ILoginFields } from '@/types/auth.types'
 import {
 	FormState,
 	UseFormHandleSubmit,
@@ -6,27 +7,25 @@ import {
 } from 'react-hook-form'
 
 export interface propsRegInput {
-	reg: UseFormRegister<IAuthFields>
+	reg: UseFormRegister<IRegisterFieldsClient>
 }
 
-export interface propsForInput extends propsRegInput {
-	handleSubmit: UseFormHandleSubmit<IAuthFields>
-	formState: FormState<IAuthFields>
-	watch: UseFormWatch<IAuthFields>
+export interface BirthDateComponentProps {
+	reg: UseFormRegister<IRegisterFieldsClient>
+	formState: FormState<IRegisterFieldsClient>
 }
 
-export interface IConfirmField {
+export interface RegisterPropsHookForm extends propsRegInput {
+	handleSubmit: UseFormHandleSubmit<IRegisterFieldsClient>
+	formState: FormState<IRegisterFieldsClient>
+	watch: UseFormWatch<IRegisterFieldsClient>
+}
+
+export interface IConfirmPasswordField {
 	confirm: string
 }
 
-export interface IEmailPassordFields {
-	email: string
-	password: string
-}
-
-export type TypeGender = `male` | `female`
-
-export interface IUserInfoFields {
+export interface IRegisterInfoFields {
 	name: string
 	surname: string
 	day: string
@@ -35,14 +34,7 @@ export interface IUserInfoFields {
 	gender: string
 }
 
-export interface IUserExInfoField {
-	city?: string
-	status?: string
-}
-
-export interface IAuthFields
-	extends IEmailPassordFields,
-		IUserInfoFields,
-		IConfirmField {}
-
-export interface UserFields extends IAuthFields, IUserExInfoField {}
+export interface IRegisterFieldsClient
+	extends ILoginFields,
+		IRegisterInfoFields,
+		IConfirmPasswordField {}

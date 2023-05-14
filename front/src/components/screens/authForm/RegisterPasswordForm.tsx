@@ -1,4 +1,5 @@
-import { IEmailPassordFields, propsForInput } from './auth.interface'
+import { RegisterPropsHookForm } from './auth.interface'
+import { ILoginFields } from '@/types/auth.types'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { SubmitHandler } from 'react-hook-form'
@@ -8,7 +9,7 @@ import Input from '@/components/ui/form/Input'
 
 import styles from './AuthForm.module.scss'
 
-const PasswordRegisterForm: FC<propsForInput> = ({
+const PasswordRegisterForm: FC<RegisterPropsHookForm> = ({
 	reg,
 	handleSubmit,
 	formState,
@@ -16,7 +17,7 @@ const PasswordRegisterForm: FC<propsForInput> = ({
 }) => {
 	const { replace } = useRouter()
 
-	const onSubmit: SubmitHandler<IEmailPassordFields> = (data) => {
+	const onSubmit: SubmitHandler<ILoginFields> = () => {
 		replace(`/auth/register#info`)
 	}
 

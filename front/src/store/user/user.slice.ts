@@ -7,7 +7,7 @@ import {
 	register,
 } from './user.action'
 import { IInitialState } from './user.interface'
-import { IUser } from '@/types/user.types'
+import { IUserDto } from '@/types/auth.types'
 import { createSlice } from '@reduxjs/toolkit'
 
 import {
@@ -15,8 +15,9 @@ import {
 	getUserLocalStore,
 } from '@/utils/local-storage'
 
-export const initialUser: IUser = {
-	isAuth: false,
+export const initialUser: IUserDto = {
+	id: 0,
+
 	email: ``,
 	name: ``,
 	surname: ``,
@@ -71,6 +72,8 @@ export const userSlice = createSlice({
 		})
 		builder.addCase(login.fulfilled, (state, { payload }) => {
 			state.isLoading = false
+			console.log(payload)
+
 			state.user = payload.user
 			state.isAutorized = true
 		})

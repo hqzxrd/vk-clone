@@ -1,6 +1,7 @@
 import BirthDateFields from '../authForm/BirthDateFields/BirthDateFields'
 import GenderSelector from '../authForm/GenderSelector/GenderSelector'
-import { TypeGender, UserFields } from '../authForm/auth.interface'
+import { IUpdateProfileFieldsClient } from './profileEdit.interface'
+import { TypeGender } from '@/types/auth.types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FC, useState } from 'react'
@@ -17,8 +18,7 @@ const ProfileEdit: FC = () => {
 		register: reg,
 		handleSubmit,
 		formState,
-		watch,
-	} = useForm<UserFields>({
+	} = useForm<IUpdateProfileFieldsClient>({
 		mode: `onChange`,
 	})
 
@@ -41,7 +41,7 @@ const ProfileEdit: FC = () => {
 							message: `Пароль должен быть более 8ми символвов`,
 						},
 					})}
-					error={formState.errors.password}
+					error={formState.errors.name}
 				/>
 
 				<Input
@@ -53,21 +53,21 @@ const ProfileEdit: FC = () => {
 							message: `Пароль должен быть более 8ми символвов`,
 						},
 					})}
-					error={formState.errors.password}
+					error={formState.errors.surname}
 				/>
 
 				<Input
 					placeholder="Статус"
 					{...reg(`status`)}
 					maxLength={64}
-					error={formState.errors.password}
+					error={formState.errors.status}
 				/>
 
 				<Input
 					placeholder="Город"
 					{...reg(`city`)}
 					maxLength={20}
-					error={formState.errors.password}
+					error={formState.errors.city}
 				/>
 
 				<BirthDateFields formState={formState} reg={reg} />

@@ -1,6 +1,15 @@
+import { TypeGender } from './auth.types'
+
 export interface IUser {
-	isAuth: boolean
-	email: string
+	id: number
+	createDate: string
 	name: string
 	surname: string
+	email: string
+	birthday: string
+	gender: TypeGender
+	city?: string | null
+	status?: string | null
+	nickname?: string | null
+	avatar?: string | null
 }

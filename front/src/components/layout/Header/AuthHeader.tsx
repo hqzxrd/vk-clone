@@ -22,7 +22,7 @@ const AuthHeader: FC<props> = ({ toggleTheme }) => {
 				Тема
 			</div>
 			<div>
-				<Link href="" onClick={() => logout()}>
+				<Link href={`/auth/login`} onClick={() => logout()}>
 					<span className={styles.sign}>Выйти</span>
 				</Link>
 			</div>
