@@ -17,7 +17,7 @@ import {
 
 export const initialUser: IUserDto = {
 	id: 0,
-	isAuth: false,
+
 	email: ``,
 	name: ``,
 	surname: ``,
