@@ -5,6 +5,6 @@ export interface IUpdateProfileFieldsClient
 		IUseradditionalInfoFields {}
 
 export interface IUseradditionalInfoFields {
-	city?: string
-	status?: string
+	city: string | null
+	status: string | null
 }

@@ -5,11 +5,10 @@ export interface IUser {
 	createDate: string
 	name: string
 	surname: string
-	email: string
 	birthday: string
 	gender: TypeGender
-	city?: string | null
-	status?: string | null
-	nickname?: string | null
-	avatar?: string | null
+	city: string | null
+	status: string | null
+	nickname: string | null
+	avatar: string | null
 }

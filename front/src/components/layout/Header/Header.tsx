@@ -24,7 +24,7 @@ const Header: FC<props> = ({ toggleTheme }) => {
 		<header className={styles.header}>
 			<div className={styles.wrapper}>
 				<div className={styles.logo}>
-					<Link href="/profile">
+					<Link href="/">
 						<Image src={`/vk_logo.ico`} alt="logo" height={24} width={24} />
 						<div>ВКонтакте</div>
 					</Link>

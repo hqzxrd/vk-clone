@@ -10,10 +10,18 @@ import { useForm } from 'react-hook-form'
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
 
+import { useAuth } from '@/hooks/useAuth'
+import { useProfile } from '@/hooks/useProfile'
+
+import { NAME_REGEX } from '@/shared/regex'
+
 import styles from './profileEdit.module.scss'
 
 const ProfileEdit: FC = () => {
-	const [gender, setGender] = useState<TypeGender>(`male`)
+	const { user } = useAuth()
+	const { isLoading, data } = useProfile(user.id)
+
+	const [gender, setGender] = useState<TypeGender>(data?.gender || `male`)
 	const {
 		register: reg,
 		handleSubmit,
@@ -35,11 +43,14 @@ const ProfileEdit: FC = () => {
 				<Input
 					placeholder="Имя"
 					{...reg(`name`, {
-						required: `Введите имя`,
-						minLength: {
-							value: 8,
-							message: `Пароль должен быть более 8ми символвов`,
+						value: data?.name,
+						pattern: {
+							value: NAME_REGEX,
+							message: `Только ru или en буквы`,
 						},
+						required: `Введите имя`,
+						maxLength: { value: 15, message: `Максимум 15 символов` },
+						minLength: { value: 2, message: `Минимум 2 символа` },
 					})}
 					error={formState.errors.name}
 				/>
@@ -47,25 +58,30 @@ const ProfileEdit: FC = () => {
 				<Input
 					placeholder="Фамилия"
 					{...reg(`surname`, {
-						required: `Введите фамилию`,
-						minLength: {
-							value: 8,
-							message: `Пароль должен быть более 8ми символвов`,
+						value: data?.surname,
+						pattern: {
+							value: NAME_REGEX,
+							message: `Только ru или en буквы`,
 						},
+						required: `Введите фамилию`,
+						maxLength: { value: 15, message: `Максимум 15 символов` },
+						minLength: { value: 2, message: `Минимум 2 символа` },
 					})}
 					error={formState.errors.surname}
 				/>
 
 				<Input
 					placeholder="Статус"
-					{...reg(`status`)}
+					{...reg(`status`, {
+						value: data?.status && data.status,
+					})}
 					maxLength={64}
 					error={formState.errors.status}
 				/>
 
 				<Input
 					placeholder="Город"
-					{...reg(`city`)}
+					{...reg(`city`, { value: data?.city && data.city })}
 					maxLength={20}
 					error={formState.errors.city}
 				/>

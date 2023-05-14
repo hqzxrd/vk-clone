@@ -1,12 +1,15 @@
 import AboutCount from '../AboutCount/AboutCount'
 import { IUser } from '@/types/user.types'
 
+import { useNormalDate } from '@/hooks/useNormalDate'
 import { useProfile } from '@/hooks/useProfile'
 
 import styles from './About.module.scss'
 
 const About = () => {
 	const { isLoading, data } = useProfile()
+
+	const { day, month, year } = useNormalDate(data ? data.birthday : ``)
 
 	const getGender = (data: IUser | undefined) => {
 		if (!data) {
@@ -37,7 +40,7 @@ const About = () => {
 			</div>
 			<div className={styles.about_field}>
 				<div>Дата рождения:</div>
-				<div>{data?.birthday}</div>
+				<div>{`${day}.${month}.${year}`}</div>
 			</div>
 
 			<div className={styles.info}>
