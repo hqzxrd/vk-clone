@@ -14,7 +14,7 @@ export class UserService {
     private readonly dropboxService: DropboxService
   ){}
 
-  private returnKeyUser: FindOptionsSelectByString<UserEntity> = [
+  private returnKeyUser: (keyof UserEntity)[] = [
       'id', 'createDate', 'birthday',
       'name', 'surname', 'nickname', 'status',
       'avatar', 'gender', 'city'
