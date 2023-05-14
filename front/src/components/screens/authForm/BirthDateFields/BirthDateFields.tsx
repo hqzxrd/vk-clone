@@ -3,13 +3,21 @@ import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react'
 
 import Input from '@/components/ui/form/Input'
 
+import { useAuth } from '@/hooks/useAuth'
+import { useNormalDate } from '@/hooks/useNormalDate'
+import { useProfile } from '@/hooks/useProfile'
+
 import { YEAR_REGEX } from '@/shared/regex'
 
 import styles from './BirthDate.module.scss'
 
 const BirthDateFields: FC<BirthDateComponentProps> = ({ formState, reg }) => {
-	const [day, setDay] = useState(``)
-	const [month, setMonth] = useState(``)
+	const { user } = useAuth()
+	const { isLoading, data } = useProfile(user.id)
+	const { day, month, year } = useNormalDate(data ? data.birthday : ``)
+
+	const [dayInput, setDayInput] = useState(day)
+	const [monthInput, setMonthInput] = useState(month)
 
 	const handleChangeValidate = (
 		e: ChangeEvent<HTMLInputElement>,
@@ -40,9 +48,9 @@ const BirthDateFields: FC<BirthDateComponentProps> = ({ formState, reg }) => {
 					})}
 					style={{ width: 43 }}
 					onChange={(e) => {
-						handleChangeValidate(e, 1, 31, setDay)
+						handleChangeValidate(e, 1, 31, setDayInput)
 					}}
-					value={day}
+					value={dayInput}
 					maxLength={2}
 				/>
 				<Input
@@ -52,14 +60,15 @@ const BirthDateFields: FC<BirthDateComponentProps> = ({ formState, reg }) => {
 					})}
 					style={{ width: 43 }}
 					onChange={(e) => {
-						handleChangeValidate(e, 1, 12, setMonth)
+						handleChangeValidate(e, 1, 12, setMonthInput)
 					}}
-					value={month}
+					value={monthInput}
 					maxLength={2}
 				/>
 				<Input
 					placeholder="Год"
 					{...reg(`year`, {
+						value: year,
 						pattern: {
 							value: YEAR_REGEX,
 							message: `Введите корректный год рождения`,

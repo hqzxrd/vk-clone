@@ -1,3 +1,4 @@
+import { IUpdateProfileFieldsClient } from '../profileEdit/profileEdit.interface'
 import { ILoginFields } from '@/types/auth.types'
 import {
 	FormState,
@@ -7,18 +8,18 @@ import {
 } from 'react-hook-form'
 
 export interface propsRegInput {
-	reg: UseFormRegister<IRegisterFieldsClient>
+	reg: UseFormRegister<IUpdateProfileFieldsClient>
 }
 
 export interface BirthDateComponentProps {
-	reg: UseFormRegister<IRegisterFieldsClient>
-	formState: FormState<IRegisterFieldsClient>
+	reg: UseFormRegister<IUpdateProfileFieldsClient>
+	formState: FormState<IUpdateProfileFieldsClient>
 }
 
 export interface RegisterPropsHookForm extends propsRegInput {
-	handleSubmit: UseFormHandleSubmit<IRegisterFieldsClient>
-	formState: FormState<IRegisterFieldsClient>
-	watch: UseFormWatch<IRegisterFieldsClient>
+	handleSubmit: UseFormHandleSubmit<IUpdateProfileFieldsClient>
+	formState: FormState<IUpdateProfileFieldsClient>
+	watch: UseFormWatch<IUpdateProfileFieldsClient>
 }
 
 export interface IConfirmPasswordField {

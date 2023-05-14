@@ -17,7 +17,6 @@ import {
 
 export const initialUser: IUserDto = {
 	id: 0,
-
 	email: ``,
 	name: ``,
 	surname: ``,

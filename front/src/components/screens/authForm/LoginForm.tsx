@@ -31,9 +31,12 @@ const LoginForm: FC = () => {
 	const onSubmit: SubmitHandler<ILoginFields> = async (data: any) => {
 		dispatch(login(data)).then((action) => {
 			const status = action.meta.requestStatus
-			const payload = action.payload as { user: IUser }
-			const id = payload.user.id
-			if (status === `fulfilled`) replace(`/users/${id}`)
+
+			if (status === `fulfilled`) {
+				const payload = action.payload as { user: IUser }
+				const id = payload.user.id
+				replace(`/users/${id}`)
+			}
 		})
 	}
 

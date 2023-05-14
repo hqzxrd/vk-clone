@@ -11,12 +11,12 @@ import { SubmitHandler } from 'react-hook-form'
 import Button from '@/components/ui/form/Button'
 import Input from '@/components/ui/form/Input'
 
+import { NAME_REGEX } from '@/shared/regex'
+
 import { useAppDispatch } from '@/store/store'
 import { register } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
-
-const nameRegExp = /^[a-zA-Zа-яА-Я]+$/g
 
 const UserInfoForm: FC<RegisterPropsHookForm> = ({
 	reg,
@@ -47,9 +47,11 @@ const UserInfoForm: FC<RegisterPropsHookForm> = ({
 		dispatch(register(userDto)).then((action) => {
 			const status = action.meta.requestStatus
 
-			const payload = action.payload as { user: IUser }
-			const id = payload.user.id
-			if (status === `fulfilled`) replace(`/users/${id}`)
+			if (status === `fulfilled`) {
+				const payload = action.payload as { user: IUser }
+				const id = payload.user.id
+				replace(`/users/${id}`)
+			}
 		})
 	}
 
@@ -62,7 +64,7 @@ const UserInfoForm: FC<RegisterPropsHookForm> = ({
 					placeholder="Имя"
 					{...reg(`name`, {
 						pattern: {
-							value: nameRegExp,
+							value: NAME_REGEX,
 							message: `Только ru или en буквы`,
 						},
 						required: `Введите имя`,
@@ -75,7 +77,7 @@ const UserInfoForm: FC<RegisterPropsHookForm> = ({
 					placeholder="Фамилия"
 					{...reg(`surname`, {
 						pattern: {
-							value: nameRegExp,
+							value: NAME_REGEX,
 							message: `Только ru или en буквы`,
 						},
 						required: `Введите фамилию`,

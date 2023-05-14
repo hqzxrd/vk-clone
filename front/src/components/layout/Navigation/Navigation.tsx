@@ -1,13 +1,17 @@
 import Link from 'next/link'
 import { FC } from 'react'
 
+import { useAuth } from '@/hooks/useAuth'
+
 import style from './Navigation.module.scss'
 
 const Navigation: FC = () => {
+	const { user } = useAuth()
+
 	return (
 		<div className={style.nav_wrapper}>
 			<nav>
-				<Link href="/users/profile">
+				<Link href={`/users/${user.id}`}>
 					<div>
 						<div className={style.icon}>
 							<svg

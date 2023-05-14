@@ -1,0 +1,14 @@
+.peoples_wrapper {
+	display: flex;
+	justify-content: center;
+	.peoples {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		min-width: 500px;
+		background-color: var(--extra-background);
+		border: 1px solid var(--primary-border);
+		border-radius: var(--primary-border-radius);
+		padding: 20px;
+	}
+}
