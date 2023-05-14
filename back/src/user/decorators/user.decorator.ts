@@ -1,7 +1,7 @@
 import { ExecutionContext, createParamDecorator } from "@nestjs/common";
 import { UserEntity } from "../entities/user.entity";
 
-type UserDecorator = Pick<UserEntity, 'id' | 'isAuth' | 'email' |'name' |'surname'>
+type UserDecorator = Pick<UserEntity, 'id' | 'email' |'name' |'surname'>
 
 export const User = createParamDecorator(
     (data: keyof UserDecorator, ctx: ExecutionContext) => {

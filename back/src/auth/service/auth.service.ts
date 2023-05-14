@@ -29,7 +29,7 @@ export class AuthService {
 
     const salt = await genSalt(8)
     const hashPassword = await hash(dto.password, salt)
-    const user = await this.userService.create({...dto, password: hashPassword, isAuth: true})
+    const user = await this.userService.create({...dto, password: hashPassword})
     await this.confirmationService.delete(dto.email)
     const userData = await this.generateAndSaveToken(user)
     return userData
@@ -76,7 +76,6 @@ export class AuthService {
     return {
       ...tokens, 
       user: {
-        isAuth: user.isAuth,
         email: user.email,
         name: user.name,
         surname: user.surname,

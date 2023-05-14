@@ -1,13 +1,11 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
-import { INCORRECT_CODE } from './constants/user.error.constants';
-import { USER_NOT_FOUND } from 'src/auth/constants/auth.error.constants';
+import { FindOptionsSelectByString, Repository } from 'typeorm';
 import { DropboxService } from 'src/dropbox/dropbox.service';
 import { MultipartFile } from '@fastify/multipart';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { RegistrationDto } from 'src/auth/dto/registration.dto';
 
 @Injectable()
 export class UserService {
@@ -15,6 +13,12 @@ export class UserService {
     @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     private readonly dropboxService: DropboxService
   ){}
+
+  private returnKeyUser: FindOptionsSelectByString<UserEntity> = [
+      'id', 'createDate', 'birthday',
+      'name', 'surname', 'nickname', 'status',
+      'avatar', 'gender', 'city'
+    ]
   
   async byEmail(email: string) {
     const user = await this.userRepository.findOne({
@@ -24,7 +28,7 @@ export class UserService {
   }
 
 
-  async create(dto: CreateUserDto) {
+  async create(dto: RegistrationDto) {
     const user = this.userRepository.create({...dto})
     return await this.userRepository.save(user)
   }
@@ -32,30 +36,10 @@ export class UserService {
   async byId(id: number) {
     const user = await this.userRepository.findOne({
       where: {id},
-      select: [
-        'avatar', 'birthday', 'city', 
-        'createDate', 'name', 'nickname', 
-        'status', 'gender', 'email', 'id'
-      ]
+      select: this.returnKeyUser
     })
     return user
   }
-  
-  async setAuthByCode(code: number, email: string) {
-    const user = await this.userRepository.findOne({
-      where: {email}
-    })
-
-    if(!user) throw new BadRequestException(USER_NOT_FOUND)
-  
-    if(code !== user.code) throw new BadRequestException(INCORRECT_CODE)
-
-    user.isAuth = true
-    user.code = null
-    console.log(user)
-    await this.userRepository.save(user)
-  }
-
 
   async uploadAvatar(id: number, file: MultipartFile) {
     const user = await this.userRepository.findOne({
@@ -73,11 +57,7 @@ export class UserService {
 
   async getAll() {
     const users = await this.userRepository.find({
-      select: [ 
-        'avatar', 'birthday', 'city', 
-        'createDate', 'name', 'nickname', 
-        'status', 'gender',  'id'
-      ]
+      select: this.returnKeyUser
     })
     return users
   }

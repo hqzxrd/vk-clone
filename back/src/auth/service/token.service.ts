@@ -15,8 +15,8 @@ export class TokenService {
         private readonly configService: ConfigService
     ) {}
 
-    generateTokens({id, isAuth, email, name, surname, }: UserEntity) {
-        const payload = { id, isAuth, email, name, surname}
+    generateTokens({id, email, name, surname, }: UserEntity) {
+        const payload = { id, email, name, surname}
 
         const accessToken = this.jwtService.sign(payload, {expiresIn: '30m', secret: this.configService.get(ACCESS_SECRET)})
         const refreshToken = this.jwtService.sign(payload, {expiresIn: '15d', secret: this.configService.get(REFRESH_SECRET)})
