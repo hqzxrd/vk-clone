@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import Button from '@/components/ui/form/Button'
-import Input from '@/components/ui/form/Input'
+import Button from '@/components/ui/Form/Button'
+import Input from '@/components/ui/Form/Input'
 
 import { useAuth } from '@/hooks/useAuth'
 
@@ -21,7 +21,7 @@ const LoginForm: FC = () => {
 		mode: `onChange`,
 	})
 	const dispatch = useAppDispatch()
-	const { replace, isReady } = useRouter()
+	const { replace } = useRouter()
 	const { isAutorized } = useAuth()
 
 	useEffect(() => {

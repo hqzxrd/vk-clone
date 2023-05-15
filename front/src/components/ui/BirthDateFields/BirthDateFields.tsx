@@ -1,7 +1,18 @@
-import { BirthDateComponentProps } from '../auth.interface'
-import { ChangeEvent, Dispatch, FC, SetStateAction, useState } from 'react'
+import React, {
+	ChangeEvent,
+	Dispatch,
+	FC,
+	SetStateAction,
+	useState,
+} from 'react'
+import { FieldValues } from 'react-hook-form'
 
-import Input from '@/components/ui/form/Input'
+import {
+	IPropsHookForm,
+	IRegisterFields,
+} from '@/components/screens/authForm/auth.interface'
+import { IUpdateFields } from '@/components/screens/profileEdit/profileEdit.interface'
+import Input from '@/components/ui/Form/Input'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useNormalDate } from '@/hooks/useNormalDate'
@@ -11,7 +22,15 @@ import { YEAR_REGEX } from '@/shared/regex'
 
 import styles from './BirthDate.module.scss'
 
-const BirthDateFields: FC<BirthDateComponentProps> = ({ formState, reg }) => {
+interface IPropsRegister
+	extends Omit<IPropsHookForm<IRegisterFields>, `watch` | `handleSubmit`> {}
+interface IPropsUpdate
+	extends Omit<IPropsHookForm<IUpdateFields>, `watch` | `handleSubmit`> {}
+
+const BirthDateFields: FC<IPropsRegister | IPropsUpdate> = ({
+	formState,
+	reg,
+}) => {
 	const { user } = useAuth()
 	const { isLoading, data } = useProfile(user.id)
 	const { day, month, year } = useNormalDate(data ? data.birthday : ``)

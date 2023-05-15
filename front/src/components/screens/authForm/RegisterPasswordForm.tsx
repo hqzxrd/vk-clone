@@ -1,15 +1,18 @@
-import { RegisterPropsHookForm } from './auth.interface'
-import { ILoginFields } from '@/types/auth.types'
+import {
+	IPasswordConfirm,
+	IPropsHookForm,
+	IRegisterFields,
+} from './auth.interface'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
-import Button from '@/components/ui/form/Button'
-import Input from '@/components/ui/form/Input'
+import Button from '@/components/ui/Form/Button'
+import Input from '@/components/ui/Form/Input'
 
 import styles from './AuthForm.module.scss'
 
-const PasswordRegisterForm: FC<RegisterPropsHookForm> = ({
+const PasswordRegisterForm: FC<IPropsHookForm<IRegisterFields>> = ({
 	reg,
 	handleSubmit,
 	formState,
@@ -17,7 +20,7 @@ const PasswordRegisterForm: FC<RegisterPropsHookForm> = ({
 }) => {
 	const { replace } = useRouter()
 
-	const onSubmit: SubmitHandler<ILoginFields> = () => {
+	const onSubmit: SubmitHandler<IPasswordConfirm> = () => {
 		replace(`/auth/register#info`)
 	}
 

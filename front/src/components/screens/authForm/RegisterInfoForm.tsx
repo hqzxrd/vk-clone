@@ -1,6 +1,8 @@
-import BirthDateFields from './BirthDateFields/BirthDateFields'
-import GenderSelector from './GenderSelector/GenderSelector'
-import { IRegisterFieldsClient, RegisterPropsHookForm } from './auth.interface'
+import {
+	IPropsHookForm,
+	IRegisterFields,
+	IUserInfoFields,
+} from './auth.interface'
 import { TypeGender } from '@/types/auth.types'
 import { IRegisterFieldsDto } from '@/types/auth.types'
 import { IUser } from '@/types/user.types'
@@ -8,8 +10,10 @@ import { useRouter } from 'next/router'
 import { FC, useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
-import Button from '@/components/ui/form/Button'
-import Input from '@/components/ui/form/Input'
+import BirthDateFields from '@/components/ui/BirthDateFields/BirthDateFields'
+import Button from '@/components/ui/Form/Button'
+import Input from '@/components/ui/Form/Input'
+import GenderSelector from '@/components/ui/GenderSelector/GenderSelector'
 
 import { NAME_REGEX } from '@/shared/regex'
 
@@ -18,17 +22,15 @@ import { register } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
 
-const UserInfoForm: FC<RegisterPropsHookForm> = ({
-	reg,
-	handleSubmit,
-	formState,
-}) => {
+interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> {}
+
+const UserInfoForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	const [gender, setGender] = useState<TypeGender>(`male`)
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
 
-	const onSubmit: SubmitHandler<IRegisterFieldsClient> = async (
-		data: IRegisterFieldsClient
+	const onSubmit: SubmitHandler<IUserInfoFields> = async (
+		data: IUserInfoFields
 	) => {
 		const modifiedDay = +data.day < 10 ? `0${data.day}` : data.day
 		const modifiedMonth = +data.month < 10 ? `0${data.month}` : data.month
@@ -43,7 +45,6 @@ const UserInfoForm: FC<RegisterPropsHookForm> = ({
 			birthday,
 			gender: gender,
 		}
-		console.log(gender, userDto)
 		dispatch(register(userDto)).then((action) => {
 			const status = action.meta.requestStatus
 

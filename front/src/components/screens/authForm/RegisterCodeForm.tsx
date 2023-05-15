@@ -1,9 +1,10 @@
+import { ICode, IPropsHookForm, IRegisterFields } from './auth.interface'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler } from 'react-hook-form'
 
-import Button from '@/components/ui/form/Button'
-import Input from '@/components/ui/form/Input'
+import Button from '@/components/ui/Form/Button'
+import Input from '@/components/ui/Form/Input'
 
 import { useAuth } from '@/hooks/useAuth'
 
@@ -12,19 +13,14 @@ import { code } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
 
-interface code {
-	code: string
-}
+interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> {}
 
-const CodeForm: FC = () => {
-	const { register, handleSubmit, formState } = useForm<code>({
-		mode: `onChange`,
-	})
+const CodeForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
 	const { user } = useAuth()
 
-	const onSubmit: SubmitHandler<code> = (data: code) => {
+	const onSubmit: SubmitHandler<ICode> = (data: ICode) => {
 		dispatch(code({ code: +data.code, email: user.email })).then((action) => {
 			const status = action.meta.requestStatus
 			if (status === `fulfilled`) replace(`/auth/register#password`)
@@ -41,7 +37,7 @@ const CodeForm: FC = () => {
 				<div className={styles.descr}>Проверьте папку спам!</div>
 				<Input
 					placeholder="Код"
-					{...register(`code`, {
+					{...reg(`code`, {
 						required: `Введите код`,
 						minLength: {
 							value: 6,
