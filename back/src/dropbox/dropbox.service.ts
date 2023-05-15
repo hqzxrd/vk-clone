@@ -38,4 +38,9 @@ export class DropboxService {
         }
         
     }
+
+
+    async remove(path: string) {
+       await this.dbx.filesDeleteV2({path: '/' + path})
+    }
 }
