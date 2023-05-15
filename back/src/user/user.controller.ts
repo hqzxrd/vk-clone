@@ -10,22 +10,6 @@ import { FileInterceptor, MulterFile } from '@webundsoehne/nest-fastify-file-upl
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @UseInterceptors(FileInterceptor('avatar'))
-  @AccessJwtGuard()
-  @Post('avatar')
-  async uploadAvatar(
-    @User('id') id: number,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [new FileTypeValidator({fileType: /\/(jpg|jpeg|png)$/})]
-      })
-    ) file: MulterFile
-  ) {
-    console.log(file)
-    const url = await this.userService.uploadAvatar(id, file)
-    return {url}
-  }
-
   @Get(':id')
   getOne(
     @Param('id', ParseIntPipe) id: number
@@ -39,12 +23,19 @@ export class UserController {
   }
 
   @AccessJwtGuard()
+  @UseInterceptors(FileInterceptor('avatar'))
   @UsePipes(new ValidationPipe({whitelist: true}))
   @Patch()
   update(
     @User('id') id: number,
-    @Body() updateDto: UpdateUserDto
+    @Body() updateDto: UpdateUserDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: false,
+        validators: [new FileTypeValidator({fileType: /\/(jpg|jpeg|png)$/})],
+      })
+    ) file: MulterFile
   ) {
-    return this.userService.update(id, updateDto)
+    return this.userService.update(id, updateDto, file)
   }
 }

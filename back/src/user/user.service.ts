@@ -42,20 +42,6 @@ export class UserService {
     return user
   }
 
-  async uploadAvatar(id: number, file: MulterFile) {
-    const user = await this.userRepository.findOne({
-      where: {id}
-    })
-    if(!user) throw new UnauthorizedException()
-
-    const filename = await this.dropboxService.uploadFile(file)
-    
-    user.avatar = filename
-    await this.userRepository.save(user)
-
-    return filename
-  }
-
   async getAll() {
     const users = await this.userRepository.find({
       select: this.returnKeyUser
@@ -63,9 +49,17 @@ export class UserService {
     return users
   }
 
-  async update(id: number, dto: UpdateUserDto) {
+  async update(id: number, dto: UpdateUserDto, file?: MulterFile) {
     const user = await this.byId(id)
     if(!user) throw new UnauthorizedException()
+    console.log(user);
+    if(file) {
+      this.dropboxService.remove(user.avatar)
+      let urls: string
+      await Promise.all(urls = await this.dropboxService.uploadFile(file))
+      console.log(urls)
+      user.avatar = urls
+    }
     return await this.userRepository.save({...user, ...dto})
   }
 
