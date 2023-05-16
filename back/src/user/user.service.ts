@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { DropboxService } from 'src/dropbox/dropbox.service';
-import { MultipartFile } from '@fastify/multipart';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RegistrationDto } from 'src/auth/dto/registration.dto';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
@@ -15,7 +14,7 @@ export class UserService {
     private readonly dropboxService: DropboxService
   ){}
 
-  private returnKeyUser: (keyof UserEntity)[] = [
+  readonly returnKeyUser: (keyof UserEntity)[] = [
       'id', 'createDate', 'birthday',
       'name', 'surname', 'nickname', 'status',
       'avatar', 'gender', 'city'
@@ -52,15 +51,23 @@ export class UserService {
   async update(id: number, dto: UpdateUserDto, file?: MulterFile) {
     const user = await this.byId(id)
     if(!user) throw new UnauthorizedException()
-    console.log(user);
     if(file) {
-      this.dropboxService.remove(user.avatar)
-      let urls: string
-      await Promise.all(urls = await this.dropboxService.uploadFile(file))
-      console.log(urls)
-      user.avatar = urls
+      if(user.avatar) this.dropboxService.remove(user.avatar)
+      let url: string
+      await Promise.all(url = await this.dropboxService.uploadFile(file))
+      user.avatar = url
     }
     return await this.userRepository.save({...user, ...dto})
+  }
+
+  async deleteAvatar(id: number){
+    const user = await this.byId(id)
+    if(!user) throw new UnauthorizedException()
+    if(user.avatar) {
+      this.dropboxService.remove(user.avatar)
+    }
+    user.avatar = null
+    await this.userRepository.save(user)
   }
 
   async checkUser(email: string) {
