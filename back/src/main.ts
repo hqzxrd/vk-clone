@@ -3,8 +3,7 @@ import { AppModule } from './app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { ConfigService } from '@nestjs/config';
 import fastifyCookie from '@fastify/cookie';
-import fastifyMultipart = require('@fastify/multipart');
-
+import { contentParser } from 'fastify-multer'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -13,7 +12,7 @@ async function bootstrap() {
     {}
   );
   await app.register(fastifyCookie)
-  await app.register(fastifyMultipart)
+  await app.register(contentParser)
   app.setGlobalPrefix('api')
   app.enableCors()
   const configService = app.get(ConfigService);
