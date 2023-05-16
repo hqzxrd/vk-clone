@@ -1,4 +1,5 @@
 import { TokenEntity } from "src/auth/entities/token.entity";
+import { PostEntity } from "src/post/entities/post.entity";
 import { BaseEntity } from "src/utils/base.entity";
 import { Column, Entity, OneToMany } from "typeorm";
 
@@ -41,6 +42,9 @@ export class UserEntity extends BaseEntity {
 
     @Column({nullable: true})
     avatar: string
+
+    @OneToMany(() => PostEntity, post => post.author)
+    posts: PostEntity
 
     @OneToMany(() => TokenEntity, (token) => token.user, {cascade: true})
     tokens: TokenEntity[]
