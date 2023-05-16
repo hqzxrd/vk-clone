@@ -1,11 +1,10 @@
-import { RegisterPropsHookForm } from './auth.interface'
-import { ILoginFields } from '@/types/auth.types'
+import { IEmail, IPropsHookForm, IRegisterFields } from './auth.interface'
 import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
-import Button from '@/components/ui/form/Button'
-import Input from '@/components/ui/form/Input'
+import Button from '@/components/ui/Form/Button'
+import Input from '@/components/ui/Form/Input'
 
 import { useAuth } from '@/hooks/useAuth'
 
@@ -16,11 +15,9 @@ import { confirmation } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
 
-const RegisterForm: FC<RegisterPropsHookForm> = ({
-	reg,
-	handleSubmit,
-	formState,
-}) => {
+interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> {}
+
+const RegisterForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
 	const { isAutorized } = useAuth()
@@ -29,7 +26,7 @@ const RegisterForm: FC<RegisterPropsHookForm> = ({
 		isAutorized && replace(`/profile`)
 	}, [])
 
-	const onSubmit: SubmitHandler<ILoginFields> = (data) => {
+	const onSubmit: SubmitHandler<IEmail> = (data) => {
 		dispatch(confirmation(data)).then((action) => {
 			const status = action.meta.requestStatus
 			if (status === `fulfilled`) replace(`/auth/register#code`)

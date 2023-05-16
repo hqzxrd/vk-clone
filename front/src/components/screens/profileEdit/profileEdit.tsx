@@ -1,14 +1,14 @@
-import BirthDateFields from '../authForm/BirthDateFields/BirthDateFields'
-import GenderSelector from '../authForm/GenderSelector/GenderSelector'
-import { IUpdateProfileFieldsClient } from './profileEdit.interface'
+import { IUpdateFields } from './profileEdit.interface'
 import { TypeGender } from '@/types/auth.types'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { FC, useRef, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
-import Button from '@/components/ui/form/Button'
-import Input from '@/components/ui/form/Input'
+import BirthDateFields from '@/components/ui/BirthDateFields/BirthDateFields'
+import Button from '@/components/ui/Form/Button'
+import Input from '@/components/ui/Form/Input'
+import GenderSelector from '@/components/ui/GenderSelector/GenderSelector'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
@@ -18,26 +18,44 @@ import { NAME_REGEX } from '@/shared/regex'
 import styles from './profileEdit.module.scss'
 
 const ProfileEdit: FC = () => {
+	const ref = useRef<HTMLInputElement>(null)
 	const { user } = useAuth()
 	const { isLoading, data } = useProfile(user.id)
-
 	const [gender, setGender] = useState<TypeGender>(data?.gender || `male`)
+
 	const {
 		register: reg,
 		handleSubmit,
 		formState,
-	} = useForm<IUpdateProfileFieldsClient>({
+	} = useForm<IUpdateFields>({
 		mode: `onChange`,
 	})
 
-	const onSubmit = () => {}
+	const onSubmit: SubmitHandler<IUpdateFields> = (data) => {
+		//patch profile
+	}
+
+	//upload avatar
+	const onClickAvatar = () => {
+		if (!ref) {
+			return
+		}
+		ref.current?.click()
+	}
 
 	return (
 		<section className={styles.auth}>
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className={styles.heading}>Редактировать профиль</div>
-				<div className={styles.info}>
-					<Image src="/avatar.jpg" width={60} height={60} alt="avatar" />
+				<div className={styles.wrapper}>
+					<Image
+						onClick={() => onClickAvatar()}
+						src="/avatar.jpg"
+						width={80}
+						height={80}
+						alt="avatar"
+					/>
+					<input style={{ display: 'none' }} type="file" ref={ref} />
 					<GenderSelector gender={gender} setGender={setGender} />
 				</div>
 				<Input

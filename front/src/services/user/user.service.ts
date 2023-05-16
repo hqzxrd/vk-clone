@@ -11,4 +11,8 @@ export const UserService = {
 	async getAll() {
 		return await baseAxios.get<IUser[]>(UserUrl(``))
 	},
+
+	async updateProfile(data: IUser) {
+		return await baseAxios.patch<IUser>(UserUrl(``), data)
+	},
 }
