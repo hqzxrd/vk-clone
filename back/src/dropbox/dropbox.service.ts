@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Dropbox } from "dropbox";
 import { randomUUID } from "crypto";
-import { MultipartFile } from "@fastify/multipart";
 import { MulterFile } from "@webundsoehne/nest-fastify-file-upload";
 
 

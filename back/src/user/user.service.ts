@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { DropboxService } from 'src/dropbox/dropbox.service';
-import { MultipartFile } from '@fastify/multipart';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RegistrationDto } from 'src/auth/dto/registration.dto';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
@@ -15,7 +14,7 @@ export class UserService {
     private readonly dropboxService: DropboxService
   ){}
 
-  private returnKeyUser: (keyof UserEntity)[] = [
+  readonly returnKeyUser: (keyof UserEntity)[] = [
       'id', 'createDate', 'birthday',
       'name', 'surname', 'nickname', 'status',
       'avatar', 'gender', 'city'
@@ -42,20 +41,6 @@ export class UserService {
     return user
   }
 
-  async uploadAvatar(id: number, file: MulterFile) {
-    const user = await this.userRepository.findOne({
-      where: {id}
-    })
-    if(!user) throw new UnauthorizedException()
-
-    const filename = await this.dropboxService.uploadFile(file)
-    
-    user.avatar = filename
-    await this.userRepository.save(user)
-
-    return filename
-  }
-
   async getAll() {
     const users = await this.userRepository.find({
       select: this.returnKeyUser
@@ -63,10 +48,29 @@ export class UserService {
     return users
   }
 
-  async update(id: number, dto: UpdateUserDto) {
+  async update(id: number, dto: UpdateUserDto, file?: MulterFile) {
     const user = await this.byId(id)
     if(!user) throw new UnauthorizedException()
-    return await this.userRepository.save({...user, ...dto})
+    if(file) {
+      if(user.avatar) this.dropboxService.remove(user.avatar)
+      let url: string
+      await Promise.all(url = await this.dropboxService.uploadFile(file))
+      dto.avatar = url
+    }
+    const updatedUser = await this.userRepository.save({...user, ...dto})
+    delete updatedUser.code
+    delete updatedUser.updateDate
+    return updatedUser
+  }
+
+  async deleteAvatar(id: number){
+    const user = await this.byId(id)
+    if(!user) throw new UnauthorizedException()
+    if(user.avatar) {
+      this.dropboxService.remove(user.avatar)
+    }
+    user.avatar = null
+    await this.userRepository.save(user)
   }
 
   async checkUser(email: string) {

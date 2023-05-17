@@ -1,41 +1,37 @@
-import { IUpdateProfileFieldsClient } from '../profileEdit/profileEdit.interface'
-import { ILoginFields } from '@/types/auth.types'
+import { TypeGender } from '@/types/auth.types'
 import {
+	FieldValues,
 	FormState,
 	UseFormHandleSubmit,
 	UseFormRegister,
 	UseFormWatch,
 } from 'react-hook-form'
 
-export interface propsRegInput {
-	reg: UseFormRegister<IUpdateProfileFieldsClient>
+export interface IPropsHookForm<T extends FieldValues> {
+	reg: UseFormRegister<any>
+	handleSubmit: UseFormHandleSubmit<T>
+	formState: FormState<T>
+	watch: UseFormWatch<T>
 }
 
-export interface BirthDateComponentProps {
-	reg: UseFormRegister<IUpdateProfileFieldsClient>
-	formState: FormState<IUpdateProfileFieldsClient>
-}
-
-export interface RegisterPropsHookForm extends propsRegInput {
-	handleSubmit: UseFormHandleSubmit<IUpdateProfileFieldsClient>
-	formState: FormState<IUpdateProfileFieldsClient>
-	watch: UseFormWatch<IUpdateProfileFieldsClient>
-}
-
-export interface IConfirmPasswordField {
-	confirm: string
-}
-
-export interface IRegisterInfoFields {
+export interface IRegisterFields {
 	name: string
 	surname: string
 	day: string
 	month: string
 	year: string
-	gender: string
+	gender: TypeGender
+	confirm: string
+	email: string
+	password: string
+	code: string
 }
+export interface IEmail extends Pick<IRegisterFields, 'email'> {}
 
-export interface IRegisterFieldsClient
-	extends ILoginFields,
-		IRegisterInfoFields,
-		IConfirmPasswordField {}
+export interface ICode extends Pick<IRegisterFields, 'code'> {}
+
+export interface IPasswordConfirm
+	extends Pick<IRegisterFields, `password` | `confirm`> {}
+
+export interface IUserInfoFields
+	extends Omit<IRegisterFields, `confirm` | `code` | `status`> {}

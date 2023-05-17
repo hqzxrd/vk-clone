@@ -1,10 +1,11 @@
-import { IRegisterFieldsClient } from '../authForm/auth.interface'
+import { IRegisterFields } from '../authForm/auth.interface'
 
-export interface IUpdateProfileFieldsClient
-	extends IRegisterFieldsClient,
-		IUseradditionalInfoFields {}
+export interface IUpdateFields
+	extends Omit<IRegisterFields, 'password' | 'confirm' | 'email' | `code`>,
+		IUserAdditionalInfoFields {}
 
-export interface IUseradditionalInfoFields {
+export interface IUserAdditionalInfoFields {
 	city: string | null
 	status: string | null
+	avatar: string
 }

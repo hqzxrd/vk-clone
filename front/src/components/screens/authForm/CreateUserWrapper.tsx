@@ -2,7 +2,7 @@ import RegisterCodeForm from './RegisterCodeForm'
 import EmailRegisterForm from './RegisterEmailForm'
 import RegisterInfoForm from './RegisterInfoForm'
 import PasswordRegisterForm from './RegisterPasswordForm'
-import { IRegisterFieldsClient } from './auth.interface'
+import { IRegisterFields } from './auth.interface'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -31,7 +31,7 @@ const CreateUserWrapper = () => {
 		handleSubmit,
 		formState,
 		watch,
-	} = useForm<IRegisterFieldsClient>({
+	} = useForm<IRegisterFields>({
 		mode: `onChange`,
 	})
 
@@ -41,13 +41,18 @@ const CreateUserWrapper = () => {
 				reg={reg}
 				handleSubmit={handleSubmit}
 				formState={formState}
-				watch={watch}
 			/>
 		)
 	}
 
 	if (state === `code`) {
-		return <RegisterCodeForm />
+		return (
+			<RegisterCodeForm
+				reg={reg}
+				handleSubmit={handleSubmit}
+				formState={formState}
+			/>
+		)
 	}
 
 	if (state === `password`) {
@@ -67,7 +72,6 @@ const CreateUserWrapper = () => {
 				reg={reg}
 				handleSubmit={handleSubmit}
 				formState={formState}
-				watch={watch}
 			/>
 		)
 	}

@@ -17,9 +17,6 @@ export class CreateUserDto {
     @IsEmail()
     email: string
 
-    @IsBoolean()
-    isAuth: boolean
-
     @IsString()
     status: string
 

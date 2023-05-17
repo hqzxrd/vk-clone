@@ -1,30 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseInterceptors, ParseIntPipe, UsePipes, ValidationPipe, UploadedFile, ParseFilePipe, FileTypeValidator } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,UseInterceptors, ParseIntPipe, UsePipes, ValidationPipe, UploadedFile, ParseFilePipe, FileTypeValidator, UploadedFiles, HttpCode, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AccessJwtGuard } from 'src/auth/decorators/access-jwt.decorator';
 import { User } from './decorators/user.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { FileInterceptor, MulterFile } from '@webundsoehne/nest-fastify-file-upload';
+import { FileInterceptor,  MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @UseInterceptors(FileInterceptor('avatar'))
-  @AccessJwtGuard()
-  @Post('avatar')
-  async uploadAvatar(
-    @User('id') id: number,
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [new FileTypeValidator({fileType: /\/(jpg|jpeg|png)$/})]
-      })
-    ) file: MulterFile
-  ) {
-    console.log(file)
-    const url = await this.userService.uploadAvatar(id, file)
-    return {url}
-  }
 
   @Get(':id')
   getOne(
@@ -39,12 +23,28 @@ export class UserController {
   }
 
   @AccessJwtGuard()
+  @UseInterceptors(FileInterceptor('avatar'))
   @UsePipes(new ValidationPipe({whitelist: true}))
   @Patch()
   update(
     @User('id') id: number,
-    @Body() updateDto: UpdateUserDto
+    @Body() updateDto: UpdateUserDto,
+    @UploadedFile(
+      new ParseFilePipe({
+       fileIsRequired: false,
+       validators: [new FileTypeValidator({fileType: /\/(jpg|jpeg|png)$/})], 
+      })
+    ) file: MulterFile
   ) {
-    return this.userService.update(id, updateDto)
+    return this.userService.update(id, updateDto, file)
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @AccessJwtGuard()
+  @Delete()
+  deleteAvatar(
+    @User('id') id: number
+  ) {
+    return this.userService.deleteAvatar(id)
   }
 }
