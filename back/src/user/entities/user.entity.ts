@@ -1,6 +1,6 @@
 import { TokenEntity } from "src/auth/entities/token.entity";
 import { BaseEntity } from "src/utils/base.entity";
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, DatabaseType, Entity, OneToMany } from "typeorm";
 
 export enum Gender {
     MALE = 'male',
@@ -21,7 +21,16 @@ export class UserEntity extends BaseEntity {
     @Column()
     surname: string
 
-    @Column()
+    @Column({
+        transformer: {
+            to(value: Date | string | null): string {
+              return value instanceof Date ? value.toISOString() : value;
+            },
+            from(value: string | null): Date {
+              return value ? new Date(`${value}Z`) : null;
+            },
+        }
+    })
     birthday: Date
 
     @Column({type: 'enum', enum: Gender})
