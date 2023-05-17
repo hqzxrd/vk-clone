@@ -55,9 +55,12 @@ export class UserService {
       if(user.avatar) this.dropboxService.remove(user.avatar)
       let url: string
       await Promise.all(url = await this.dropboxService.uploadFile(file))
-      user.avatar = url
+      dto.avatar = url
     }
-    return await this.userRepository.save({...user, ...dto})
+    const updatedUser = await this.userRepository.save({...user, ...dto})
+    delete updatedUser.code
+    delete updatedUser.updateDate
+    return updatedUser
   }
 
   async deleteAvatar(id: number){
