@@ -8,7 +8,7 @@ export const useProfile = (userid?: number) => {
 	const id = query.id as string
 
 	const { isLoading, data } = useQuery(
-		`get_profile`,
+		String(query.id),
 		() => UserService.getById(userid ? userid : +id),
 		{
 			select: ({ data }) => data,

@@ -2,6 +2,8 @@ import CreatePost from './CreatePost/CreatePost'
 import Info from './Info/Info'
 import Post from './Post/Post'
 
+import { useProfile } from '@/hooks/useProfile'
+
 import styles from './Profile.module.scss'
 
 const posts = [
@@ -12,13 +14,21 @@ const posts = [
 ]
 
 const Profile = () => {
+	const { isLoading } = useProfile()
+
 	return (
 		<div className={styles.wrapper}>
-			<Info />
-			<CreatePost />
-			{posts.map(({ text, imgs }, i) => {
-				return <Post text={text} imgs={imgs} key={imgs[i]} />
-			})}
+			{isLoading ? (
+				<></>
+			) : (
+				<>
+					<Info />
+					<CreatePost />
+					{posts.map(({ text, imgs }, i) => {
+						return <Post text={text} imgs={imgs} key={imgs[i]} />
+					})}
+				</>
+			)}
 		</div>
 	)
 }

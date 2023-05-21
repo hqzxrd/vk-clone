@@ -24,10 +24,21 @@
 			gap: 10px;
 			border-bottom: 1px solid var(--primary-border);
 			padding: 10px 0;
-			> img {
-				cursor: pointer;
-				user-select: none;
+
+			.hover_wrapper {
+				width: 79px;
+				height: 79px;
+				background-color: black;
 				border-radius: 50%;
+				> img {
+					cursor: pointer;
+					user-select: none;
+					border-radius: 50%;
+					&:hover {
+						background-color: black;
+						opacity: 0.7;
+					}
+				}
 			}
 		}
 

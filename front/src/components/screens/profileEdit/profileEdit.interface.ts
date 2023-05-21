@@ -1,4 +1,5 @@
 import { IRegisterFields } from '../authForm/auth.interface'
+import { IUser } from '@/types/user.types'
 
 export interface IUpdateFields
 	extends Omit<IRegisterFields, 'password' | 'confirm' | 'email' | `code`>,
@@ -7,5 +8,8 @@ export interface IUpdateFields
 export interface IUserAdditionalInfoFields {
 	city: string | null
 	status: string | null
-	avatar: string
 }
+
+export interface IUpdateFieldsDto
+	extends Omit<IUser, 'createDate' | 'avatar'>,
+		IUserAdditionalInfoFields {}

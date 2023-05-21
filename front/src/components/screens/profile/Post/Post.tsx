@@ -1,6 +1,10 @@
 import Image from 'next/image'
 import { FC } from 'react'
 
+import { FilesUrl } from '@/config/api.config'
+
+import { useProfile } from '@/hooks/useProfile'
+
 import styles from './Post.module.scss'
 
 interface props {
@@ -9,13 +13,21 @@ interface props {
 }
 
 const PostList: FC<props> = ({ text, imgs }) => {
+	const { isLoading, data } = useProfile()
 	return (
 		<div className={styles.post}>
 			<div className={styles.postHeader}>
 				<div className={styles.postAvatar}>
-					<Image src={`/avatar.jpg`} width={50} height={50} alt="avatar" />
+					<Image
+						src={data?.avatar ? `${FilesUrl(data?.avatar)}` : `/avatar.jpg`}
+						width={50}
+						height={50}
+						alt="avatar"
+					/>
 				</div>
-				<div className={styles.whosePost}>Василий Абобович</div>
+				<div className={styles.whosePost}>
+					{data?.name} {data?.surname}
+				</div>
 			</div>
 			<div className={styles.postMain}>
 				Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem

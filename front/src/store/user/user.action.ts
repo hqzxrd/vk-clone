@@ -29,7 +29,6 @@ export const code = createAsyncThunk<number, ICodeEmailDto>(
 	async ({ code, email }, thunkApi) => {
 		try {
 			const res = await AuthService.code(code, email)
-			console.log(res)
 
 			return res.status
 		} catch (error) {
@@ -46,7 +45,6 @@ export const register = createAsyncThunk<
 	try {
 		const res = await AuthService.register(user)
 		toastr.success(`Регистрация`, `Успешно`)
-		console.log(res.data)
 
 		return res.data
 	} catch (error) {
