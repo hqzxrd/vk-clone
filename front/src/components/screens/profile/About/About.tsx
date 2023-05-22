@@ -1,7 +1,7 @@
 import AboutCount from '../AboutCount/AboutCount'
 import { IUser } from '@/types/user.types'
 
-import { useNormalDate } from '@/hooks/useNormalDate'
+import { useDate } from '@/hooks/useDate'
 import { useProfile } from '@/hooks/useProfile'
 
 import styles from './About.module.scss'
@@ -9,7 +9,7 @@ import styles from './About.module.scss'
 const About = () => {
 	const { isLoading, data } = useProfile()
 
-	const { day, month, year } = useNormalDate(data ? data.birthday : ``)
+	const { day, month, year } = useDate(data ? data.birthday : ``)
 
 	const getGender = (data: IUser | undefined) => {
 		if (!data) {

@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
+import { FilesUrl } from '@/config/api.config'
+
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/hooks/useProfile'
 
@@ -9,13 +11,13 @@ import styles from './Avatar.module.scss'
 const Avatar = () => {
 	const { isLoading, data } = useProfile()
 	const { user } = useAuth()
-
 	const { push } = useRouter()
 
 	return (
 		<div className={styles.avatar}>
 			<Image
-				src={data?.avatar ? data?.avatar : `/avatar.jpg`}
+				priority={true}
+				src={data?.avatar ? `${FilesUrl(data?.avatar)}` : `/avatar.jpg`}
 				width={300}
 				height={300}
 				alt="avatar"

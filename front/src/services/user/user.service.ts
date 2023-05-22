@@ -1,5 +1,7 @@
-import { baseAxios } from '@/api/interceptors'
+import { authAxios, baseAxios, filesAxios } from '@/api/interceptors'
 import { IUser } from '@/types/user.types'
+
+import { IUpdateFieldsDto } from '@/components/screens/profileEdit/profileEdit.interface'
 
 import { UserUrl } from '@/config/api.config'
 
@@ -12,7 +14,18 @@ export const UserService = {
 		return await baseAxios.get<IUser[]>(UserUrl(``))
 	},
 
-	async updateProfile(data: IUser) {
-		return await baseAxios.patch<IUser>(UserUrl(``), data)
+	async updateProfile(data: IUpdateFieldsDto, file: File | null) {
+		if (!file) {
+			return await authAxios.patch<IUser>(UserUrl(``), data)
+		} else {
+			const formData = new FormData()
+			formData.append('avatar', file)
+
+			Object.entries(data).forEach(([key, value]) => {
+				formData.append(key, value)
+			})
+
+			return await filesAxios.patch(UserUrl(``), formData)
+		}
 	},
 }

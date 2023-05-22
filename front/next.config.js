@@ -7,6 +7,17 @@ const nextConfig = {
 	env: {
 		API_URL: process.env.API_URL,
 	},
+	images: {
+		domains: ['localhost'],
+		remotePatterns: [
+			{
+				protocol: 'http',
+				hostname: 'localhost',
+				port: '',
+				pathname: 'api/file/**',
+			},
+		],
+	},
 }
 
 module.exports = nextConfig

@@ -43,7 +43,7 @@ const UserInfoForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 			name: data.name,
 			surname: data.surname,
 			birthday,
-			gender: gender,
+			gender,
 		}
 		dispatch(register(userDto)).then((action) => {
 			const status = action.meta.requestStatus

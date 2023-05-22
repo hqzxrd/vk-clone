@@ -15,7 +15,7 @@ import { IUpdateFields } from '@/components/screens/profileEdit/profileEdit.inte
 import Input from '@/components/ui/Form/Input'
 
 import { useAuth } from '@/hooks/useAuth'
-import { useNormalDate } from '@/hooks/useNormalDate'
+import { useDate } from '@/hooks/useDate'
 import { useProfile } from '@/hooks/useProfile'
 
 import { YEAR_REGEX } from '@/shared/regex'
@@ -33,7 +33,7 @@ const BirthDateFields: FC<IPropsRegister | IPropsUpdate> = ({
 }) => {
 	const { user } = useAuth()
 	const { isLoading, data } = useProfile(user.id)
-	const { day, month, year } = useNormalDate(data ? data.birthday : ``)
+	const { day, month, year } = useDate(data ? data.birthday : ``)
 
 	const [dayInput, setDayInput] = useState(day)
 	const [monthInput, setMonthInput] = useState(month)

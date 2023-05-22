@@ -71,7 +71,6 @@ export const userSlice = createSlice({
 		})
 		builder.addCase(login.fulfilled, (state, { payload }) => {
 			state.isLoading = false
-			console.log(payload)
 
 			state.user = payload.user
 			state.isAutorized = true

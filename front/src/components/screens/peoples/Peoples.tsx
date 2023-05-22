@@ -8,7 +8,6 @@ const Peoples = () => {
 	const { isLoading, data } = useQuery(`get_all`, () => UserService.getAll(), {
 		select: ({ data }) => data,
 	})
-	console.log(data)
 
 	return (
 		<div className={styles.peoples_wrapper}>
@@ -17,7 +16,7 @@ const Peoples = () => {
 				<div>
 					{data &&
 						data.map((user) => {
-							return <Item user={user} />
+							return <Item user={user} key={user.id} />
 						})}
 				</div>
 			</div>
