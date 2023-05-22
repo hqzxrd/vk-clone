@@ -1,11 +1,13 @@
 import { MailerService } from "@nestjs-modules/mailer";
 import { Injectable, Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class MailService {
     constructor(
         private readonly mailerService: MailerService,
-        private readonly logger: Logger
+        private readonly logger: Logger,
+        private readonly configService: ConfigService
     ){}
 
 
@@ -13,7 +15,7 @@ export class MailService {
         try {
             await this.mailerService.sendMail({
                 to: email,
-                from: 'VkClone',
+                from: this.configService.get('NM_USER'),
                 subject: 'Подтверждение почты',
                 text: '',
                 html: `
