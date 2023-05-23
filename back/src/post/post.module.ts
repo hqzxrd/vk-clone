@@ -13,6 +13,7 @@ import { UserModule } from 'src/user/user.module';
     DropboxModule,
     UserModule
   ],
-  providers: [PostService]
+  providers: [PostService],
+  exports: [PostService]
 })
 export class PostModule {}
