@@ -1,7 +1,8 @@
+import { LikeEntity } from "src/like/entities/like.entity";
 import { PostEntity } from "src/post/entities/post.entity";
 import { UserEntity } from "src/user/entities/user.entity";
 import { BaseEntity } from "src/utils/base.entity";
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
 @Entity('comment')
 export class CommentEntity extends BaseEntity{
@@ -13,4 +14,7 @@ export class CommentEntity extends BaseEntity{
 
     @ManyToOne(() => UserEntity, author => author.comments)
     author: UserEntity
+
+    @OneToMany(() => LikeEntity, like => like.comment)
+    likes: LikeEntity[]
 }

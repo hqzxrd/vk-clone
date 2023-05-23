@@ -11,6 +11,7 @@ import { MailModule } from './mail/mail.module';
 import { DropboxModule } from './dropbox/dropbox.module';
 import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { CommentModule } from './comment/comment.module';
     MailModule,
     DropboxModule,
     PostModule,
-    CommentModule
+    CommentModule,
+    LikeModule
   ]
 })
 export class AppModule {}

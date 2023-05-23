@@ -1,5 +1,6 @@
 import { TokenEntity } from "src/auth/entities/token.entity";
 import { CommentEntity } from "src/comment/entities/comment.entity";
+import { LikeEntity } from "src/like/entities/like.entity";
 import { PostEntity } from "src/post/entities/post.entity";
 import { BaseEntity } from "src/utils/base.entity";
 import { Column, Entity, OneToMany } from "typeorm";
@@ -55,6 +56,9 @@ export class UserEntity extends BaseEntity {
 
     @OneToMany(() => CommentEntity, comment => comment.author)
     comments: CommentEntity[]
+
+    @OneToMany(() => LikeEntity, like => like.user)
+    likes: LikeEntity[]
 
     @OneToMany(() => PostEntity, post => post.author)
     posts: PostEntity
