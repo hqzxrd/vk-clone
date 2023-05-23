@@ -1,7 +1,8 @@
 import { TokenEntity } from "src/auth/entities/token.entity";
+import { CommentEntity } from "src/comment/entities/comment.entity";
 import { PostEntity } from "src/post/entities/post.entity";
 import { BaseEntity } from "src/utils/base.entity";
-import { Column, DatabaseType, Entity, OneToMany } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 
 export enum Gender {
     MALE = 'male',
@@ -51,6 +52,9 @@ export class UserEntity extends BaseEntity {
 
     @Column({nullable: true})
     avatar: string
+
+    @OneToMany(() => CommentEntity, comment => comment.author)
+    comments: CommentEntity[]
 
     @OneToMany(() => PostEntity, post => post.author)
     posts: PostEntity
