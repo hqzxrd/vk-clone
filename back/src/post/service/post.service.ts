@@ -8,6 +8,7 @@ import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 import { DropboxService } from 'src/dropbox/dropbox.service';
 import { UserService } from 'src/user/user.service';
 import { arrayComparison } from 'src/utils/array-comparison';
+import { LikeService } from 'src/like/service/like.service';
 
 @Injectable()
 export class PostService {
@@ -15,6 +16,7 @@ export class PostService {
   constructor(
     @InjectRepository(PostEntity) private readonly postRepository: Repository<PostEntity>,
     private readonly dropboxService: DropboxService,
+    private readonly likeService: LikeService,
     private readonly userService: UserService
   ) {}
 
@@ -80,7 +82,6 @@ export class PostService {
     }
     
     if(files.length) {
-      console.log('true')
       await Promise.all(files.map(async (file) => {
         const url =  await this.dropboxService.uploadFile(file)
         newPhotos.push(url)
@@ -97,5 +98,11 @@ export class PostService {
     if(!post) throw new NotFoundException()
     post.photos.forEach((path) => this.dropboxService.remove(path))
     await this.postRepository.remove(post)
+  }
+
+  async likePost(userId: number, postId: number) {
+    const post = await this.postRepository.findOneBy({id: postId})
+    if(!post) throw new NotFoundException()
+    return await this.likeService.likePost(userId, postId)
   }
 }

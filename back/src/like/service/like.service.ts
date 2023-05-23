@@ -11,7 +11,7 @@ export class LikeService {
     @InjectRepository(LikeEntity) private readonly likeRepository: Repository<LikeEntity>
   ) {}
 
-  create(createLikeDto: CreateLikeDto) {
+  createLikeToComment(createLikeDto: CreateLikeDto) {
     return 'This action adds a new like';
   }
 
@@ -27,5 +27,15 @@ export class LikeService {
     const like = await this.likeRepository.findOneBy({id, user: {id: userId}})
     if(!like) throw new BadRequestException()
     this.likeRepository.remove(like)
+  }
+
+  async likePost(userId: number, postId: number) {
+    const like = this.likeRepository.create({post: {id: postId}, user: {id: userId}})
+    return await this.likeRepository.save(like)
+  }
+
+  async likeComment(userId: number, commentId: number) {
+    const like = this.likeRepository.create({comment: {id: commentId}, user: {id: userId}})
+    return await this.likeRepository.save(like)
   }
 }

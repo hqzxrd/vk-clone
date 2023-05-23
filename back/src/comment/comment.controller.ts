@@ -55,4 +55,13 @@ export class CommentController {
   ) {
     return this.commentService.findAllByPostId(page, count, post) 
   }
+
+  @AccessJwtGuard()
+  @Get('like/:id')
+  async likeComment(
+    @User('id') userId: number, 
+    @Param('id', ParseIntPipe) commentId: number
+  ) {
+    return this.commentService.likeComment(userId, commentId)
+  }
 }

@@ -5,13 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PostEntity } from './entities/post.entity';
 import { DropboxModule } from 'src/dropbox/dropbox.module';
 import { UserModule } from 'src/user/user.module';
+import { LikeModule } from 'src/like/like.module';
 
 @Module({
   controllers: [PostController],
   imports: [
     TypeOrmModule.forFeature([PostEntity]),
     DropboxModule,
-    UserModule
+    UserModule,
+    LikeModule,
   ],
   providers: [PostService],
   exports: [PostService]

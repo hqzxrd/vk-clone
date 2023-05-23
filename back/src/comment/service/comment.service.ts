@@ -1,16 +1,18 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCommentDto } from '../dto/create-comment.dto';
 import { UpdateCommentDto } from '../dto/update-comment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentEntity } from '../entities/comment.entity';
 import { Repository } from 'typeorm';
 import { PostService } from 'src/post/service/post.service';
+import { LikeService } from 'src/like/service/like.service';
 
 @Injectable()
 export class CommentService {
   constructor(
     @InjectRepository(CommentEntity) private readonly commentRepository: Repository<CommentEntity>,
-    private readonly postService: PostService
+    private readonly postService: PostService,
+    private readonly likeService: LikeService
   ){}
   async create({text, postId}: CreateCommentDto, userId: number) {
      const post = await this.postService.findOne(postId)
@@ -52,4 +54,9 @@ export class CommentService {
     return comment
   }
   
+  async likeComment(userId: number, commentId: number) {
+      const comment = await this.commentRepository.findOneBy({id: commentId})
+      if(!comment) throw new NotFoundException()
+      return await this.likeService.likeComment(userId, commentId)
+  }
 }

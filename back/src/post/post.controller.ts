@@ -70,4 +70,13 @@ export class PostController {
   ) {
     return this.postService.remove(postId, userId);
   }
+
+  @AccessJwtGuard()
+  @Get('like/:id')
+  async likePost(
+    @User('id') userId: number,
+    @Param('id', ParseIntPipe) postId: number
+  ) {
+    return this.postService.likePost(userId, postId)
+  }
 }
