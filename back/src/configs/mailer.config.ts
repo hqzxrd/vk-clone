@@ -14,7 +14,7 @@ export const getMailerConfig = (configService: ConfigService): MailerOptions => 
                 user,
                 pass
             },
-            secure: false
+            secure: true
         }
     }
 }
