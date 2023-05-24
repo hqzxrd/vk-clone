@@ -28,7 +28,7 @@ const ProfileEdit: FC = () => {
 	const { user } = useAuth()
 	const { isLoading, data } = useProfile(user.id)
 	const [gender, setGender] = useState<TypeGender>(data?.gender || `male`)
-	const { file, avatar, handleChange } = usePrepareAvatar()
+	const { file, avatar, errorSize, handleChange } = usePrepareAvatar()
 
 	const {
 		register: reg,
@@ -81,14 +81,17 @@ const ProfileEdit: FC = () => {
 								}
 								width={80}
 								height={80}
+								quality={50}
 								alt="avatar"
 							/>
 						</div>
-
+						<span>Минимальный размер 300x300</span>
+						<span>Ширина не может привышать высоту</span>
 						<input
 							onChange={(e) => handleChange(e)}
 							style={{ display: 'none' }}
 							type="file"
+							accept=".jpg,.jpeg"
 							ref={ref}
 						/>
 						<GenderSelector gender={gender} setGender={setGender} />
