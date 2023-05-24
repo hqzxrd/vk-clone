@@ -23,17 +23,18 @@
 		}
 
 		.avatar_placeholder {
+			font-size: 82px;
 			user-select: none;
 			display: flex;
 			justify-content: center;
-			font-size: 64px;
 			align-items: center;
 			border: 1px solid var(--primary-border);
 			border-radius: var(--primary-border-radius);
-			padding: 3px;
-			min-width: 300px;
-			min-height: 300px;
+			padding: 50px;
+			width: 250px;
+			height: 250px;
 			color: white;
+			overflow: hidden;
 		}
 	}
 

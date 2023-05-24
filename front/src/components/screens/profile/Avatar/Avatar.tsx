@@ -32,7 +32,7 @@ const Avatar = () => {
 						style={{ backgroundColor: color }}
 						className={styles.avatar_placeholder}
 					>
-						{data?.name}
+						{data?.name[0]}
 					</div>
 				)}
 			</div>
