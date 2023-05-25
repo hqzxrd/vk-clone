@@ -21,9 +21,13 @@ export class CommentController {
     return this.commentService.create(createCommentDto, id);
   }
 
+  @AccessJwtGuard()
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.commentService.findOne(id);
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @User('id') userId: number  
+  ) {
+    return this.commentService.findOne(id, userId);
   }
 
   @AccessJwtGuard()
@@ -47,13 +51,14 @@ export class CommentController {
     return this.commentService.remove(id, userId);
   }
 
-
+  @AccessJwtGuard()
   @UsePipes(new ValidationPipe({transform: true}))
   @Get()
   findAllByPostId(
-    @Query() {count, page, post} : FindAllQueryDto
+    @Query() {count, page, post} : FindAllQueryDto,
+    @User('id') userId: number
   ) {
-    return this.commentService.findAllByPostId(page, count, post) 
+    return this.commentService.findAllByPostId(page, count, post, userId) 
   }
 
   @AccessJwtGuard()
