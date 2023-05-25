@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserEntity } from './entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { DropboxService } from 'src/dropbox/dropbox.service';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 import { RegistrationDto } from 'src/auth/dto/registration.dto';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 
@@ -21,16 +21,8 @@ export class UserService {
     ]
   
   async byEmail(email: string) {
-    const user = await this.userRepository.findOne({
-      where: {email}
-    })
+    const user = await this.userRepository.findOneBy({email})
     return user
-  }
-
-
-  async create(dto: RegistrationDto) {
-    const user = this.userRepository.create({...dto})
-    return await this.userRepository.save(user)
   }
 
   async byId(id: number) {
@@ -39,6 +31,11 @@ export class UserService {
       select: this.returnKeyUser
     })
     return user
+  }
+
+  async create(dto: RegistrationDto) {
+    const user = this.userRepository.create({...dto})
+    return await this.userRepository.save(user)
   }
 
   async getAll() {
@@ -71,10 +68,5 @@ export class UserService {
     }
     user.avatar = null
     await this.userRepository.save(user)
-  }
-
-  async checkUser(email: string) {
-    const user = await this.userRepository.findOneBy({email})
-    return user
   }
 }

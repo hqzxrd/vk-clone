@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete,UseInterceptors, ParseIntPipe, UsePipes, ValidationPipe, UploadedFile, ParseFilePipe, FileTypeValidator, UploadedFiles, HttpCode, HttpStatus } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from './service/user.service';
 import { AccessJwtGuard } from 'src/auth/decorators/access-jwt.decorator';
 import { User } from './decorators/user.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';

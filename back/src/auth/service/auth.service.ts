@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { RegistrationDto } from '../dto/registration.dto';
 import { LoginDto } from '../dto/login.dto';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/user/service/user.service';
 import { EMAIL_NOT_CONFIRMED, INCORRECT_PASSWORD, USER_ALREADY_EXISTS, USER_NOT_FOUND } from '../constants/auth.error.constants';
 import {hash, compare, genSalt} from 'bcrypt'
 import { TokenService } from './token.service';
@@ -85,7 +85,7 @@ export class AuthService {
   }
 
   async confirmationEmail(email: string) {
-    const user = await this.userService.checkUser(email)
+    const user = await this.userService.byEmail(email)
     if(user) throw new BadRequestException(USER_ALREADY_EXISTS)
     const code = generateCode()
     await this.confirmationService.setCodeOrCreate(email, code)

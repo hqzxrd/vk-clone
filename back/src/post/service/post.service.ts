@@ -6,7 +6,7 @@ import { PostEntity } from '../entities/post.entity';
 import { Repository } from 'typeorm';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 import { DropboxService } from 'src/dropbox/dropbox.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/user/service/user.service';
 import { arrayComparison } from 'src/utils/array-comparison';
 import { LikeService } from 'src/like/service/like.service';
 import { LikeType } from 'src/like/like.enum';
