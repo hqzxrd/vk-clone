@@ -9,6 +9,7 @@ import { DropboxService } from 'src/dropbox/dropbox.service';
 import { UserService } from 'src/user/user.service';
 import { arrayComparison } from 'src/utils/array-comparison';
 import { LikeService } from 'src/like/service/like.service';
+import { LikeType } from 'src/like/like.enum';
 
 @Injectable()
 export class PostService {
@@ -130,6 +131,6 @@ export class PostService {
   async likePost(userId: number, postId: number) {
     const post = await this.postRepository.findOneBy({id: postId})
     if(!post) throw new NotFoundException()
-    return await this.likeService.likePost(userId, postId)
+    return await this.likeService.like(userId, postId, LikeType.POST)
   }
 }
