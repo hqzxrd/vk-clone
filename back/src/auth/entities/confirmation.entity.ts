@@ -1,8 +1,8 @@
-import { BaseEntity } from "src/utils/base.entity";
+import { AbstractEntity } from "src/utils/base.entity";
 import { Column, Entity } from "typeorm";
 
 @Entity('confirmation')
-export class ConfirmationEntity extends BaseEntity {
+export class ConfirmationEntity extends AbstractEntity {
     @Column({unique: true})
     email: string
 

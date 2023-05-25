@@ -2,7 +2,7 @@ import { TokenEntity } from "src/auth/entities/token.entity";
 import { CommentEntity } from "src/comment/entities/comment.entity";
 import { LikeEntity } from "src/like/entities/like.entity";
 import { PostEntity } from "src/post/entities/post.entity";
-import { BaseEntity } from "src/utils/base.entity";
+import { AbstractEntity } from "src/utils/base.entity";
 import { Column, Entity, OneToMany } from "typeorm";
 
 export enum Gender {
@@ -11,7 +11,7 @@ export enum Gender {
 }
 
 @Entity('users')
-export class UserEntity extends BaseEntity {
+export class UserEntity extends AbstractEntity {
     @Column({unique: true})
     email: string
 

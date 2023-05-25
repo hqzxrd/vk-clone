@@ -1,11 +1,11 @@
 import { CommentEntity } from "src/comment/entities/comment.entity";
 import { LikeEntity } from "src/like/entities/like.entity";
 import { UserEntity } from "src/user/entities/user.entity";
-import { BaseEntity } from "src/utils/base.entity";
+import { AbstractEntity } from "src/utils/base.entity";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
 @Entity('post')
-export class PostEntity extends BaseEntity {
+export class PostEntity extends AbstractEntity {
     
     @Column({type: 'text', nullable: true})
     text: string
