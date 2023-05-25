@@ -7,11 +7,7 @@ import { useAuth } from '@/hooks/useAuth'
 
 import styles from './Header.module.scss'
 
-export interface props {
-	toggleTheme: () => void
-}
-
-const Header: FC<props> = ({ toggleTheme }) => {
+const Header: FC = () => {
 	const { isAutorized } = useAuth()
 
 	const [isAuth, setIsAuth] = useState<boolean>(true)
@@ -34,7 +30,7 @@ const Header: FC<props> = ({ toggleTheme }) => {
 					</Link>
 				</div>
 				{isAuth ? (
-					<AuthHeader toggleTheme={toggleTheme} />
+					<AuthHeader />
 				) : (
 					<div>
 						<Link href="/auth/login">
