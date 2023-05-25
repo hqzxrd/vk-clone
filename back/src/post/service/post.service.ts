@@ -31,13 +31,13 @@ export class PostService {
     return await this.postRepository.save(post)
   }
 
-  async findAll(page: number, count: number, userId?: number) {
-    const posts = await this.postRepository.findAndCount({
+  async findAll(page: number, count: number, queryUserId?: number, userId?: number) {
+    const postsAndCount = await this.postRepository.findAndCount({
+      relations: ['author', 'likes', 'likes.user'],
       take: count, 
       skip: count * page - count,
-      where: {author: {id: userId}},
+      where: {author: {id: queryUserId}},
       order: {createDate: 'DESC'},
-      relations: {author: true},
       select: {
         author: {
           id: true, 
@@ -45,17 +45,33 @@ export class PostService {
           name: true, 
           surname: true,
           nickname: true
+        },
+        likes: {
+          id: true, 
+          user: { id: true }
         }
       }
     })
-    return posts
+
+    const posts = postsAndCount[0].map(post => {
+      let isLike = false
+      if(userId) {
+        const likeOfUser = post.likes.find(like => like.user.id === userId)
+        isLike = !!likeOfUser
+      }
+      const count = post.likes.length
+      delete post.likes
+      return {...post, likes: count, isLike}
+    })
+
+    return [posts, postsAndCount[1]]
   }
   
 
-  async findOne(id: number) {
+  async findOne(id: number, userId?: number) {
     const post = await this.postRepository.findOne({
       where: {id},
-      relations: {author: true},
+      relations: ['author', 'likes', 'likes.user'],
       select: {
         author: {
           id: true, 
@@ -63,10 +79,21 @@ export class PostService {
           name: true, 
           surname: true, 
           nickname: true
+        },
+        likes: {
+          id: true,
+          user: {id: true}
         }
       }
     })
-    return post
+    let isLike = false
+    if(userId) {
+      const likeOfUser = post.likes.find(like => like.user.id === userId)
+      isLike = !!likeOfUser
+    }
+    const count = post.likes.length
+    delete post.likes
+    return {...post, likes: count, isLike}
   }
 
   async update(id: number, userId: number,  updatePostDto: UpdatePostDto, files: MulterFile[]) {

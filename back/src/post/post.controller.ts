@@ -29,18 +29,23 @@ export class PostController {
     return this.postService.create(id, createPostDto, photos);
   }
 
+  @AccessJwtGuard()
   @UsePipes(new ValidationPipe({transform: true}))
   @Get()
   findAll(
-    @Query() {count, page, user} : FindAllQueryDto
+    @Query() {count, page, user} : FindAllQueryDto,
+    @User('id') userId: number
   ) {
-    return this.postService.findAll(page, count, user);
+    return this.postService.findAll(page, count, user, userId);
   }
 
+  @AccessJwtGuard()
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    console.log(id, 'id')
-    return this.postService.findOne(id);
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @User('id') userId: number  
+  ) {
+    return this.postService.findOne(id, userId);
   }
 
   @AccessJwtGuard()
