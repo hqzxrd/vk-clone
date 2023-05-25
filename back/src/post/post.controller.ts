@@ -7,12 +7,11 @@ import { User } from 'src/user/decorators/user.decorator';
 import { FilesInterceptor,  MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 import { ProductQueryDto } from './dto/product.query.dto';
 
-
+@AccessJwtGuard()
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @AccessJwtGuard()
   @UseInterceptors(FilesInterceptor('photos'))
   @UsePipes(new ValidationPipe({whitelist: true}))
   @Post()
@@ -29,7 +28,6 @@ export class PostController {
     return this.postService.create(id, createPostDto, photos);
   }
 
-  @AccessJwtGuard()
   @UsePipes(new ValidationPipe({transform: true}))
   @Get()
   findAll(
@@ -39,7 +37,6 @@ export class PostController {
     return this.postService.findAll(page, count, user, userId);
   }
 
-  @AccessJwtGuard()
   @Get(':id')
   findOne(
     @Param('id', ParseIntPipe) id: number,
@@ -48,7 +45,6 @@ export class PostController {
     return this.postService.findOne(id, userId);
   }
 
-  @AccessJwtGuard()
   @UseInterceptors(FilesInterceptor('newPhotos'))
   @UsePipes(new ValidationPipe({whitelist: true}))
   @Patch(':id')
@@ -66,7 +62,7 @@ export class PostController {
     return this.postService.update(id, userId, updatePostDto, files);
   }
 
-  @AccessJwtGuard()
+  
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   remove(
@@ -76,7 +72,6 @@ export class PostController {
     return this.postService.remove(postId, userId);
   }
 
-  @AccessJwtGuard()
   @Get('like/:id')
   async likePost(
     @User('id') userId: number,

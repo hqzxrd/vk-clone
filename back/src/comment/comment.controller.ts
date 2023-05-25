@@ -6,12 +6,11 @@ import { AccessJwtGuard } from 'src/auth/decorators/access-jwt.decorator';
 import { User } from 'src/user/decorators/user.decorator';
 import { CommentQueryDto } from './dto/comment.query.dto';
 
-
+@AccessJwtGuard()
 @Controller('comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
-  @AccessJwtGuard()
   @UsePipes(new ValidationPipe())
   @Post()
   create(
@@ -21,7 +20,6 @@ export class CommentController {
     return this.commentService.create(createCommentDto, id);
   }
 
-  @AccessJwtGuard()
   @Get(':id')
   findOne(
     @Param('id', ParseIntPipe) id: number,
@@ -30,7 +28,6 @@ export class CommentController {
     return this.commentService.findOne(id, userId);
   }
 
-  @AccessJwtGuard()
   @UsePipes(new ValidationPipe({whitelist: true}))
   @Patch(':id')
   update(
@@ -41,7 +38,6 @@ export class CommentController {
     return this.commentService.update(id, updateCommentDto, userId);
   }
 
-  @AccessJwtGuard()
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
   remove(
@@ -51,7 +47,6 @@ export class CommentController {
     return this.commentService.remove(id, userId);
   }
 
-  @AccessJwtGuard()
   @UsePipes(new ValidationPipe({transform: true}))
   @Get()
   findAllByPostId(
@@ -61,7 +56,6 @@ export class CommentController {
     return this.commentService.findAllByPostId(page, count, post, userId) 
   }
 
-  @AccessJwtGuard()
   @Get('like/:id')
   async likeComment(
     @User('id') userId: number, 
