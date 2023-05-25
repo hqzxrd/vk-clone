@@ -4,6 +4,7 @@ import { UpdateLikeDto } from '../dto/update-like.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LikeEntity } from '../entities/like.entity';
 import { Repository } from 'typeorm';
+import { LikeType } from '../like.enum';
 
 @Injectable()
 export class LikeService {
@@ -30,12 +31,12 @@ export class LikeService {
   }
 
   async likePost(userId: number, postId: number) {
-    const like = this.likeRepository.create({post: {id: postId}, user: {id: userId}})
+    const like = this.likeRepository.create({type: LikeType.POST, post: {id: postId}, user: {id: userId}})
     return await this.likeRepository.save(like)
   }
 
   async likeComment(userId: number, commentId: number) {
-    const like = this.likeRepository.create({comment: {id: commentId}, user: {id: userId}})
+    const like = this.likeRepository.create({type: LikeType.COMMENT, comment: {id: commentId}, user: {id: userId}})
     return await this.likeRepository.save(like)
   }
 }
