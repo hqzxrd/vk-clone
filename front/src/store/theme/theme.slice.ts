@@ -1,13 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-type TypeTheme = `light` | `dark`
+import { getTheme, saveTheme } from '@/utils/local-storage'
+
+export type TypeTheme = `light` | `dark`
 
 export interface IInitialTheme {
 	theme: TypeTheme
 }
 
 export const initialState: IInitialTheme = {
-	theme: `light`,
+	theme: getTheme(`theme`) ? (getTheme(`theme`) as TypeTheme) : `light`,
 }
 
 export const themeSlice = createSlice({
@@ -17,8 +19,10 @@ export const themeSlice = createSlice({
 		changeTheme(state) {
 			if (state.theme === `light`) {
 				state.theme = `dark`
+				saveTheme(`theme`, `dark`)
 			} else {
 				state.theme = `light`
+				saveTheme(`theme`, `light`)
 			}
 		},
 	},
