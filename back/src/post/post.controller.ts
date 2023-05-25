@@ -5,7 +5,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { AccessJwtGuard } from 'src/auth/decorators/access-jwt.decorator';
 import { User } from 'src/user/decorators/user.decorator';
 import { FilesInterceptor,  MulterFile } from '@webundsoehne/nest-fastify-file-upload';
-import { FindAllQueryDto } from './dto/findAll.query.dto';
+import { ProductQueryDto } from './dto/product.query.dto';
 
 
 @Controller('post')
@@ -33,7 +33,7 @@ export class PostController {
   @UsePipes(new ValidationPipe({transform: true}))
   @Get()
   findAll(
-    @Query() {count, page, user} : FindAllQueryDto,
+    @Query() {count, page, user} : ProductQueryDto,
     @User('id') userId: number
   ) {
     return this.postService.findAll(page, count, user, userId);

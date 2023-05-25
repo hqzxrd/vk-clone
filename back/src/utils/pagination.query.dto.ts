@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsNumber, IsOptional } from "class-validator";
 
-export class FindAllQueryDto {
+export class PaginationQueryDto {
     @IsOptional()
     @IsNumber()
     @Type(() => Number)
@@ -11,9 +11,4 @@ export class FindAllQueryDto {
     @IsNumber()
     @Type(() => Number)
     page: number = 1
-
-    @IsOptional()
-    @IsNumber()
-    @Type(() => Number)
-    user?: number
 }

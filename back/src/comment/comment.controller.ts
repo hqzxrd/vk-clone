@@ -4,7 +4,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { AccessJwtGuard } from 'src/auth/decorators/access-jwt.decorator';
 import { User } from 'src/user/decorators/user.decorator';
-import { FindAllQueryDto } from './dto/findAll.query.dto';
+import { CommentQueryDto } from './dto/comment.query.dto';
 
 
 @Controller('comment')
@@ -55,7 +55,7 @@ export class CommentController {
   @UsePipes(new ValidationPipe({transform: true}))
   @Get()
   findAllByPostId(
-    @Query() {count, page, post} : FindAllQueryDto,
+    @Query() {count, page, post} : CommentQueryDto,
     @User('id') userId: number
   ) {
     return this.commentService.findAllByPostId(page, count, post, userId) 
