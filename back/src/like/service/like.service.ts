@@ -1,6 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateLikeDto } from '../dto/create-like.dto';
-import { UpdateLikeDto } from '../dto/update-like.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LikeEntity } from '../entities/like.entity';
 import { Repository } from 'typeorm';
@@ -12,16 +10,8 @@ export class LikeService {
     @InjectRepository(LikeEntity) private readonly likeRepository: Repository<LikeEntity>
   ) {}
 
-  createLikeToComment(createLikeDto: CreateLikeDto) {
-    return 'This action adds a new like';
-  }
-
   findAll() {
-    return `This action returns all like`;
-  }
 
-  update(id: number, updateLikeDto: UpdateLikeDto) {
-    return `This action updates a #${id} like`;
   }
 
   async remove(id: number, userId: number) {
@@ -30,13 +20,18 @@ export class LikeService {
     this.likeRepository.remove(like)
   }
 
-  async likePost(userId: number, postId: number) {
-    const like = this.likeRepository.create({type: LikeType.POST, post: {id: postId}, user: {id: userId}})
-    return await this.likeRepository.save(like)
-  }
-
-  async likeComment(userId: number, commentId: number) {
-    const like = this.likeRepository.create({type: LikeType.COMMENT, comment: {id: commentId}, user: {id: userId}})
-    return await this.likeRepository.save(like)
+  async like(userId: number, columnId: number, columnType: LikeType ){
+    const findOrCreateObject = {
+      type: columnType,
+      [columnType]: {id: columnId},
+      user: {id: userId}
+    }
+    const oldLike = await this.likeRepository.findOneBy(findOrCreateObject)
+    if(!oldLike) {
+      const like = this.likeRepository.create(findOrCreateObject)
+      return await this.likeRepository.save(like)
+    }
+    
+    return oldLike
   }
 }
