@@ -1,6 +1,11 @@
 import { IUser } from '@/types/user.types'
+import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
+
+import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
+
+import { FilesUrl } from '@/config/api.config'
 
 import { useAvatarGenerate } from '@/hooks/useAvatarGenerate'
 
@@ -11,14 +16,7 @@ const Item: FC<{ user: IUser }> = ({ user }) => {
 
 	return (
 		<div className={styles.peoples_item}>
-			<Link
-				href={`/users/${user.id}`}
-				style={{ backgroundColor: `${color}` }}
-				className={styles.avatar}
-			>
-				<div>{user.name[0]}</div>
-			</Link>
-
+			<AvatarMini user={user} width={90} height={90} isLink={true} />
 			<div className={styles.info}>
 				<Link href={`/users/${user.id}`} className={styles.name}>
 					{`${user.name} ${user.surname}`}

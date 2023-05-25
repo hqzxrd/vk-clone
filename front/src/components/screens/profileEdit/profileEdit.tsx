@@ -1,3 +1,4 @@
+import Avatar from '../profile/Avatar/Avatar'
 import { IUpdateFields, IUpdateFieldsDto } from './profileEdit.interface'
 import { UserService } from '@/services/user/user.service'
 import { TypeGender } from '@/types/auth.types'
@@ -7,6 +8,7 @@ import { useRouter } from 'next/router'
 import { FC, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
+import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 import BirthDateFields from '@/components/ui/BirthDateFields/BirthDateFields'
 import Button from '@/components/ui/Form/Button'
 import Input from '@/components/ui/Form/Input'

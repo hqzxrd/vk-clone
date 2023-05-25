@@ -69,8 +69,8 @@ export const AuthService = {
 		const refreshToken = Cookies.get(`refreshToken`)
 
 		const res = await baseAxios.post<ILoginRegisterResponse>(
-			AuthUrl(`/login/access-token`),
-			{ refreshToken },
+			AuthUrl(`/refresh`),
+			{ token: refreshToken },
 			{ headers: { 'Content-Type': `application/json` } }
 		)
 
@@ -106,7 +106,7 @@ const saveTokenCookie = (data: ITokens) => {
 	Cookies.set(`RefreshToken`, data.refreshToken)
 }
 
-const removeTokensCookie = () => {
+export const removeTokensCookie = () => {
 	Cookies.remove(`AccessToken`)
 	Cookies.remove(`RefreshToken`)
 }
