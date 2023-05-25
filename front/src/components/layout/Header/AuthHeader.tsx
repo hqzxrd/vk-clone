@@ -1,4 +1,3 @@
-import { props } from './Header'
 import Link from 'next/link'
 import React, { FC } from 'react'
 
@@ -6,19 +5,12 @@ import { useActions } from '@/hooks/useActions'
 
 import styles from './Header.module.scss'
 
-const AuthHeader: FC<props> = ({ toggleTheme }) => {
-	const { logout } = useActions()
+const AuthHeader: FC = () => {
+	const { logout, changeTheme } = useActions()
+
 	return (
 		<>
-			<div className={styles.search}>
-				<input type="text" placeholder="Поиск" />
-			</div>
-			<div
-				className={styles.theme}
-				onClick={() => {
-					toggleTheme()
-				}}
-			>
+			<div className={styles.theme} onClick={() => changeTheme()}>
 				Тема
 			</div>
 			<div>

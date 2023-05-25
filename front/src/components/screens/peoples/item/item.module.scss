@@ -3,19 +3,6 @@
 	padding: 10px;
 	gap: 20px;
 	border-top: 1px solid var(--primary-border);
-	.avatar {
-		user-select: none;
-		cursor: pointer;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 90px;
-		height: 90px;
-		font-size: 36px;
-		border: 1px solid var(--primary-border);
-		border-radius: 50%;
-		color: white;
-	}
 
 	.info {
 		display: flex;

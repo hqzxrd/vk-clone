@@ -1,9 +1,9 @@
 import Header from './Header/Header'
 import Navigation from './Navigation/Navigation'
 import { useRouter } from 'next/router'
-import { FC, useRef } from 'react'
+import { FC } from 'react'
 
-import { useDarkTheme } from '@/hooks/useDarkTheme'
+import { useTypedSelector } from '@/hooks/useTypedSelector'
 
 import IChildren from '@/utils/children.inteface'
 
@@ -15,23 +15,22 @@ function isHideNavbar() {
 	const path = router.pathname
 	return path === '/auth/register' ||
 		path === '/auth/login' ||
-		path === '/auth/code' ? (
-		``
-	) : (
+		path === '/auth/code' ||
+		path === '/404' ||
+		path === '/500' ? null : (
 		<Navigation />
 	)
 }
 
 const Layout: FC<IChildren> = ({ children }) => {
-	const ref = useRef<HTMLDivElement>(null)
-
-	const { theme, toggle } = useDarkTheme(ref)
+	const { theme } = useTypedSelector((state) => state.theme)
 
 	return (
-		<div className={styles.layout} ref={ref}>
+		<div className={styles.layout} data-theme={theme}>
 			<div className={styles.header_wrapper}>
-				<Header toggleTheme={toggle} />
+				<Header />
 			</div>
+
 			<div className={styles.main_wrapper}>
 				<div className={styles.main}>
 					<div className={styles.left}>{isHideNavbar()}</div>

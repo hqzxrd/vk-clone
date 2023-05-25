@@ -26,19 +26,26 @@
 			padding: 10px 0;
 
 			.hover_wrapper {
-				width: 79px;
-				height: 79px;
+				width: 80px;
+				height: 80px;
 				background-color: black;
 				border-radius: 50%;
 				> img {
 					cursor: pointer;
 					user-select: none;
 					border-radius: 50%;
+					object-fit: cover;
+					outline: 2px solid var(--primary-border);
 					&:hover {
 						background-color: black;
 						opacity: 0.7;
 					}
 				}
+			}
+
+			span {
+				font-size: 12px;
+				color: var(--secondary-color);
 			}
 		}
 

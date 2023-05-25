@@ -3,6 +3,7 @@ import { ChangeEventHandler, useState } from 'react'
 const usePrepareAvatar = () => {
 	const [file, setFile] = useState<File | null>(null)
 	const [avatar, setAvatar] = useState<string>(``)
+	const [errorSize, setErrorSize] = useState<boolean>(false)
 
 	const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		if (!e.target.files) {
@@ -14,12 +15,30 @@ const usePrepareAvatar = () => {
 
 		reader.readAsDataURL(file)
 
-		reader.onloadend = () => {
-			setFile(file)
-			setAvatar(reader.result as string)
+		reader.onloadend = async () => {
+			const image = new Promise<boolean>((resolve, reject) => {
+				const img = new Image()
+				img.src = reader.result as string
+				img.onload = () => {
+					if (img.width < 300 || img.height < 300 || img.width > img.height) {
+						setErrorSize(true)
+						reject(true)
+					}
+					resolve(false)
+				}
+			})
+
+			image.then((isError) => {
+				if (!isError) {
+					setErrorSize(false)
+					setFile(file)
+					setAvatar(reader.result as string)
+				}
+			})
 		}
 	}
-	return { file, avatar, handleChange }
+
+	return { file, avatar, errorSize, handleChange }
 }
 
 export default usePrepareAvatar

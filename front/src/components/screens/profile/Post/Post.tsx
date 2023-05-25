@@ -1,7 +1,8 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { FC } from 'react'
 
-import { FilesUrl } from '@/config/api.config'
+import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 
 import { useProfile } from '@/hooks/useProfile'
 
@@ -18,15 +19,12 @@ const PostList: FC<props> = ({ text, imgs }) => {
 		<div className={styles.post}>
 			<div className={styles.postHeader}>
 				<div className={styles.postAvatar}>
-					<Image
-						src={data?.avatar ? `${FilesUrl(data?.avatar)}` : `/avatar.jpg`}
-						width={50}
-						height={50}
-						alt="avatar"
-					/>
+					<AvatarMini user={data!} width={60} height={60} isLink={true} />
 				</div>
 				<div className={styles.whosePost}>
-					{data?.name} {data?.surname}
+					<Link href={`/users/${data!.id}`}>
+						{data?.name} {data?.surname}
+					</Link>
 				</div>
 			</div>
 			<div className={styles.postMain}>

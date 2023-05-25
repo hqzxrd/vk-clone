@@ -1,4 +1,4 @@
-:root {
+[data-theme='dark'] {
 	--primary-color: #e0ffff;
 	--secondary-color: #818c99;
 	--primary-background: #141414;
@@ -7,5 +7,17 @@
 	--primary-hover: #323232;
 	--primary-scroll: #222222;
 	--primary-button: white;
+	--primary-button-color: black;
+}
+
+[data-theme='light'] {
+	--primary-color: #000;
+	--secondary-color: #818c99;
+	--primary-background: #edeef0;
+	--extra-background: #ffffff;
+	--primary-border: #dce1e6;
+	--primary-hover: #f5f6f8;
+	--primary-scroll: #b5b8b1;
+	--primary-button: #447bba;
 	--primary-button-color: white;
 }
