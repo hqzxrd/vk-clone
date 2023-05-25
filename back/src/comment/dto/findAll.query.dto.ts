@@ -12,8 +12,7 @@ export class FindAllQueryDto {
     @Type(() => Number)
     page: number = 1
 
-    @IsOptional()
     @IsNumber()
     @Type(() => Number)
-    post?: number
+    post: number
 }
