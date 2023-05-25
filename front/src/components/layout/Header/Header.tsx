@@ -1,7 +1,7 @@
 import AuthHeader from './AuthHeader'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { useAuth } from '@/hooks/useAuth'
 
@@ -14,14 +14,15 @@ export interface props {
 const Header: FC<props> = ({ toggleTheme }) => {
 	const { isAutorized } = useAuth()
 
-	// const { data } = useHydrationFix(isAutorized)
+	const [isAuth, setIsAuth] = useState<boolean>(true)
 
-	// // const [auth, setAuth] = useState(false)
-
-	// // useEffect(() => {
-	// // 	//для избежания hydration error
-	// // 	if (isAutorized !== null) setAuth(isAutorized)
-	// // }, [isAutorized])
+	useEffect(() => {
+		if (!isAutorized) {
+			setIsAuth(false)
+			return
+		}
+		setIsAuth(isAutorized)
+	}, [])
 
 	return (
 		<header className={styles.header}>
@@ -32,7 +33,7 @@ const Header: FC<props> = ({ toggleTheme }) => {
 						<div>ВКонтакте</div>
 					</Link>
 				</div>
-				{isAutorized ? (
+				{isAuth ? (
 					<AuthHeader toggleTheme={toggleTheme} />
 				) : (
 					<div>

@@ -10,9 +10,6 @@ const AuthHeader: FC<props> = ({ toggleTheme }) => {
 	const { logout } = useActions()
 	return (
 		<>
-			<div className={styles.search}>
-				<input type="text" placeholder="Поиск" />
-			</div>
 			<div
 				className={styles.theme}
 				onClick={() => {

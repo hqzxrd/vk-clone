@@ -15,7 +15,9 @@ function isHideNavbar() {
 	const path = router.pathname
 	return path === '/auth/register' ||
 		path === '/auth/login' ||
-		path === '/auth/code' ? (
+		path === '/auth/code' ||
+		path === '/404' ||
+		path === '/500' ? (
 		``
 	) : (
 		<Navigation />
