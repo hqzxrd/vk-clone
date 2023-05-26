@@ -17,7 +17,7 @@ import GenderSelector from '@/components/ui/GenderSelector/GenderSelector'
 import { FilesUrl } from '@/config/api.config'
 
 import { useAuth } from '@/hooks/useAuth'
-import usePrepareAvatar from '@/hooks/usePrepareAvatar'
+import usePhotos from '@/hooks/usePhoto'
 import { useProfile } from '@/hooks/useProfile'
 
 import { NAME_REGEX } from '@/shared/regex'
@@ -25,12 +25,12 @@ import { NAME_REGEX } from '@/shared/regex'
 import styles from './profileEdit.module.scss'
 
 const ProfileEdit: FC = () => {
-	const ref = useRef<HTMLInputElement>(null)
+	const inputFiles = useRef<HTMLInputElement>(null)
 	const { push } = useRouter()
 	const { user } = useAuth()
 	const { isLoading, data } = useProfile(user.id)
 	const [gender, setGender] = useState<TypeGender>(data?.gender || `male`)
-	const { file, avatar, errorSize, handleChange } = usePrepareAvatar()
+	const { file, avatar, errorSize, handleChange } = usePhotos()
 
 	const {
 		register: reg,
@@ -73,7 +73,7 @@ const ProfileEdit: FC = () => {
 						<div className={styles.hover_wrapper}>
 							<Image
 								priority={true}
-								onClick={() => ref.current?.click()}
+								onClick={() => inputFiles.current?.click()}
 								src={
 									avatar
 										? avatar
@@ -94,7 +94,7 @@ const ProfileEdit: FC = () => {
 							style={{ display: 'none' }}
 							type="file"
 							accept=".jpg,.jpeg"
-							ref={ref}
+							ref={inputFiles}
 						/>
 						<GenderSelector gender={gender} setGender={setGender} />
 					</div>

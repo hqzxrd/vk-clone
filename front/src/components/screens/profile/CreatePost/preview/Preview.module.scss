@@ -1,0 +1,57 @@
+.preview {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	justify-items: center;
+	grid-auto-rows: max-content;
+	grid-auto-flow: dense;
+	grid-gap: 10px;
+
+	.preview_img {
+		position: relative;
+		width: 100%;
+		max-width: 400px;
+		max-height: 500px;
+		border-radius: 8px;
+		img {
+			border-radius: var(--primary-border-radius);
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.delete {
+			user-select: none;
+			cursor: pointer;
+			position: absolute;
+			right: 5px;
+			font-size: 24px;
+			font-weight: bold;
+			color: var(--secondary-color);
+			height: 25px;
+			&:hover {
+				animation: spin 0.3s infinite;
+			}
+		}
+	}
+}
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	20% {
+		transform: rotate(-2deg);
+	}
+
+	50% {
+		transform: rotate(0deg);
+	}
+
+	80% {
+		transform: rotate(2deg);
+	}
+
+	100% {
+		transform: rotate(0deg);
+	}
+}

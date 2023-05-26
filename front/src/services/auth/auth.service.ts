@@ -5,7 +5,6 @@ import {
 	ITokens,
 	IUserDto,
 } from '@/types/auth.types'
-import { IUser } from '@/types/user.types'
 import Cookies from 'js-cookie'
 
 import { AuthUrl } from '@/config/api.config'

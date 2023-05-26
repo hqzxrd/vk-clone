@@ -4,4 +4,6 @@ export const AuthUrl = (str: string) => `/auth${str}`
 
 export const UserUrl = (str: string) => `/user${str}`
 
+export const PostUrl = (str: string) => `/post${str}`
+
 export const FilesUrl = (str: string) => `${API_URL}/file/${str}`

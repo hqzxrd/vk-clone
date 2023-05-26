@@ -29,18 +29,20 @@
 	}
 
 	.postPic {
-		margin-top: 10px;
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		justify-items: center;
 		grid-auto-rows: max-content;
 		grid-auto-flow: dense;
 		grid-gap: 10px;
 
 		.postPicWrapper {
+			width: 100%;
+			max-width: 400px;
+			max-height: 500px;
 			> img {
-				width: 100% !important;
-				position: relative !important;
-				max-height: 100% !important;
+				width: 100%;
+				height: 100%;
 				object-fit: cover;
 			}
 		}

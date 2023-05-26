@@ -1,6 +1,6 @@
 import { ChangeEventHandler, useState } from 'react'
 
-const usePrepareAvatar = () => {
+const usePhoto = () => {
 	const [file, setFile] = useState<File | null>(null)
 	const [avatar, setAvatar] = useState<string>(``)
 	const [errorSize, setErrorSize] = useState<boolean>(false)
@@ -41,4 +41,4 @@ const usePrepareAvatar = () => {
 	return { file, avatar, errorSize, handleChange }
 }
 
-export default usePrepareAvatar
+export default usePhoto

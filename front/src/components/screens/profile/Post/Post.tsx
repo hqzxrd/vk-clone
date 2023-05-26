@@ -45,7 +45,7 @@ const PostList: FC<props> = ({ text, imgs }) => {
 				{imgs?.map((pic) => {
 					return (
 						<div className={styles.postPicWrapper} key={pic}>
-							<Image src={pic} fill alt="avatar" />
+							<Image src={pic} width={500} height={500} alt="avatar" />
 						</div>
 					)
 				})}
