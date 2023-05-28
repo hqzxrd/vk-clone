@@ -11,13 +11,13 @@ const useSeveralPhotos = () => {
 
 		const files = e.target.files
 
-		const reader = new FileReader()
+		let reader = new FileReader()
 
 		for (let i = 0; i < files.length; i++) {
 			reader.readAsDataURL(files[i])
 
 			reader.onloadend = () => {
-				setPhotos((prev) => [...prev, reader.result as string])
+				setPhotos((prev) => [...prev, reader!.result as string])
 				setFile((prev) => prev.concat(files[i]))
 			}
 		}
@@ -28,11 +28,17 @@ const useSeveralPhotos = () => {
 		setFile((prev) => prev.filter((_, i) => i !== index))
 	}
 
+	const clear = () => {
+		setPhotos([])
+		setFile([])
+	}
+
 	return {
 		file,
 		photos,
 		handleChange,
 		removePhoto,
+		clear,
 	}
 }
 

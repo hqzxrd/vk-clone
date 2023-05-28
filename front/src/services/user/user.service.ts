@@ -24,7 +24,7 @@ export const UserService = {
 			Object.entries(data).forEach(([key, value]) => {
 				formData.append(key, value)
 			})
-
+			console.log(formData)
 			return await filesAxios.patch(UserUrl(``), formData)
 		}
 	},

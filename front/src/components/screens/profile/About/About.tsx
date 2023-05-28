@@ -1,19 +1,23 @@
 import AboutCount from '../AboutCount/AboutCount'
 import { IUser } from '@/types/user.types'
+import { useRouter } from 'next/router'
 
 import { useDate } from '@/hooks/useDate'
+import { usePosts } from '@/hooks/usePosts'
 import { useProfile } from '@/hooks/useProfile'
 
 import styles from './About.module.scss'
 
 const About = () => {
-	const { isLoading, data } = useProfile()
+	const { query } = useRouter()
+	const { profile } = useProfile()
+	const { posts } = usePosts(`?user=${query.id}`)
 
-	const { day, month, year } = useDate(data ? data.birthday : ``)
+	const { day, month, year } = useDate(profile ? profile.birthday : ``)
 
 	const getGender = (data: IUser | undefined) => {
 		if (!data) {
-			return `Ошибка`
+			return <></>
 		}
 
 		if (data.gender === `female`) {
@@ -26,17 +30,19 @@ const About = () => {
 	return (
 		<div className={styles.about}>
 			<div className={styles.about_header}>
-				<div className={styles.name}>{`${data?.name} ${data?.surname}`}</div>
-				<div className={styles.status}>{data?.status}</div>
+				<div
+					className={styles.name}
+				>{`${profile?.name} ${profile?.surname}`}</div>
+				<div className={styles.status}>{profile?.status}</div>
 			</div>
 
 			<div className={styles.about_field}>
 				<div>Город:</div>
-				<div>{data?.city}</div>
+				<div>{profile?.city}</div>
 			</div>
 			<div className={styles.about_field}>
 				<div>Пол:</div>
-				<div>{getGender(data)}</div>
+				<div>{getGender(profile)}</div>
 			</div>
 			<div className={styles.about_field}>
 				<div>Дата рождения:</div>
@@ -44,8 +50,8 @@ const About = () => {
 			</div>
 
 			<div className={styles.info}>
-				<AboutCount name="Друзей" value={1} />
-				<AboutCount name="Постов" value={3} />
+				<AboutCount name="Друзей" value={0} />
+				<AboutCount name="Постов" value={posts ? posts[1] : 0} />
 			</div>
 		</div>
 	)

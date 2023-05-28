@@ -17,12 +17,13 @@
 			height: 25px;
 			resize: none;
 			font-size: 18px;
-
-			&:not(:placeholder-shown), //kekw
-			&:focus:not(:placeholder-shown) {
-				transition: 0.2s;
-				height: 150px;
-			}
+			height: 150px;
+			// &:not(:placeholder-shown),
+			// &:focus:not(:placeholder-shown)
+			// {
+			// 	transition: 0.2s;
+			// 	height: 150px;
+			// }
 		}
 
 		.textarea::placeholder {

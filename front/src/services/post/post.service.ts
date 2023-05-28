@@ -1,20 +1,36 @@
-import { baseAxios } from '@/api/interceptors'
+import { authAxios, filesAxios } from '@/api/interceptors'
+
+import {
+	TypePostFiles,
+	TypePostText,
+} from '@/components/screens/profile/CreatePost/createPost.interface'
 
 import { PostUrl } from '@/config/api.config'
 
 export const PostService = {
-	async createPost(data: { text: string }, files: File[]) {
-		if (!files) {
-			return await baseAxios.post(PostUrl(``), data)
-		} else {
-			const formData = new FormData()
-			// formData.append('photos', files)
+	async getAll(query: string) {
+		return await filesAxios.get(PostUrl(query))
+	},
 
-			Object.entries(data).forEach(([key, value]) => {
-				formData.append(key, value)
+	async createPost(text: TypePostText, files: TypePostFiles) {
+		const formData = new FormData()
+
+		if (files[0]) {
+			files.forEach((file, i) => {
+				formData.append(`photos`, file, file.name)
 			})
-
-			return await baseAxios.post(PostUrl(``), formData)
 		}
+
+		formData.append(`text`, text)
+
+		return await filesAxios.post(PostUrl(``), formData)
+	},
+
+	async detelePost(id: number) {
+		return await authAxios.delete(PostUrl(`/${id}`))
+	},
+
+	async likePost(id: number) {
+		return await authAxios.get(PostUrl(`/like/${id}`))
 	},
 }

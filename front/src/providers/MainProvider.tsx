@@ -9,7 +9,9 @@ import Layout from '@/components/layout/Layout'
 
 import { store } from '@/store/store'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+	defaultOptions: { queries: { refetchOnWindowFocus: false } },
+})
 
 const MainProvider: FC<TypeComponentAuth> = ({ children, Component }) => {
 	return (

@@ -1,7 +1,7 @@
 import { IUser } from '@/types/user.types'
 
 export interface IAvatarMiniProps {
-	user: IUser
+	user: Pick<IUser, `avatar` | `name` | `id`>
 	width: number
 	height: number
 	isLink: boolean

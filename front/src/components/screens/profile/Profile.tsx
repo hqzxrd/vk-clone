@@ -1,34 +1,28 @@
 import CreatePost from './CreatePost/CreatePost'
 import Info from './Info/Info'
 import Post from './Post/Post'
+import { IPostDto } from '@/types/post.types'
+import { useRouter } from 'next/router'
 
-import { useProfile } from '@/hooks/useProfile'
+import { useAuth } from '@/hooks/useAuth'
+import { usePosts } from '@/hooks/usePosts'
 
 import styles from './Profile.module.scss'
 
-const posts = [
-	{
-		text: `qqqqqqqqqqqqqqqqqqqqqqqqqqqqq`,
-		imgs: [`/avatar.jpg`, `/full3.jpg`],
-	},
-]
-
 const Profile = () => {
-	const { isLoading } = useProfile()
+	const { user } = useAuth()
+	const { query } = useRouter()
+	const { posts } = usePosts(`?user=${query.id}`)
 
 	return (
 		<div className={styles.wrapper}>
-			{isLoading ? (
-				<></>
-			) : (
-				<>
-					<Info />
-					<CreatePost />
-					{posts.map(({ text, imgs }, i) => {
-						return <Post text={text} imgs={imgs} key={imgs[i]} />
-					})}
-				</>
-			)}
+			<Info />
+			{user.id === +query.id! && <CreatePost />}
+
+			{posts &&
+				posts[0].map((post: IPostDto) => {
+					return <Post post={post} key={post.id} />
+				})}
 		</div>
 	)
 }
