@@ -1,13 +1,15 @@
+import UpdatePost from './UpdatePost/UpdatePost'
 import { PostService } from '@/services/post/post.service'
 import { IPostDto } from '@/types/post.types'
 import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 import LikeIcon from '@/components/ui/Icon/LikeIcon'
+import PencilIcon from '@/components/ui/Icon/PencilIcon'
 
 import { FilesUrl } from '@/config/api.config'
 
@@ -20,6 +22,7 @@ interface props {
 }
 
 const Post: FC<props> = ({ post }) => {
+	const [isUpdate, setIsUpdate] = useState<boolean>(false)
 	const { user } = useAuth()
 	const queryClient = useQueryClient()
 
@@ -35,8 +38,13 @@ const Post: FC<props> = ({ post }) => {
 	return (
 		<div className={styles.post}>
 			{user.id === post.author.id ? (
-				<div className={styles.delete} onClick={() => deletePost()}>
-					X
+				<div className={styles.post_actions}>
+					<div className={styles.update} onClick={() => setIsUpdate(!isUpdate)}>
+						<PencilIcon />
+					</div>
+					<div className={styles.delete} onClick={() => deletePost()}>
+						X
+					</div>
 				</div>
 			) : (
 				``
@@ -51,32 +59,33 @@ const Post: FC<props> = ({ post }) => {
 					</Link>
 				</div>
 			</div>
-			<div className={styles.postMain}>{post.text}</div>
-			<div className={styles.postPic}>
-				{post.photos?.map((pic) => {
-					return (
-						<div className={styles.postPicWrapper} key={pic}>
-							<Image
-								src={FilesUrl(`${pic}`)}
-								width={500}
-								height={500}
-								alt="avatar"
-							/>
+			{isUpdate ? (
+				<UpdatePost propsText={post.text} />
+			) : (
+				<>
+					<div className={styles.postMain}>{post.text}</div>
+					<div className={styles.postPic}>
+						{post.photos?.map((pic) => {
+							return (
+								<div className={styles.postPicWrapper} key={pic}>
+									<Image src={FilesUrl(`${pic}`)} fill={true} alt="pic" />
+								</div>
+							)
+						})}
+					</div>
+					<div className={styles.reactions}>
+						<div
+							className={
+								post.isLike ? cn(styles.like, styles.isLiked) : styles.like
+							}
+							onClick={() => likePost()}
+						>
+							<LikeIcon />
+							<div className={styles.like_count}>{post.likes}</div>
 						</div>
-					)
-				})}
-			</div>
-			<div className={styles.reactions}>
-				<div
-					className={
-						post.isLike ? cn(styles.like, styles.isLiked) : styles.like
-					}
-					onClick={() => likePost()}
-				>
-					<LikeIcon />
-					<div className={styles.like_count}>{post.likes}</div>
-				</div>
-			</div>
+					</div>
+				</>
+			)}
 		</div>
 	)
 }

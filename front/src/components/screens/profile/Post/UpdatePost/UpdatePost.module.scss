@@ -1,0 +1,44 @@
+.update_post {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	background-color: var(--extra-background);
+	.textarea_wrapper {
+		.textarea {
+			color: var(--primary-color);
+			background-color: var(--primary-background);
+			border: none;
+			border-radius: var(--primary-border-radius);
+			width: 100%;
+			height: 25px;
+			resize: none;
+			font-size: 16px;
+			height: auto;
+		}
+
+		.textarea::placeholder {
+			line-height: 25px;
+			font-size: 18px;
+			color: var(--primary-color);
+		}
+	}
+
+	.buttons {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+		button {
+			padding: 10px 20px;
+		}
+		> svg {
+			user-select: none;
+			cursor: pointer;
+
+			width: 30px;
+			height: 30px;
+			path {
+				fill: var(--secondary-color);
+			}
+		}
+	}
+}
