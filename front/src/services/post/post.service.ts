@@ -26,6 +26,32 @@ export const PostService = {
 		return await filesAxios.post(PostUrl(``), formData)
 	},
 
+	async updatePost(
+		id: number,
+		text: TypePostText,
+		files: TypePostFiles,
+		oldPhotos: string[]
+	) {
+		console.log(oldPhotos)
+		const formData = new FormData()
+
+		if (files[0]) {
+			files.map((file) => {
+				formData.append(`newPhotos`, file, file.name)
+			})
+		}
+
+		if (oldPhotos[0]) {
+			oldPhotos.map((str) => {
+				formData.append(`photos`, str)
+			})
+		}
+
+		formData.append(`text`, text)
+
+		return await filesAxios.patch(PostUrl(`/${id}`), formData)
+	},
+
 	async detelePost(id: number) {
 		return await authAxios.delete(PostUrl(`/${id}`))
 	},

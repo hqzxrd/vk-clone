@@ -69,7 +69,12 @@ const Post: FC<props> = ({ post }) => {
 				</div>
 			</div>
 			{isUpdate ? (
-				<UpdatePost propsText={post.text} />
+				<UpdatePost
+					post={post}
+					propsText={post.text}
+					propsPhotos={post.photos}
+					setIsUpdate={setIsUpdate}
+				/>
 			) : (
 				<>
 					<div className={styles.postMain}>{post.text}</div>

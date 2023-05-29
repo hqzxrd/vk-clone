@@ -31,6 +31,7 @@
 
 	.postMain {
 		word-wrap: break-word;
+		white-space: pre;
 	}
 
 	.postPic {
@@ -43,7 +44,7 @@
 
 		.postPicWrapper {
 			position: relative;
-			width: auto;
+			width: 100%;
 			min-height: 200px;
 			max-width: 400px;
 			max-height: 550px;

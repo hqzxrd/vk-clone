@@ -3,6 +3,12 @@ import { ChangeEventHandler, useState } from 'react'
 const useSeveralPhotos = () => {
 	const [file, setFile] = useState<File[]>([])
 	const [photos, setPhotos] = useState<string[]>([])
+	const oldPhotos: string[] = []
+
+	photos.map((str) => {
+		const arrayPhotoStr = str.split(`:`)
+		arrayPhotoStr[0] !== `data` && oldPhotos.push(str)
+	})
 
 	const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
 		if (!e.target.files) {
@@ -29,6 +35,7 @@ const useSeveralPhotos = () => {
 	}
 
 	const clear = () => {
+		oldPhotos.length = 0
 		setPhotos([])
 		setFile([])
 	}
@@ -36,6 +43,8 @@ const useSeveralPhotos = () => {
 	return {
 		file,
 		photos,
+		oldPhotos,
+		setPhotos,
 		handleChange,
 		removePhoto,
 		clear,
