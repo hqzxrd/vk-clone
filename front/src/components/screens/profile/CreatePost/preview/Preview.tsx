@@ -15,13 +15,7 @@ const Preview: FC<{ photos: string[]; remove: (index: number) => void }> = ({
 						<div className={styles.delete} onClick={() => remove(i)}>
 							X
 						</div>
-						<Image
-							src={photoStr}
-							width={80}
-							height={80}
-							quality={100}
-							alt="photo"
-						/>
+						<Image src={photoStr} fill={true} alt="photo" />
 					</div>
 				)
 			})}

@@ -1,4 +1,3 @@
-import Avatar from '../profile/Avatar/Avatar'
 import { IUpdateFields, IUpdateFieldsDto } from './profileEdit.interface'
 import { UserService } from '@/services/user/user.service'
 import { TypeGender } from '@/types/auth.types'
@@ -8,7 +7,6 @@ import { useRouter } from 'next/router'
 import { FC, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 import BirthDateFields from '@/components/ui/BirthDateFields/BirthDateFields'
 import Button from '@/components/ui/Form/Button'
 import Input from '@/components/ui/Form/Input'
@@ -28,8 +26,8 @@ const ProfileEdit: FC = () => {
 	const inputFiles = useRef<HTMLInputElement>(null)
 	const { push } = useRouter()
 	const { user } = useAuth()
-	const { isLoading, data } = useProfile(user.id)
-	const [gender, setGender] = useState<TypeGender>(data?.gender || `male`)
+	const { isLoading, profile } = useProfile(user.id)
+	const [gender, setGender] = useState<TypeGender>(profile?.gender || `male`)
 	const { file, avatar, errorSize, handleChange } = usePhotos()
 
 	const {
@@ -77,8 +75,8 @@ const ProfileEdit: FC = () => {
 								src={
 									avatar
 										? avatar
-										: data?.avatar
-										? `${FilesUrl(data?.avatar)}`
+										: profile?.avatar
+										? `${FilesUrl(profile?.avatar)}`
 										: ``
 								}
 								width={80}
@@ -101,7 +99,7 @@ const ProfileEdit: FC = () => {
 					<Input
 						placeholder="Имя"
 						{...reg(`name`, {
-							value: data?.name,
+							value: profile?.name,
 							pattern: {
 								value: NAME_REGEX,
 								message: `Только ru или en буквы`,
@@ -116,7 +114,7 @@ const ProfileEdit: FC = () => {
 					<Input
 						placeholder="Фамилия"
 						{...reg(`surname`, {
-							value: data?.surname,
+							value: profile?.surname,
 							pattern: {
 								value: NAME_REGEX,
 								message: `Только ru или en буквы`,
@@ -131,7 +129,7 @@ const ProfileEdit: FC = () => {
 					<Input
 						placeholder="Статус"
 						{...reg(`status`, {
-							value: data?.status && data.status,
+							value: profile?.status && profile.status,
 						})}
 						maxLength={64}
 						error={formState.errors.status}
@@ -139,7 +137,7 @@ const ProfileEdit: FC = () => {
 
 					<Input
 						placeholder="Город"
-						{...reg(`city`, { value: data?.city && data.city })}
+						{...reg(`city`, { value: profile?.city && profile.city })}
 						maxLength={20}
 						error={formState.errors.city}
 					/>

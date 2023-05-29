@@ -1,57 +1,93 @@
+import UpdatePost from './UpdatePost/UpdatePost'
+import { PostService } from '@/services/post/post.service'
+import { IPostDto } from '@/types/post.types'
+import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FC } from 'react'
+import React, { FC, useState } from 'react'
+import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
+import LikeIcon from '@/components/ui/Icon/LikeIcon'
+import PencilIcon from '@/components/ui/Icon/PencilIcon'
 
-import { useProfile } from '@/hooks/useProfile'
+import { FilesUrl } from '@/config/api.config'
+
+import { useAuth } from '@/hooks/useAuth'
 
 import styles from './Post.module.scss'
 
 interface props {
-	text: string
-	imgs: string[] | null
+	post: IPostDto
 }
 
-const PostList: FC<props> = ({ text, imgs }) => {
-	const { isLoading, data } = useProfile()
+const Post: FC<props> = ({ post }) => {
+	const [isUpdate, setIsUpdate] = useState<boolean>(false)
+	const { user } = useAuth()
+	const queryClient = useQueryClient()
+
+	const likePost = () => {
+		PostService.likePost(post.id)
+	}
+
+	const deletePost = async () => {
+		const res = await PostService.detelePost(post.id)
+		if (res.status === 204) queryClient.invalidateQueries(`userPosts${user.id}`)
+	}
+
 	return (
 		<div className={styles.post}>
+			{user.id === post.author.id ? (
+				<div className={styles.post_actions}>
+					<div className={styles.update} onClick={() => setIsUpdate(!isUpdate)}>
+						<PencilIcon />
+					</div>
+					<div className={styles.delete} onClick={() => deletePost()}>
+						X
+					</div>
+				</div>
+			) : (
+				``
+			)}
 			<div className={styles.postHeader}>
 				<div className={styles.postAvatar}>
-					<AvatarMini user={data!} width={60} height={60} isLink={true} />
+					<AvatarMini user={post.author} width={60} height={60} isLink={true} />
 				</div>
 				<div className={styles.whosePost}>
-					<Link href={`/users/${data!.id}`}>
-						{data?.name} {data?.surname}
+					<Link href={`/users/${post.author.id}`}>
+						{post.author.name} {post.author.surname}
 					</Link>
 				</div>
 			</div>
-			<div className={styles.postMain}>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
-				voluptates, dolore, sapiente vero laborum, ab nulla aut aliquam
-				obcaecati rem eveniet praesentium ipsum dolor maxime quod ea reiciendis.
-				Repudiandae, rerum iusto, excepturi sequi deleniti laudantium autem
-				architecto ratione aperiam reprehenderit velit tempore? Ab expedita
-				quisquam tenetur, quidem fugit explicabo sit mollitia. Consequuntur
-				aspernatur ullam eum esse inventore, labore consequatur! Omnis, ratione
-				molestiae, hic ipsum accusamus fugit dolorum consectetur suscipit libero
-				odio illum eligendi, neque exercitationem eum tempora necessitatibus
-				fugiat. Optio tempore at ratione ea id qui expedita distinctio, nostrum
-				in nobis magni. Voluptate autem, quisquam itaque nisi architecto laborum
-				error.
-			</div>
-			<div className={styles.postPic}>
-				{imgs?.map((pic) => {
-					return (
-						<div className={styles.postPicWrapper} key={pic}>
-							<Image src={pic} width={500} height={500} alt="avatar" />
+			{isUpdate ? (
+				<UpdatePost propsText={post.text} />
+			) : (
+				<>
+					<div className={styles.postMain}>{post.text}</div>
+					<div className={styles.postPic}>
+						{post.photos?.map((pic) => {
+							return (
+								<div className={styles.postPicWrapper} key={pic}>
+									<Image src={FilesUrl(`${pic}`)} fill={true} alt="pic" />
+								</div>
+							)
+						})}
+					</div>
+					<div className={styles.reactions}>
+						<div
+							className={
+								post.isLike ? cn(styles.like, styles.isLiked) : styles.like
+							}
+							onClick={() => likePost()}
+						>
+							<LikeIcon />
+							<div className={styles.like_count}>{post.likes}</div>
 						</div>
-					)
-				})}
-			</div>
+					</div>
+				</>
+			)}
 		</div>
 	)
 }
 
-export default PostList
+export default Post

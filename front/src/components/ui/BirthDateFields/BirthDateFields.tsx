@@ -32,8 +32,8 @@ const BirthDateFields: FC<IPropsRegister | IPropsUpdate> = ({
 	reg,
 }) => {
 	const { user } = useAuth()
-	const { isLoading, data } = useProfile(user.id)
-	const { day, month, year } = useDate(data ? data.birthday : ``)
+	const { isLoading, profile } = useProfile(user.id)
+	const { day, month, year } = useDate(profile ? profile.birthday : ``)
 
 	const [dayInput, setDayInput] = useState(day)
 	const [monthInput, setMonthInput] = useState(month)

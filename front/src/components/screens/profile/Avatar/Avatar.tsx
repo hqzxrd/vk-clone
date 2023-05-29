@@ -10,18 +10,18 @@ import { useProfile } from '@/hooks/useProfile'
 import styles from './Avatar.module.scss'
 
 const Avatar = () => {
-	const { isLoading, data } = useProfile()
+	const { isLoading, profile } = useProfile()
 	const { user } = useAuth()
 	const { push } = useRouter()
-	const color = useAvatarGenerate(data?.name!)
+	const color = useAvatarGenerate(profile?.name!)
 
 	return (
 		<div className={styles.avatar}>
 			<div className={styles.avatar_img}>
-				{data?.avatar ? (
+				{profile?.avatar ? (
 					<Image
 						priority={true}
-						src={`${FilesUrl(data?.avatar)}`}
+						src={`${FilesUrl(profile?.avatar)}`}
 						width={300}
 						height={300}
 						quality={100}
@@ -32,12 +32,12 @@ const Avatar = () => {
 						style={{ backgroundColor: color }}
 						className={styles.avatar_placeholder}
 					>
-						{data?.name[0]}
+						{profile?.name[0]}
 					</div>
 				)}
 			</div>
 
-			{user.id === data?.id ? (
+			{user.id === profile?.id ? (
 				<div onClick={() => push(`/users/profile/edit`)}>
 					Редактировать профиль
 				</div>
