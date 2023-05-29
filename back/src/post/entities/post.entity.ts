@@ -16,9 +16,9 @@ export class PostEntity extends AbstractEntity {
     @ManyToOne(() => UserEntity, user => user.posts, {onDelete: 'CASCADE'})
     author: UserEntity
 
-    @ManyToOne(() => CommentEntity, comment => comment.post)
+    @OneToMany(() => CommentEntity, comment => comment.post, {cascade: true})
     comments: CommentEntity[]
 
-    @OneToMany(() => LikeEntity, like => like.post)
+    @OneToMany(() => LikeEntity, like => like.post, {cascade: true})
     likes: LikeEntity[]
 }

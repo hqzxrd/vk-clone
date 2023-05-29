@@ -9,12 +9,12 @@ export class CommentEntity extends AbstractEntity{
     @Column()
     text: string
 
-    @ManyToOne(() => PostEntity, post => post.comments)
+    @ManyToOne(() => PostEntity, post => post.comments, {onDelete: 'CASCADE'})
     post: PostEntity
 
     @ManyToOne(() => UserEntity, author => author.comments)
     author: UserEntity
 
-    @OneToMany(() => LikeEntity, like => like.comment)
+    @OneToMany(() => LikeEntity, like => like.comment, {cascade: true})
     likes: LikeEntity[]
 }

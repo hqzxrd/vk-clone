@@ -19,6 +19,6 @@ export class LikeEntity extends AbstractEntity {
     @ManyToOne(() => PostEntity, post => post.likes)
     post: PostEntity
 
-    @ManyToOne(() => CommentEntity, comment => comment.likes)
+    @ManyToOne(() => CommentEntity, comment => comment.likes, {onDelete: 'CASCADE'})
     comment: CommentEntity
 }
