@@ -9,7 +9,8 @@ export interface IPostDto {
 	updateDate: string
 	id: number
 	isLike: boolean
-	likes: number
+	countLikes: number
+	countComments: number
 	photos: string[]
 	text: string
 }

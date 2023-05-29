@@ -4,7 +4,7 @@ import { IPostDto } from '@/types/post.types'
 import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
@@ -23,17 +23,26 @@ interface props {
 
 const Post: FC<props> = ({ post }) => {
 	const [isUpdate, setIsUpdate] = useState<boolean>(false)
+	const [isLike, setIsLike] = useState<boolean>()
+	const [countLiked, setCountLiked] = useState<number>(0)
 	const { user } = useAuth()
 	const queryClient = useQueryClient()
 
-	const likePost = () => {
-		PostService.likePost(post.id)
+	const likePost = async () => {
+		const res = await PostService.likePost(post.id)
+		setIsLike(res.data.isLike)
+		console.log(res.data)
 	}
 
 	const deletePost = async () => {
 		const res = await PostService.detelePost(post.id)
 		if (res.status === 204) queryClient.invalidateQueries(`userPosts${user.id}`)
 	}
+
+	useEffect(() => {
+		setIsLike(post.isLike)
+		setCountLiked(post.countLikes)
+	}, [])
 
 	return (
 		<div className={styles.post}>
@@ -75,13 +84,11 @@ const Post: FC<props> = ({ post }) => {
 					</div>
 					<div className={styles.reactions}>
 						<div
-							className={
-								post.isLike ? cn(styles.like, styles.isLiked) : styles.like
-							}
+							className={isLike ? cn(styles.like, styles.isLiked) : styles.like}
 							onClick={() => likePost()}
 						>
 							<LikeIcon />
-							<div className={styles.like_count}>{post.likes}</div>
+							<div className={styles.like_count}>{countLiked}</div>
 						</div>
 					</div>
 				</>
