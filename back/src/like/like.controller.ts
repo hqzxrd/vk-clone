@@ -10,19 +10,5 @@ import { User } from 'src/user/decorators/user.decorator';
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
 
-  // ! ?
-  @Get()
-  findAll() {
-    return this.likeService.findAll();
-  }
-
   
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @Delete(':id')
-  remove(
-    @Param('id', ParseIntPipe) id: number,
-    @User('id') userId: number
-  ) {
-    return this.likeService.remove(id, userId);
-  }
 }
