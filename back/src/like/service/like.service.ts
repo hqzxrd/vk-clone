@@ -27,11 +27,12 @@ export class LikeService {
       user: {id: userId}
     }
     const oldLike = await this.likeRepository.findOneBy(findOrCreateObject)
-    if(!oldLike) {
-      const like = this.likeRepository.create(findOrCreateObject)
-      return await this.likeRepository.save(like)
+    if(oldLike) {
+      await this.likeRepository.remove(oldLike)
+      return {...oldLike, isLike: false}
     }
     
-    return oldLike
+    const like = this.likeRepository.create(findOrCreateObject)
+    return {...await this.likeRepository.save(like), isLike: true}
   }
 }
