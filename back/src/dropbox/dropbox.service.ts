@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { Dropbox } from "dropbox";
 import { randomUUID } from "crypto";
@@ -10,7 +10,8 @@ export class DropboxService {
     private dbx: Dropbox
 
     constructor(
-        private readonly configService: ConfigService
+        private readonly configService: ConfigService,
+        private readonly logger: Logger,
     ) {
         const refreshToken = configService.get('DROPBOX_REFRESH')
         const clientId = configService.get('DROPBOX_CLIENT_ID')
@@ -40,6 +41,10 @@ export class DropboxService {
 
 
     async remove(path: string) {
-       await this.dbx.filesDeleteV2({path: '/' + path})
+        try {
+            await this.dbx.filesDeleteV2({path: '/' + path})
+        }catch(e) {
+            this.logger.error(e.message)
+        }
     }
 }
