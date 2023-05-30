@@ -26,13 +26,20 @@ export class LikeService {
       [columnType]: {id: columnId},
       user: {id: userId}
     }
+    
     const oldLike = await this.likeRepository.findOneBy(findOrCreateObject)
+
+    let isLike: boolean
     if(oldLike) {
       await this.likeRepository.remove(oldLike)
-      return {...oldLike, isLike: false}
+      isLike = false
+    }else {
+      const like = this.likeRepository.create(findOrCreateObject)
+      await this.likeRepository.save(like)
+      isLike = true
     }
     
-    const like = this.likeRepository.create(findOrCreateObject)
-    return {...await this.likeRepository.save(like), isLike: true}
+    const countLikes = await this.likeRepository.countBy({type: columnType, [columnType]: {id: columnId}})
+    return {isLike, countLikes}
   }
 }
