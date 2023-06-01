@@ -26,7 +26,10 @@ export class DropboxService {
         const fileName = randomUUID()
         const filePath = `${folder}/${fileName}.${type}`
         await this.dbx.filesUpload({path: '/' + filePath, contents: file.buffer})
-        return filePath
+        return {
+            originalname: file.originalname,
+            url: filePath
+        }
     }
 
     async getFile(fileName: string) {

@@ -21,12 +21,23 @@ export class PostService {
     private readonly userService: UserService
   ) {}
 
+  
   async create(id: number, dto: CreatePostDto, photos: MulterFile[]) {
-    const urls = []
+    // * pattern data about file for return in order
+    const patternData = photos.map(photo => photo.originalname)
+    
+    const urlsObject: Array<{url: string, originalname: string}> = []
     await Promise.all(photos.map(async (photo) => {
-      const url =  await this.dropboxService.uploadFile(photo)
-      urls.push(url)
+      const data =  await this.dropboxService.uploadFile(photo)
+      urlsObject.push(data)
     }))
+
+    const urls: string[] = []
+    patternData.forEach(url => {
+      urlsObject.forEach(urlObject => {
+        if(url === urlObject.originalname) urls.push(urlObject.url)
+      })
+    })
 
     const post = this.postRepository.create({...dto, author: {id}, photos: urls})
     return await this.postRepository.save(post)
@@ -71,18 +82,28 @@ export class PostService {
       where: {id, author: {id: userId}}
     })
     if(!post) throw new NotFoundException()
+    
     const oldPhotos = post.photos
     const newPhotos = updatePostDto.photos
+
     const urlsForDelete = arrayComparison(oldPhotos, newPhotos)
     if(urlsForDelete.length) {
       urlsForDelete.forEach((path) => this.dropboxService.remove(path))
     }
     
     if(files.length) {
+      const patternData = files.map(file => file.originalname)
+      const urlsObject: Array<{url: string, originalname: string}> = []
       await Promise.all(files.map(async (file) => {
-        const url =  await this.dropboxService.uploadFile(file)
-        newPhotos.push(url)
+        const data =  await this.dropboxService.uploadFile(file)
+        urlsObject.push(data)
       }))
+
+      patternData.forEach(url => {
+        urlsObject.forEach(urlObject => {
+          if(url === urlObject.originalname) newPhotos.push(urlObject.url)
+        })
+      })
     }
 
     return await this.postRepository.save({...post, ...updatePostDto, photos: newPhotos})

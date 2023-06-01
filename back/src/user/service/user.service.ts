@@ -48,12 +48,14 @@ export class UserService {
   async update(id: number, dto: UpdateUserDto, file?: MulterFile) {
     const user = await this.byId(id)
     if(!user) throw new UnauthorizedException()
+
     if(file) {
       if(user.avatar) this.dropboxService.remove(user.avatar)
       let url: string
-      await Promise.all(url = await this.dropboxService.uploadFile(file))
+      await Promise.all(url = (await this.dropboxService.uploadFile(file)).url)
       dto.avatar = url
     }
+    
     const updatedUser = await this.userRepository.save({...user, ...dto})
     delete updatedUser.code
     delete updatedUser.updateDate
