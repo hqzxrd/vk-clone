@@ -43,7 +43,7 @@ export const PostService = {
 
 		if (oldPhotos[0]) {
 			oldPhotos.map((str) => {
-				formData.append(`photos`, str)
+				formData.append(`photos[]`, str)
 			})
 		}
 

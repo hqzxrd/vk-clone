@@ -31,7 +31,8 @@ const Post: FC<props> = ({ post }) => {
 	const likePost = async () => {
 		const res = await PostService.likePost(post.id)
 		setIsLike(res.data.isLike)
-		console.log(res.data)
+		setCountLiked(res.data.countLikes)
+		console.log(countLiked, res.data)
 	}
 
 	const deletePost = async () => {
