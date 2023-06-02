@@ -1,0 +1,27 @@
+.textarea {
+	box-sizing: border-box;
+	color: var(--primary-color);
+	background-color: var(--extra-background);
+	border: 1px solid var(--primary-border);
+	border-radius: var(--primary-border-radius);
+	padding: 15px 5px;
+	width: 100%;
+	height: 100%;
+	resize: none;
+	font-size: 18px;
+	overflow: hidden;
+
+	// &:not(:placeholder-shown),
+	// &:focus:not(:placeholder-shown)
+	// {
+	// 	transition: 0.2s;
+	// 	height: 150px;
+	// }
+}
+
+.textarea::placeholder {
+	display: flex;
+	line-height: 21px;
+	font-size: 18px;
+	color: var(--primary-color);
+}

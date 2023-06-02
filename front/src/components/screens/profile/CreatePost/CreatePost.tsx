@@ -6,6 +6,7 @@ import { useQueryClient } from 'react-query'
 
 import Button from '@/components/ui/Form/Button'
 import CamIcon from '@/components/ui/Icon/CamIcon'
+import Textarea from '@/components/ui/Textarea/Textarea'
 
 import useSeveralPhotos from '@/hooks/useSeveralPhotos'
 
@@ -13,9 +14,9 @@ import styles from './CreatePost.module.scss'
 
 const CreatePost = () => {
 	const inputFiles = useRef<HTMLInputElement>(null)
-	const textarea = useRef<HTMLTextAreaElement>(null)
-	const { file, photos, handleChange, removePhoto, clear } = useSeveralPhotos()
 	const [text, setText] = useState<string>(``)
+	const { file, photos, handleChange, removePhoto, clear } = useSeveralPhotos()
+
 	const { query } = useRouter()
 	const queryClient = useQueryClient()
 
@@ -29,14 +30,12 @@ const CreatePost = () => {
 	return (
 		<div className={styles.create_post}>
 			<div className={styles.textarea_wrapper}>
-				<textarea
-					value={text}
-					onChange={(e) => setText(e.target.value)}
-					ref={textarea}
-					className={styles.textarea}
+				<Textarea
+					text={text}
+					setText={setText}
+					resize={false}
 					placeholder="Что у вас нового?"
-					wrap="cols"
-				></textarea>
+				/>
 			</div>
 			<Preview photos={photos} remove={removePhoto} />
 			<div className={styles.buttons}>

@@ -31,7 +31,7 @@
 
 	.postMain {
 		word-wrap: break-word;
-		white-space: pre;
+		white-space: pre-wrap;
 	}
 
 	.postPic {
@@ -60,6 +60,7 @@
 
 	.reactions {
 		display: flex;
+		gap: 10px;
 		.like {
 			user-select: none;
 			cursor: pointer;

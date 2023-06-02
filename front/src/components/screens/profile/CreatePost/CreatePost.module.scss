@@ -1,36 +1,14 @@
 .create_post {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 25px;
 	padding: 10px;
 	background-color: var(--extra-background);
 	border: 1px solid var(--primary-border);
 	border-radius: var(--primary-border-radius);
 	.textarea_wrapper {
-		.textarea {
-			color: var(--primary-color);
-			background-color: var(--extra-background);
-			border: 1px solid var(--primary-border);
-			border-radius: var(--primary-border-radius);
-			padding: 5px;
-			width: 99%;
-			height: 25px;
-			resize: none;
-			font-size: 18px;
-			height: 150px;
-			// &:not(:placeholder-shown),
-			// &:focus:not(:placeholder-shown)
-			// {
-			// 	transition: 0.2s;
-			// 	height: 150px;
-			// }
-		}
-
-		.textarea::placeholder {
-			line-height: 25px;
-			font-size: 18px;
-			color: var(--primary-color);
-		}
+		width: 98.5%;
+		height: 100px;
 	}
 
 	.buttons {
