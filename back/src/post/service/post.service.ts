@@ -24,11 +24,15 @@ export class PostService {
   
   async create(id: number, dto: CreatePostDto, photos: MulterFile[]) {
     // * pattern data about file for return in order
-    const patternData = photos.map(photo => photo.originalname)
+    const patternData = photos.map(photo => {
+      // * for every item to be unique
+        const index = photos.indexOf(photo)
+        return index + photo.originalname
+    })
     
     const urlsObject: Array<{url: string, originalname: string}> = []
     await Promise.all(photos.map(async (photo) => {
-      const data =  await this.dropboxService.uploadFile(photo)
+      const data = await this.dropboxService.uploadFile(photo)
       urlsObject.push(data)
     }))
 
@@ -92,7 +96,11 @@ export class PostService {
     }
     
     if(files.length) {
-      const patternData = files.map(file => file.originalname)
+      const patternData = files.map(photo => {
+        // * for every item to be unique
+          const index = files.indexOf(photo)
+          return index + photo.originalname
+      })
       const urlsObject: Array<{url: string, originalname: string}> = []
       await Promise.all(files.map(async (file) => {
         const data =  await this.dropboxService.uploadFile(file)
