@@ -8,6 +8,7 @@ import { useQueryClient } from 'react-query'
 
 import Button from '@/components/ui/Form/Button'
 import CamIcon from '@/components/ui/Icon/CamIcon'
+import Textarea from '@/components/ui/Textarea/Textarea'
 
 import { FilesUrl } from '@/config/api.config'
 
@@ -55,34 +56,14 @@ const UpdatePost: FC<props> = ({
 		setIsUpdate(false)
 	}
 
-	const resizeTextarea = (e?: ChangeEvent<HTMLTextAreaElement>) => {
-		if (textarea.current) {
-			textarea.current.style.height = 'auto'
-			textarea.current.style.height = `${textarea.current.scrollHeight}px`
-		}
-	}
-
-	const handleChangeTextarea = (e: ChangeEvent<HTMLTextAreaElement>) => {
-		setText(e.target.value)
-		resizeTextarea(e)
-	}
-
 	useEffect(() => {
-		resizeTextarea()
 		propsPhotos && setPhotos((prev) => [...prev, ...propsPhotos])
 	}, [])
 
 	return (
 		<div className={styles.update_post}>
 			<div className={styles.textarea_wrapper}>
-				<textarea
-					value={text}
-					onChange={(e) => handleChangeTextarea(e)}
-					ref={textarea}
-					className={styles.textarea}
-					placeholder=""
-					wrap="cols"
-				></textarea>
+				<Textarea text={text} setText={setText} resize={true} />
 			</div>
 
 			<Preview photos={photos} remove={removePhoto} />

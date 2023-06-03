@@ -31,7 +31,7 @@
 
 	.postMain {
 		word-wrap: break-word;
-		white-space: pre;
+		white-space: pre-wrap;
 	}
 
 	.postPic {
@@ -60,14 +60,15 @@
 
 	.reactions {
 		display: flex;
+		gap: 10px;
 		.like {
 			user-select: none;
 			cursor: pointer;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			gap: 8px;
-			padding: 5px 14px;
+			gap: 5px;
+			padding: 5px 10px;
 			background-color: var(--primary-hover);
 			color: #b2b2b2;
 			border-radius: 20px;
@@ -78,6 +79,11 @@
 		.isLiked {
 			color: #e32636;
 			background-color: rgba($color: #9b2d30, $alpha: 0.1);
+		}
+
+		.like_count {
+			text-align: center;
+			min-width: 25px;
 		}
 	}
 	.post_actions {

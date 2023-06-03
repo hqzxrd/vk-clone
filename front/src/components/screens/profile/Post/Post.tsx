@@ -1,3 +1,4 @@
+import Comments from './Comment/Comments'
 import UpdatePost from './UpdatePost/UpdatePost'
 import { PostService } from '@/services/post/post.service'
 import { IPostDto } from '@/types/post.types'
@@ -8,6 +9,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
+import CommentsIcon from '@/components/ui/Icon/CommentsIcon'
 import LikeIcon from '@/components/ui/Icon/LikeIcon'
 import PencilIcon from '@/components/ui/Icon/PencilIcon'
 
@@ -23,15 +25,16 @@ interface props {
 
 const Post: FC<props> = ({ post }) => {
 	const [isUpdate, setIsUpdate] = useState<boolean>(false)
-	const [isLike, setIsLike] = useState<boolean>()
-	const [countLiked, setCountLiked] = useState<number>(0)
+	const [isLike, setIsLike] = useState<boolean>(post.isLike)
+	const [countLiked, setCountLiked] = useState<number>(post.countLikes)
 	const { user } = useAuth()
 	const queryClient = useQueryClient()
 
 	const likePost = async () => {
 		const res = await PostService.likePost(post.id)
+
 		setIsLike(res.data.isLike)
-		console.log(res.data)
+		setCountLiked(res.data.countLikes)
 	}
 
 	const deletePost = async () => {
@@ -42,7 +45,7 @@ const Post: FC<props> = ({ post }) => {
 	useEffect(() => {
 		setIsLike(post.isLike)
 		setCountLiked(post.countLikes)
-	}, [])
+	}, [post])
 
 	return (
 		<div className={styles.post}>
@@ -95,9 +98,14 @@ const Post: FC<props> = ({ post }) => {
 							<LikeIcon />
 							<div className={styles.like_count}>{countLiked}</div>
 						</div>
+						<div className={styles.like} onClick={() => likePost()}>
+							<CommentsIcon />
+							<div className={styles.like_count}>{post.countComments}</div>
+						</div>
 					</div>
 				</>
 			)}
+			<Comments />
 		</div>
 	)
 }
