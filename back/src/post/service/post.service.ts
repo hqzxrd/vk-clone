@@ -23,13 +23,14 @@ export class PostService {
 
   
   async create(id: number, dto: CreatePostDto, photos: MulterFile[]) {
-    // * pattern data about file for return in order
-    const patternData = photos.map(photo => {
-      // * for every item to be unique
-        const index = photos.indexOf(photo)
-        return index + photo.originalname
+
+    photos.forEach(photo => {
+       // * for every item to be unique
+      const index = photos.indexOf(photo)
+      photo.originalname = index + photo.originalname
     })
-    
+    console.log(photos)
+
     const urlsObject: Array<{url: string, originalname: string}> = []
     await Promise.all(photos.map(async (photo) => {
       const data = await this.dropboxService.uploadFile(photo)
@@ -37,9 +38,9 @@ export class PostService {
     }))
 
     const urls: string[] = []
-    patternData.forEach(url => {
+    photos.forEach(photo => {
       urlsObject.forEach(urlObject => {
-        if(url === urlObject.originalname) urls.push(urlObject.url)
+        if(photo.originalname === urlObject.originalname) urls.push(urlObject.url)
       })
     })
 
@@ -86,7 +87,7 @@ export class PostService {
       where: {id, author: {id: userId}}
     })
     if(!post) throw new NotFoundException()
-    
+
     const oldPhotos = post.photos
     const newPhotos = updatePostDto.photos
 
@@ -96,10 +97,10 @@ export class PostService {
     }
     
     if(files.length) {
-      const patternData = files.map(photo => {
+      files.forEach(photo => {
         // * for every item to be unique
           const index = files.indexOf(photo)
-          return index + photo.originalname
+          photo.originalname = index + photo.originalname
       })
       const urlsObject: Array<{url: string, originalname: string}> = []
       await Promise.all(files.map(async (file) => {
@@ -107,9 +108,9 @@ export class PostService {
         urlsObject.push(data)
       }))
 
-      patternData.forEach(url => {
+      files.forEach(file => {
         urlsObject.forEach(urlObject => {
-          if(url === urlObject.originalname) newPhotos.push(urlObject.url)
+          if(file.originalname === urlObject.originalname) newPhotos.push(urlObject.url)
         })
       })
     }
