@@ -56,13 +56,14 @@ export class CommentService {
 
   async findAllByPostId(page: number, count: number, postId?: number, userId?: number) {
     const commentAndCount = await this.commentRepository.findAndCount({
-      relations: ['post', 'likes', 'likes.user'],
+      relations: ['post', 'likes', 'likes.user', 'author'],
       take: count, 
       skip: page * count - count,
       where: {post: {id: postId}},
       order: {createDate: 'DESC'},
       select: {
-        likes: {id: true, user: {id: true}}
+        likes: {id: true, user: {id: true}},
+        author: {id: true, avatar: true, name: true, surname: true, nickname: true}
       }
     })
 
