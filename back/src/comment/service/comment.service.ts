@@ -20,7 +20,8 @@ export class CommentService {
     //  ! need set error
     if(!post) throw new BadRequestException()
     const comment = this.commentRepository.create({text, post: {id: postId}, author: {id: userId}})
-    return await this.commentRepository.save(comment)
+    const countComments = await this.commentRepository.countBy({post:{id: postId}})
+    return {...await this.commentRepository.save(comment), countComments}
   }
 
   async update(id: number, updateCommentDto: UpdateCommentDto, userId: number) {
