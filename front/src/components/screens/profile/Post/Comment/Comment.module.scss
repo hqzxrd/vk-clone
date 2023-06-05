@@ -4,11 +4,14 @@
 	gap: 10px;
 	border-top: 1px solid var(--primary-border);
 	padding-top: 10px;
+
 	.comment {
 		display: flex;
 		gap: 10px;
-
+		max-width: 700px;
+		min-width: 300px;
 		.content {
+			width: 100%;
 			font-size: 14px;
 			.name {
 				font-weight: bold;

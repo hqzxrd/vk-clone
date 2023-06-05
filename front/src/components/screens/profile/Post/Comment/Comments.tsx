@@ -36,14 +36,12 @@ const Comments: FC<props> = ({ postId }) => {
 			{comments[0].map((comment) => {
 				return (
 					<div className={styles.comment}>
-						<div>
-							<AvatarMini
-								user={comment.author}
-								width={35}
-								height={35}
-								isLink={true}
-							/>
-						</div>
+						<AvatarMini
+							user={comment.author}
+							width={35}
+							height={35}
+							isLink={true}
+						/>
 
 						<div className={styles.content}>
 							<div className={styles.name}>

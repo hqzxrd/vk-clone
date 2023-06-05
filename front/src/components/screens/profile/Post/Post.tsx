@@ -50,7 +50,9 @@ const Post: FC<props> = ({ post }) => {
 	}, [post])
 
 	if (!comments) {
+		return <></>
 	}
+	console.log(comments)
 
 	return (
 		<div className={styles.post}>
@@ -103,9 +105,11 @@ const Post: FC<props> = ({ post }) => {
 							<LikeIcon />
 							<div className={styles.like_count}>{countLiked}</div>
 						</div>
-						<div className={styles.like} onClick={() => likePost()}>
+						<div className={styles.like}>
 							<CommentsIcon />
-							{/* <div className={styles.like_count}>{comments[0]}</div> */}
+							<div className={styles.like_count}>
+								{comments ? comments[1] : post.countComments}
+							</div>
 						</div>
 					</div>
 				</>
