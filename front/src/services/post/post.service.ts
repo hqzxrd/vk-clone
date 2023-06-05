@@ -5,7 +5,7 @@ import {
 	TypePostText,
 } from '@/components/screens/profile/CreatePost/createPost.interface'
 
-import { PostUrl } from '@/config/api.config'
+import { CommentUrl, PostUrl } from '@/config/api.config'
 
 export const PostService = {
 	async getAll(query: string) {
@@ -58,5 +58,13 @@ export const PostService = {
 
 	async likePost(id: number) {
 		return await authAxios.get(PostUrl(`/like/${id}`))
+	},
+
+	async createComment(postId: number, text: string) {
+		return await authAxios.post(CommentUrl(``), { postId, text })
+	},
+
+	async getCommentsByPostId(query: string) {
+		return await authAxios.get(CommentUrl(query))
 	},
 }

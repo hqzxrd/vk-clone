@@ -16,6 +16,7 @@ import PencilIcon from '@/components/ui/Icon/PencilIcon'
 import { FilesUrl } from '@/config/api.config'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useComments } from '@/hooks/useComments'
 
 import styles from './Post.module.scss'
 
@@ -28,6 +29,7 @@ const Post: FC<props> = ({ post }) => {
 	const [isLike, setIsLike] = useState<boolean>(post.isLike)
 	const [countLiked, setCountLiked] = useState<number>(post.countLikes)
 	const { user } = useAuth()
+	const { comments } = useComments(post.id, `?post=${post.id}`)
 	const queryClient = useQueryClient()
 
 	const likePost = async () => {
@@ -46,6 +48,9 @@ const Post: FC<props> = ({ post }) => {
 		setIsLike(post.isLike)
 		setCountLiked(post.countLikes)
 	}, [post])
+
+	if (!comments) {
+	}
 
 	return (
 		<div className={styles.post}>
@@ -100,12 +105,12 @@ const Post: FC<props> = ({ post }) => {
 						</div>
 						<div className={styles.like} onClick={() => likePost()}>
 							<CommentsIcon />
-							<div className={styles.like_count}>{post.countComments}</div>
+							{/* <div className={styles.like_count}>{comments[0]}</div> */}
 						</div>
 					</div>
 				</>
 			)}
-			<Comments />
+			<Comments postId={post.id} />
 		</div>
 	)
 }

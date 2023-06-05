@@ -1,7 +1,5 @@
 import { PostService } from '@/services/post/post.service'
-import { IPostDto } from '@/types/post.types'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 
 export const usePosts = (queries?: string) => {

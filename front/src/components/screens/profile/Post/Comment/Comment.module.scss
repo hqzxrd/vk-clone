@@ -7,13 +7,15 @@
 	.comment {
 		display: flex;
 		gap: 10px;
-		height: 100%;
+
 		.content {
 			font-size: 14px;
 			.name {
 				font-weight: bold;
 			}
 			.text {
+				word-wrap: break-word;
+				white-space: pre-wrap;
 			}
 		}
 	}
@@ -25,6 +27,15 @@
 		.textarea_wrapper {
 			width: 100%;
 			height: 5%;
+		}
+		.send {
+			display: flex;
+			align-items: center;
+			height: 35px;
+			svg {
+				user-select: none;
+				cursor: pointer;
+			}
 		}
 	}
 }

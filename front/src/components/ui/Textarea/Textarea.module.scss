@@ -4,12 +4,11 @@
 	background-color: var(--extra-background);
 	border: 1px solid var(--primary-border);
 	border-radius: var(--primary-border-radius);
-	padding: 15px 5px;
+	padding: 5px 5px;
 	width: 100%;
 	height: 100%;
 	resize: none;
 	font-size: 18px;
-	overflow: hidden;
 
 	// &:not(:placeholder-shown),
 	// &:focus:not(:placeholder-shown)
@@ -21,7 +20,7 @@
 
 .textarea::placeholder {
 	display: flex;
-	line-height: 21px;
+	line-height: 25px;
 	font-size: 18px;
 	color: var(--primary-color);
 }

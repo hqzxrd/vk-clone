@@ -1,46 +1,63 @@
-import { useRef, useState } from 'react'
+import { PostService } from '@/services/post/post.service'
+import { FC, useRef, useState } from 'react'
+import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
+import SendIcon from '@/components/ui/Icon/Send'
 import Textarea from '@/components/ui/Textarea/Textarea'
 
+import { useComments } from '@/hooks/useComments'
 import { useProfile } from '@/hooks/useProfile'
 
 import styles from './Comment.module.scss'
 
-const Comments = () => {
+interface props {
+	postId: number
+}
+
+const Comments: FC<props> = ({ postId }) => {
 	const [text, setText] = useState<string>(``)
 	const { profile } = useProfile()
+	const { comments } = useComments(postId, `?post=${postId}`)
+	const queryClient = useQueryClient()
+	const send = async () => {
+		const res = await PostService.createComment(postId, text)
 
-	if (!profile) return <></>
+		if (res.status === 201) {
+			queryClient.invalidateQueries(`postComments/${postId}`)
+			setText(``)
+		}
+	}
+
+	if (!profile || !comments) return <></>
 
 	return (
 		<div className={styles.comments}>
-			<div className={styles.comment}>
-				<div>
-					<AvatarMini
-						user={profile}
-						width={50}
-						height={50}
-						isLink={true}
-					></AvatarMini>
-				</div>
-				<div className={styles.content}>
-					<div className={styles.name}>
-						{profile.name} {profile.surname}
+			{comments[0].map((comment) => {
+				return (
+					<div className={styles.comment}>
+						<div>
+							<AvatarMini
+								user={comment.author}
+								width={35}
+								height={35}
+								isLink={true}
+							/>
+						</div>
+
+						<div className={styles.content}>
+							<div className={styles.name}>
+								{comment.author.name} {comment.author.surname}
+							</div>
+							<div className={styles.text}>{comment.text}</div>
+						</div>
 					</div>
-					<div className={styles.text}>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed minima
-						a modi maxime debitis porro odit voluptatem, repellat, suscipit,
-						quam alias laboriosam doloremque reprehenderit quis temporibus id
-						expedita atque nulla laudantium dolore esse necessitatibus. Nemo
-						deleniti dicta eum. In, porro labore. Numquam dolores optio omnis
-						labore quasi voluptatem modi hic!
-					</div>
-				</div>
-			</div>
+				)
+			})}
+
 			<div className={styles.create_comment}>
 				<div>
-					<AvatarMini user={profile} width={35} height={35} isLink={false} />
+					<AvatarMini user={profile} width={33} height={33} isLink={false} />
 				</div>
 				<div className={styles.textarea_wrapper}>
 					<Textarea
@@ -48,9 +65,12 @@ const Comments = () => {
 						setText={setText}
 						resize={true}
 						placeholder="Написать комментарий..."
+						style={{ overflow: `hidden`, height: 35 }}
 					/>
 				</div>
-				<div>Отправить</div>
+				<div className={styles.send}>
+					<SendIcon onClick={() => send()} />
+				</div>
 			</div>
 		</div>
 	)
