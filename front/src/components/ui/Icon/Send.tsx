@@ -12,9 +12,9 @@ const SendIcon: FC<SVGProps<SVGSVGElement>> = ({ ...rest }) => {
 			<g
 				id="send_24__Page-2"
 				stroke="none"
-				stroke-width="1"
+				strokeWidth="1"
 				fill="none"
-				fill-rule="evenodd"
+				fillRule="evenodd"
 			>
 				<g id="send_24__send_24">
 					<path id="send_24__Rectangle-76" d="M0 0h24v24H0z"></path>

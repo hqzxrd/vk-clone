@@ -4,8 +4,9 @@ import { TypeGender } from '@/types/auth.types'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { FC, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useQueryClient } from 'react-query'
 
 import BirthDateFields from '@/components/ui/BirthDateFields/BirthDateFields'
 import Button from '@/components/ui/Form/Button'
@@ -15,6 +16,7 @@ import GenderSelector from '@/components/ui/GenderSelector/GenderSelector'
 import { FilesUrl } from '@/config/api.config'
 
 import { useAuth } from '@/hooks/useAuth'
+import { useAvatarGenerate } from '@/hooks/useAvatarGenerate'
 import usePhotos from '@/hooks/usePhoto'
 import { useProfile } from '@/hooks/useProfile'
 
@@ -26,10 +28,10 @@ const ProfileEdit: FC = () => {
 	const inputFiles = useRef<HTMLInputElement>(null)
 	const { push } = useRouter()
 	const { user } = useAuth()
-	const { isLoading, profile } = useProfile(user.id)
+	const { profile } = useProfile(user.id)
 	const [gender, setGender] = useState<TypeGender>(profile?.gender || `male`)
 	const { file, avatar, errorSize, handleChange } = usePhotos()
-
+	const color = useAvatarGenerate(profile ? profile.name : user.name)
 	const {
 		register: reg,
 		handleSubmit,
@@ -60,17 +62,26 @@ const ProfileEdit: FC = () => {
 		res.status === 200 ? push(`/users/${user.id}`) : null
 	}
 
+	if (!profile) {
+		return <></>
+	}
+
 	return (
 		<section className={styles.auth}>
-			{isLoading ? (
-				<></>
-			) : (
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<div className={styles.heading}>Редактировать профиль</div>
-					<div className={styles.wrapper}>
-						<div className={styles.hover_wrapper}>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<div className={styles.heading}>Редактировать профиль</div>
+				<div className={styles.wrapper}>
+					<div className={styles.hover_wrapper}>
+						{!avatar && !profile.avatar ? (
+							<div
+								onClick={() => inputFiles.current?.click()}
+								className={styles.avatar_placeholder}
+								style={{ backgroundColor: color }}
+							>
+								{profile.name[0]}
+							</div>
+						) : (
 							<Image
-								priority={true}
 								onClick={() => inputFiles.current?.click()}
 								src={
 									avatar
@@ -81,76 +92,75 @@ const ProfileEdit: FC = () => {
 								}
 								width={80}
 								height={80}
-								quality={50}
 								alt="avatar"
 							/>
-						</div>
-						<span>Минимальный размер 300x300</span>
-						<span>Ширина не может привышать высоту</span>
-						<input
-							onChange={(e) => handleChange(e)}
-							style={{ display: 'none' }}
-							type="file"
-							accept=".jpg,.jpeg"
-							ref={inputFiles}
-						/>
-						<GenderSelector gender={gender} setGender={setGender} />
+						)}
 					</div>
-					<Input
-						placeholder="Имя"
-						{...reg(`name`, {
-							value: profile?.name,
-							pattern: {
-								value: NAME_REGEX,
-								message: `Только ru или en буквы`,
-							},
-							required: `Введите имя`,
-							maxLength: { value: 15, message: `Максимум 15 символов` },
-							minLength: { value: 2, message: `Минимум 2 символа` },
-						})}
-						error={formState.errors.name}
+					<span>Минимальный размер 300x300</span>
+					<span>Ширина не может привышать высоту</span>
+					<input
+						onChange={(e) => handleChange(e)}
+						style={{ display: 'none' }}
+						type="file"
+						accept=".jpg,.jpeg"
+						ref={inputFiles}
 					/>
+					<GenderSelector gender={gender} setGender={setGender} />
+				</div>
+				<Input
+					placeholder="Имя"
+					{...reg(`name`, {
+						value: profile.name,
+						pattern: {
+							value: NAME_REGEX,
+							message: `Только ru или en буквы`,
+						},
+						required: `Введите имя`,
+						maxLength: { value: 15, message: `Максимум 15 символов` },
+						minLength: { value: 2, message: `Минимум 2 символа` },
+					})}
+					error={formState.errors.name}
+				/>
 
-					<Input
-						placeholder="Фамилия"
-						{...reg(`surname`, {
-							value: profile?.surname,
-							pattern: {
-								value: NAME_REGEX,
-								message: `Только ru или en буквы`,
-							},
-							required: `Введите фамилию`,
-							maxLength: { value: 15, message: `Максимум 15 символов` },
-							minLength: { value: 2, message: `Минимум 2 символа` },
-						})}
-						error={formState.errors.surname}
-					/>
+				<Input
+					placeholder="Фамилия"
+					{...reg(`surname`, {
+						value: profile.surname,
+						pattern: {
+							value: NAME_REGEX,
+							message: `Только ru или en буквы`,
+						},
+						required: `Введите фамилию`,
+						maxLength: { value: 15, message: `Максимум 15 символов` },
+						minLength: { value: 2, message: `Минимум 2 символа` },
+					})}
+					error={formState.errors.surname}
+				/>
 
-					<Input
-						placeholder="Статус"
-						{...reg(`status`, {
-							value: profile?.status && profile.status,
-						})}
-						maxLength={64}
-						error={formState.errors.status}
-					/>
+				<Input
+					placeholder="Статус"
+					{...reg(`status`, {
+						value: profile.status && profile.status,
+					})}
+					maxLength={64}
+					error={formState.errors.status}
+				/>
 
-					<Input
-						placeholder="Город"
-						{...reg(`city`, { value: profile?.city && profile.city })}
-						maxLength={20}
-						error={formState.errors.city}
-					/>
+				<Input
+					placeholder="Город"
+					{...reg(`city`, { value: profile.city })}
+					maxLength={20}
+					error={formState.errors.city}
+				/>
 
-					<BirthDateFields formState={formState} reg={reg} />
+				<BirthDateFields formState={formState} reg={reg} />
 
-					<div className={styles.link}>
-						<Link href="edit/password">Сменить пароль</Link>
-					</div>
+				<div className={styles.link}>
+					<Link href="edit/password">Сменить пароль</Link>
+				</div>
 
-					<Button>Сохранить</Button>
-				</form>
-			)}
+				<Button>Сохранить</Button>
+			</form>
 		</section>
 	)
 }

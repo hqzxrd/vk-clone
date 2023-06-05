@@ -32,6 +32,7 @@ const AvatarMini: FC<IAvatarMiniProps> = ({ user, width, height, isLink }) => {
 							backgroundColor: `${color}`,
 							width: width,
 							height: height,
+							fontSize: width,
 						}}
 						className={styles.avatar}
 					>
@@ -59,6 +60,7 @@ const AvatarMini: FC<IAvatarMiniProps> = ({ user, width, height, isLink }) => {
 							backgroundColor: `${color}`,
 							width: width,
 							height: height,
+							fontSize: width,
 						}}
 						className={styles.avatar}
 					>

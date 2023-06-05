@@ -4,9 +4,10 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 36px;
+	font-size: 200%;
 	border: 1px solid var(--primary-border);
 	border-radius: 50%;
 	object-fit: cover;
 	color: white;
+	text-transform: uppercase;
 }
