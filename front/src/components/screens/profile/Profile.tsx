@@ -1,7 +1,7 @@
 import CreatePost from './CreatePost/CreatePost'
 import Info from './Info/Info'
 import Post from './Post/Post'
-import { IPostDto } from '@/types/post.types'
+import { IPost } from '@/types/post.types'
 import { useRouter } from 'next/router'
 
 import { useAuth } from '@/hooks/useAuth'
@@ -20,7 +20,7 @@ const Profile = () => {
 			{user.id === +query.id! && <CreatePost />}
 
 			{posts &&
-				posts[0].map((post: IPostDto) => {
+				posts[0].map((post: IPost) => {
 					return <Post post={post} key={post.id} />
 				})}
 		</div>

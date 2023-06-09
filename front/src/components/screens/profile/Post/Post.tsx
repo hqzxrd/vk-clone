@@ -1,7 +1,7 @@
-import Comments from './Comment/Comments'
+import Comments from './Comments/Comments'
 import UpdatePost from './UpdatePost/UpdatePost'
 import { PostService } from '@/services/post/post.service'
-import { IPostDto } from '@/types/post.types'
+import { IPost } from '@/types/post.types'
 import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -21,13 +21,14 @@ import { useComments } from '@/hooks/useComments'
 import styles from './Post.module.scss'
 
 interface props {
-	post: IPostDto
+	post: IPost
 }
 
 const Post: FC<props> = ({ post }) => {
 	const [isUpdate, setIsUpdate] = useState<boolean>(false)
 	const [isLike, setIsLike] = useState<boolean>(post.isLike)
 	const [countLiked, setCountLiked] = useState<number>(post.countLikes)
+	const [commentsIsHide, setCommentsIsHide] = useState<boolean>(true)
 	const { user } = useAuth()
 	const { comments } = useComments(post.id, `?post=${post.id}`)
 	const queryClient = useQueryClient()
@@ -52,7 +53,6 @@ const Post: FC<props> = ({ post }) => {
 	if (!comments) {
 		return <></>
 	}
-	console.log(comments)
 
 	return (
 		<div className={styles.post}>
@@ -105,7 +105,10 @@ const Post: FC<props> = ({ post }) => {
 							<LikeIcon />
 							<div className={styles.like_count}>{countLiked}</div>
 						</div>
-						<div className={styles.like}>
+						<div
+							className={styles.like}
+							onClick={() => setCommentsIsHide(!commentsIsHide)}
+						>
 							<CommentsIcon />
 							<div className={styles.like_count}>
 								{comments ? comments[1] : post.countComments}
@@ -114,7 +117,8 @@ const Post: FC<props> = ({ post }) => {
 					</div>
 				</>
 			)}
-			<Comments postId={post.id} />
+
+			{commentsIsHide ? <></> : <Comments post={post} />}
 		</div>
 	)
 }

@@ -1,31 +1,50 @@
+import Comment from './Comment/Comment'
 import { PostService } from '@/services/post/post.service'
-import { FC, useRef, useState } from 'react'
+import { IPost } from '@/types/post.types'
+import { FC, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
+import PencilIcon from '@/components/ui/Icon/PencilIcon'
 import SendIcon from '@/components/ui/Icon/Send'
 import Textarea from '@/components/ui/Textarea/Textarea'
 
+import { useAuth } from '@/hooks/useAuth'
 import { useComments } from '@/hooks/useComments'
 import { useProfile } from '@/hooks/useProfile'
 
-import styles from './Comment.module.scss'
+import styles from './Comments.module.scss'
 
 interface props {
-	postId: number
+	post: IPost
 }
 
-const Comments: FC<props> = ({ postId }) => {
+const Comments: FC<props> = ({ post }) => {
 	const [text, setText] = useState<string>(``)
+	const { user } = useAuth()
 	const { profile } = useProfile()
-	const { comments } = useComments(postId, `?post=${postId}`)
+	const { comments } = useComments(post.id, `?post=${post.id}`)
 	const queryClient = useQueryClient()
-	const send = async () => {
-		const res = await PostService.createComment(postId, text)
+
+	const sendComment = async () => {
+		if (!text) return
+
+		const res = await PostService.createComment(post.id, text)
 
 		if (res.status === 201) {
-			queryClient.invalidateQueries(`postComments/${postId}`)
+			queryClient.invalidateQueries(`postComments/${post.id}`)
 			setText(``)
+		}
+	}
+
+	const updateComment = async () => {}
+
+	const deleteComment = async (commentId: number) => {
+		console.log(user.id, post.author.id)
+		const res = await PostService.deleteComment(commentId)
+
+		if (res.status === 204) {
+			queryClient.invalidateQueries(`postComments/${post.id}`)
 		}
 	}
 
@@ -34,23 +53,7 @@ const Comments: FC<props> = ({ postId }) => {
 	return (
 		<div className={styles.comments}>
 			{comments[0].map((comment) => {
-				return (
-					<div className={styles.comment}>
-						<AvatarMini
-							user={comment.author}
-							width={35}
-							height={35}
-							isLink={true}
-						/>
-
-						<div className={styles.content}>
-							<div className={styles.name}>
-								{comment.author.name} {comment.author.surname}
-							</div>
-							<div className={styles.text}>{comment.text}</div>
-						</div>
-					</div>
-				)
+				return <Comment post={post} comment={comment} key={comment.id} />
 			})}
 
 			<div className={styles.create_comment}>
@@ -67,7 +70,7 @@ const Comments: FC<props> = ({ postId }) => {
 					/>
 				</div>
 				<div className={styles.send}>
-					<SendIcon onClick={() => send()} />
+					<SendIcon onClick={() => sendComment()} />
 				</div>
 			</div>
 		</div>

@@ -1,9 +1,11 @@
 import {
+	CSSProperties,
 	ChangeEvent,
 	Dispatch,
 	FC,
 	SetStateAction,
 	TextareaHTMLAttributes,
+	useEffect,
 	useRef,
 } from 'react'
 
@@ -14,6 +16,7 @@ interface props {
 	setText: Dispatch<SetStateAction<string>>
 	resize: boolean
 	placeholder?: string
+	style?: CSSProperties
 }
 
 const Textarea: FC<props> = ({
@@ -33,6 +36,13 @@ const Textarea: FC<props> = ({
 			textarea.current.style.height = `${textarea.current.scrollHeight}px`
 		}
 	}
+
+	useEffect(() => {
+		if (textarea.current && resize) {
+			textarea.current.style.height = 'auto'
+			textarea.current.style.height = `${textarea.current.scrollHeight}px`
+		}
+	}, [])
 
 	return (
 		<textarea

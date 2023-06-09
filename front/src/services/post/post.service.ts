@@ -1,4 +1,5 @@
 import { authAxios, filesAxios } from '@/api/interceptors'
+import { IComment } from '@/types/post.types'
 
 import {
 	TypePostFiles,
@@ -65,6 +66,14 @@ export const PostService = {
 	},
 
 	async getCommentsByPostId(query: string) {
-		return await authAxios.get(CommentUrl(query))
+		return await authAxios.get<[IComment[], number]>(CommentUrl(query))
+	},
+
+	async deleteComment(commentId: number) {
+		return await authAxios.delete(CommentUrl(`/${commentId}`))
+	},
+
+	async updateComment(commentId: number, text: string) {
+		return await authAxios.patch(CommentUrl(`/${commentId}`), { text })
 	},
 }
