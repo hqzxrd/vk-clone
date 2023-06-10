@@ -12,6 +12,7 @@ import { DropboxModule } from './dropbox/dropbox.module';
 import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
 import { LikeModule } from './like/like.module';
+import { FriendModule } from './friend/friend.module';
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { LikeModule } from './like/like.module';
     DropboxModule,
     PostModule,
     CommentModule,
-    LikeModule
+    LikeModule,
+    FriendModule
   ]
 })
 export class AppModule {}

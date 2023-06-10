@@ -1,0 +1,5 @@
+export const USER_ALREADY_EXISTS = 'Пользователь с таким email уже существует'
+export const USER_NOT_FOUND = 'Пользователь с таким email не найден'
+export const INCORRECT_PASSWORD = 'Неверный пароль'
+export const EMAIL_NOT_CONFIRMED = 'Email не подтвержден'
+export const NO_EMAIL_CONFIRMATION_REQUEST = 'Нет запроса подтверждения по электронной почте'

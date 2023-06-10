@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -70,5 +70,43 @@ export class UserService {
     }
     user.avatar = null
     await this.userRepository.save(user)
+  }
+
+  async findFriend(userId: number, friendId: number) {
+    const user = await this.userRepository.findOne({
+      where: {id: userId, friends: {id: friendId}}
+    })
+    return user
+  }
+
+  // ! 
+  async addFriend(firstUserId: number, secondUserId: number) {
+    const firstUser = await this.userRepository.findOne({where: {id: firstUserId}, relations: {friends: true}})
+    const secondUser = await this.userRepository.findOne({where: {id: secondUserId}, relations: {friends: true}})
+
+    firstUser.friends.push(secondUser)
+    secondUser.friends.push(firstUser)
+
+    await this.userRepository.save([firstUser, secondUser])
+  }
+
+  // !  
+  async removeFriend(firstUserId: number, secondUserId: number) {
+    const firstUser = await this.userRepository.findOne({where: {id: firstUserId}, relations: {friends: true}})
+    const secondUser = await this.userRepository.findOne({where: {id: secondUserId}, relations: {friends: true}})
+
+    firstUser.friends = firstUser.friends.filter(user => user.id !== secondUserId)
+    secondUser.friends = secondUser.friends.filter(user => user.id !== firstUserId)
+
+    await this.userRepository.save([firstUser, secondUser])
+  }
+
+  async get(id) {
+    const user = await this.userRepository.findOne({
+      where: {id},
+      relations: {incomingRequests: true, friends: true, outgoingRequests: true}
+    })
+    console.log(user)
+    return user
   }
 }

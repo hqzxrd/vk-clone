@@ -1,9 +1,10 @@
 import { TokenEntity } from "src/auth/entities/token.entity";
 import { CommentEntity } from "src/comment/entities/comment.entity";
+import { FriendRequestEntity } from "src/friend/entities/friend-request.entity";
 import { LikeEntity } from "src/like/entities/like.entity";
 import { PostEntity } from "src/post/entities/post.entity";
 import { AbstractEntity } from "src/utils/base.entity";
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 
 export enum Gender {
     MALE = 'male',
@@ -54,10 +55,22 @@ export class UserEntity extends AbstractEntity {
     @Column({nullable: true})
     avatar: string
 
+    @ManyToMany(() => UserEntity)
+    @JoinTable()
+    friends: UserEntity[]
+
+    // * Входящие заявки
+    @OneToMany(() => FriendRequestEntity, friendRequest => friendRequest.toUser)
+    incomingRequests: FriendRequestEntity[]
+
+    // * Исходящие заявки
+    @OneToMany(() => FriendRequestEntity, friendSubscription => friendSubscription.fromUser)
+    outgoingRequests: FriendRequestEntity[]
+
     @OneToMany(() => CommentEntity, comment => comment.author)
     comments: CommentEntity[]
 
-    @OneToMany(() => LikeEntity, like => like.user)
+    @OneToMany(() => LikeEntity, like => like.user) 
     likes: LikeEntity[]
 
     @OneToMany(() => PostEntity, post => post.author)
