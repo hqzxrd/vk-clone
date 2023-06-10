@@ -1,23 +1,20 @@
 import Preview from '../../CreatePost/preview/Preview'
 import { PostService } from '@/services/post/post.service'
-import { IPostDto } from '@/types/post.types'
-import Image from 'next/image'
+import { IPost } from '@/types/post.types'
 import { useRouter } from 'next/router'
-import { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import Button from '@/components/ui/Form/Button'
 import CamIcon from '@/components/ui/Icon/CamIcon'
 import Textarea from '@/components/ui/Textarea/Textarea'
 
-import { FilesUrl } from '@/config/api.config'
-
 import useSeveralPhotos from '@/hooks/useSeveralPhotos'
 
 import styles from './UpdatePost.module.scss'
 
 interface props {
-	post: IPostDto
+	post: IPost
 	propsText?: string
 	propsPhotos?: string[]
 	setIsUpdate: React.Dispatch<React.SetStateAction<boolean>>
@@ -30,7 +27,6 @@ const UpdatePost: FC<props> = ({
 	setIsUpdate,
 }) => {
 	const inputFiles = useRef<HTMLInputElement>(null)
-	const textarea = useRef<HTMLTextAreaElement>(null)
 	const {
 		file,
 		photos,

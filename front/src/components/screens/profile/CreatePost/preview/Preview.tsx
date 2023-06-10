@@ -22,9 +22,9 @@ const Preview: FC<props> = ({ photos, remove }) => {
 							X
 						</div>
 						{arrayPhotoStr[0] === `data` ? (
-							<Image src={photoStr} fill={true} alt="photo" />
+							<img src={photoStr} alt="photo" />
 						) : (
-							<Image src={FilesUrl(photoStr)} fill={true} alt="photo" />
+							<img src={FilesUrl(photoStr)} alt="photo" />
 						)}
 					</div>
 				)

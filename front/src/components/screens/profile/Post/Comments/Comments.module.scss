@@ -4,21 +4,7 @@
 	gap: 10px;
 	border-top: 1px solid var(--primary-border);
 	padding-top: 10px;
-	.comment {
-		display: flex;
-		gap: 10px;
 
-		.content {
-			font-size: 14px;
-			.name {
-				font-weight: bold;
-			}
-			.text {
-				word-wrap: break-word;
-				white-space: pre-wrap;
-			}
-		}
-	}
 	.create_comment {
 		display: flex;
 		gap: 10px;

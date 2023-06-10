@@ -9,6 +9,7 @@
 
 .header {
 	position: fixed;
+	z-index: 2;
 	width: 100vw;
 	background-color: var(--extra-background);
 	border-bottom: 1px solid var(--primary-border);
