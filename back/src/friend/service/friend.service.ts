@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendRequestService } from './friend-request.service';
 import { UserService } from 'src/user/service/user.service';
+import { USER_ALREADY_FRIENDS, USER_NOT_FRIENDS } from '../constants/friend.error.constants';
 
 
 @Injectable()
@@ -12,10 +13,10 @@ export class FriendService {
 
     async sendRequest(fromUserId: number, toUserId: number) {
       const friend = await this.checkFriends(fromUserId, toUserId)
-      console.log(friend)
-      if(friend) throw new BadRequestException('Пользователь уже в друзьях')
-      
+      if(friend) throw new BadRequestException(USER_ALREADY_FRIENDS)
+
       const friendRequest = await this.friendRequestService.createRequest(fromUserId, toUserId)
+
       // * notification 
       return friendRequest
     }
@@ -27,13 +28,13 @@ export class FriendService {
 
     async addFriend(firstUserId: number, secondUserId: number) {
       const friend = await  this.checkFriends(firstUserId, secondUserId)
-      if(friend) throw new BadRequestException('Пользователь уже в друзьях')
+      if(friend) throw new BadRequestException(USER_ALREADY_FRIENDS)
       await this.userService.addFriend(firstUserId, secondUserId)
     }
 
     async removeFriend(fromUserId: number, toUserId: number) {
       const friend = await this.checkFriends(fromUserId, toUserId)
-      if(!friend) throw new BadRequestException('Пользователя нет в друзьях')
+      if(!friend) throw new BadRequestException(USER_NOT_FRIENDS)
       await this.userService.removeFriend(fromUserId, toUserId)
       await this.friendRequestService.createRequest(fromUserId, toUserId)
     }
