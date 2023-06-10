@@ -37,17 +37,6 @@ const Comments: FC<props> = ({ post }) => {
 		}
 	}
 
-	const updateComment = async () => {}
-
-	const deleteComment = async (commentId: number) => {
-		console.log(user.id, post.author.id)
-		const res = await PostService.deleteComment(commentId)
-
-		if (res.status === 204) {
-			queryClient.invalidateQueries(`postComments/${post.id}`)
-		}
-	}
-
 	if (!profile || !comments) return <></>
 
 	return (

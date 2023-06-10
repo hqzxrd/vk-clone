@@ -1,11 +1,8 @@
 import { IUser } from '@/types/user.types'
-import Image from 'next/image'
 import Link from 'next/link'
 import { FC } from 'react'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
-
-import { FilesUrl } from '@/config/api.config'
 
 import { useAvatarGenerate } from '@/hooks/useAvatarGenerate'
 

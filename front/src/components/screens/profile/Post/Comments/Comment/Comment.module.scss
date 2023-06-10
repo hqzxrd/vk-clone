@@ -51,6 +51,25 @@
 				word-wrap: break-word;
 				white-space: pre-wrap;
 			}
+
+			.reactions {
+				margin-top: 5px;
+				.isLiked {
+					color: #e32636;
+				}
+				.like {
+					user-select: none;
+					cursor: pointer;
+					display: flex;
+					gap: 5px;
+					width: fit-content;
+
+					> svg {
+						width: 16px;
+						height: 16px;
+					}
+				}
+			}
 		}
 	}
 }

@@ -1,10 +1,12 @@
 import UpdateComment from '../UpdateComment/UpdateComment'
 import { PostService } from '@/services/post/post.service'
 import { IComment, IPost } from '@/types/post.types'
+import cn from 'classnames'
 import { FC, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
+import LikeIcon from '@/components/ui/Icon/LikeIcon'
 import PencilIcon from '@/components/ui/Icon/PencilIcon'
 
 import { useAuth } from '@/hooks/useAuth'
@@ -17,16 +19,28 @@ interface props {
 }
 
 const Comment: FC<props> = ({ post, comment }) => {
+	const [likes, setLikes] = useState<number>(comment.likes)
+	const [isLike, setIsLike] = useState<boolean>(comment.isLike)
 	const [isUpdate, setIsUpdate] = useState<boolean>(false)
 	const { user } = useAuth()
 	const queryClient = useQueryClient()
 
-	const deleteComment = async (commentId: number) => {
-		console.log(user.id, post.author.id)
-		const res = await PostService.deleteComment(commentId)
+	const deleteComment = async () => {
+		const res = await PostService.deleteComment(comment.id)
 
 		if (res.status === 204)
 			queryClient.invalidateQueries(`postComments/${post.id}`)
+	}
+
+	const likeComment = async () => {
+		const res = await PostService.likeComment(comment.id)
+		console.log(res.status)
+
+		if (res.status === 200) {
+			setLikes(res.data.countLikes)
+			setIsLike(res.data.isLike)
+			queryClient.invalidateQueries(`postComments/${post.id}`)
+		}
 	}
 
 	return (
@@ -36,10 +50,7 @@ const Comment: FC<props> = ({ post, comment }) => {
 					<div className={styles.update} onClick={() => setIsUpdate(!isUpdate)}>
 						<PencilIcon />
 					</div>
-					<div
-						className={styles.delete}
-						onClick={() => deleteComment(comment.id)}
-					>
+					<div className={styles.delete} onClick={() => deleteComment()}>
 						X
 					</div>
 				</div>
@@ -66,7 +77,19 @@ const Comment: FC<props> = ({ post, comment }) => {
 							setIsUpdate={setIsUpdate}
 						/>
 					) : (
-						<div className={styles.text}>{comment.text}</div>
+						<>
+							<div className={styles.text}>{comment.text}</div>
+							<div className={styles.reactions}>
+								<div
+									className={
+										isLike ? cn(styles.like, styles.isLiked) : styles.like
+									}
+									onClick={() => likeComment()}
+								>
+									<LikeIcon /> {likes}
+								</div>
+							</div>
+						</>
 					)}
 				</div>
 			</div>

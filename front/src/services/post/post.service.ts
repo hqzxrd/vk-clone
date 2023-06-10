@@ -76,4 +76,8 @@ export const PostService = {
 	async updateComment(commentId: number, text: string) {
 		return await authAxios.patch(CommentUrl(`/${commentId}`), { text })
 	},
+
+	async likeComment(commentId: number) {
+		return await authAxios.get(CommentUrl(`/like/${commentId}`))
+	},
 }
