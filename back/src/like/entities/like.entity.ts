@@ -5,7 +5,7 @@ import { AbstractEntity } from "src/utils/base.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
 import { LikeType } from "../like.enum";
 
-@Entity()
+@Entity('like')
 export class LikeEntity extends AbstractEntity {
     @Column({
         type: 'enum',
