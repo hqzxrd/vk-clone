@@ -65,12 +65,12 @@ export const AuthService = {
 	},
 
 	async getNewsTokens() {
-		const refreshToken = Cookies.get(`refreshToken`)
+		// const refreshToken = Cookies.get(`refreshToken`)
 
-		const res = await baseAxios.post<ILoginRegisterResponse>(
-			AuthUrl(`/refresh`),
-			{ token: refreshToken },
-			{ headers: { 'Content-Type': `application/json` } }
+		const res = await baseAxios.get<ILoginRegisterResponse>(
+			AuthUrl(`/refresh`)
+			// { token: refreshToken },
+			// { headers: { 'Content-Type': `application/json` } }
 		)
 
 		if (res.data.accessToken) saveToStorage(res.data)

@@ -4,7 +4,7 @@ import { FC } from 'react'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 
-import styles from './item.module.scss'
+import styles from './Item.module.scss'
 
 const Item: FC<{ user: IUser }> = ({ user }) => {
 	return (
@@ -15,8 +15,8 @@ const Item: FC<{ user: IUser }> = ({ user }) => {
 					{`${user.name} ${user.surname}`}
 				</Link>
 				<div className={styles.status}>{user.status}</div>
-				<div>
-					<div className={styles.add}>Добавить в друзья</div>
+				<div className={styles.actions}>
+					<div className={styles.addOrDelete}>Удалить из друзей</div>
 				</div>
 			</div>
 		</div>
