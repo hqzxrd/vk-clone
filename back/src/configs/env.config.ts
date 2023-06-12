@@ -7,6 +7,9 @@ export class EnvironmentVariables {
     // * Base environment
     @IsNumber()
     PORT: number
+
+    @IsString()
+    CLIENT_URL: string
   
     // * database environment 
     @IsNumber()

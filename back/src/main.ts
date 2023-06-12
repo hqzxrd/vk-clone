@@ -11,13 +11,17 @@ async function bootstrap() {
     new FastifyAdapter(),
     {}
   );
+  const configService = app.get(ConfigService);
+  const PORT = configService.get('PORT')
+  const CLIENT_URL = configService.get('CLIENT_URL')
+
   await app.register(fastifyCookie)
   await app.register(contentParser)
   app.setGlobalPrefix('api')
-  app.enableCors()
-  const configService = app.get(ConfigService);
-  const PORT = configService.get('PORT')
-  
+  app.enableCors({
+    credentials: true,
+    origin: CLIENT_URL
+  })
 
   await app.listen(PORT, '0.0.0.0');
 }
