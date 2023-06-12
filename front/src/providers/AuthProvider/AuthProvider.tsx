@@ -23,11 +23,6 @@ const AuthProvider: FC<TypeComponentAuth> = ({
 		if (accessToken) checkAuth()
 	}, [])
 
-	useEffect(() => {
-		const refreshToken = Cookies.get(`RefreshToken`)
-		if (!refreshToken) logout()
-	}, [pathname])
-
 	return !isOnlyUser ? (
 		<>{children}</>
 	) : (

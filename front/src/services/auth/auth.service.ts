@@ -53,25 +53,23 @@ export const AuthService = {
 				password,
 			}
 		)
+
+		console.log(res)
+
 		if (res.data.accessToken) saveToStorage(res.data)
 
 		return res
 	},
 
 	logout() {
+		baseAxios.get(AuthUrl(`/logout`))
 		removeTokensCookie()
 		localStorage.removeItem(`user`)
 		localStorage.removeItem(`isAutorized`)
 	},
 
 	async getNewsTokens() {
-		// const refreshToken = Cookies.get(`refreshToken`)
-
-		const res = await baseAxios.get<ILoginRegisterResponse>(
-			AuthUrl(`/refresh`)
-			// { token: refreshToken },
-			// { headers: { 'Content-Type': `application/json` } }
-		)
+		const res = await baseAxios.get(AuthUrl(`/refresh`))
 
 		if (res.data.accessToken) saveToStorage(res.data)
 
@@ -80,7 +78,7 @@ export const AuthService = {
 }
 
 const saveToStorage = (data: ILoginRegisterResponse) => {
-	saveTokenCookie(data)
+	Cookies.set(`AccessToken`, data.accessToken)
 	localStorage.setItem(`user`, JSON.stringify(data.user))
 	localStorage.setItem(`isAutorized`, JSON.stringify(true))
 }
@@ -98,11 +96,6 @@ const updateStorage = (str: string, prop: Partial<IUserDto>) => {
 		}
 		localStorage.setItem(str, JSON.stringify(user))
 	}
-}
-
-const saveTokenCookie = (data: ITokens) => {
-	Cookies.set(`AccessToken`, data.accessToken)
-	Cookies.set(`RefreshToken`, data.refreshToken)
 }
 
 export const removeTokensCookie = () => {

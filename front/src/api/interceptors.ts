@@ -12,6 +12,7 @@ export const baseAxios = axios.create({
 	headers: {
 		'Content-Type': `application/json`,
 	},
+	withCredentials: true,
 })
 
 export const authAxios = axios.create({
