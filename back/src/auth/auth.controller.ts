@@ -27,6 +27,7 @@ export class AuthController {
   ) {
     const data = await this.authService.registration(registrationDto)
     res.setCookie(REFRESH_TOKEN_COOKIE, data.refreshToken, this.optionsCookie)
+    delete data.refreshToken
     return data
   }
 
@@ -40,6 +41,7 @@ export class AuthController {
   ) {
     const data = await this.authService.login(loginDto)
     res.setCookie(REFRESH_TOKEN_COOKIE, data.refreshToken,  this.optionsCookie)
+    delete data.refreshToken
     return data
   }
   
