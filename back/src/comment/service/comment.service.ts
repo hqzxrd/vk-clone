@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCommentDto } from '../dto/create-comment.dto';
 import { UpdateCommentDto } from '../dto/update-comment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,14 +32,26 @@ export class CommentService {
   }
 
   async remove(id: number, userId: number) {
-    const comment = await this.commentRepository.findOneBy({id, author: {id: userId}})
-    if(!comment) throw new BadRequestException()
+    const comment = await this.commentRepository.findOne({
+      where: {id},
+      relations: ['author', 'post', 'post.author'],
+      select: {
+        author: {id: true},
+        post: {id: true, author: {id: true}}
+      }
+    })
+    if(!comment) throw new NotFoundException()
+
+    const postAuthorId = comment.post.author.id
+    const authorCommentId = comment.author.id
+    if(!(authorCommentId === userId || userId === postAuthorId)) throw new ForbiddenException()
+
     this.commentRepository.remove(comment)
   }
 
   async findOne(id: number, userId?: number) {
     const comment = await this.commentRepository.findOne({
-      relations: ['post', 'likes', 'likes.user'],
+      relations: ['post', 'likes', 'likes.user', 'author'],
       select: {
         likes: {id: true, user: {id: true}}
       },
