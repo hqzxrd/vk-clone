@@ -3,7 +3,7 @@ import { CreateCommentDto } from '../dto/create-comment.dto';
 import { UpdateCommentDto } from '../dto/update-comment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentEntity } from '../entities/comment.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { PostService } from 'src/post/service/post.service';
 import { LikeService } from 'src/like/service/like.service';
 import { LikeType } from 'src/like/like.enum';
@@ -97,8 +97,7 @@ export class CommentService {
   }
 
   async getIsLike(commentId: number, userId: number) {
-    const comment = await this.commentRepository.findOneBy({id: commentId, likes: {user:{id: userId}}})
-    return !!comment
+    return await this.likeService.getIsLike(userId, commentId, LikeType.COMMENT)
   }
   
   async likeComment(userId: number, commentId: number) {

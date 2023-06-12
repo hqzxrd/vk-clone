@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from '../entities/post.entity';
-import { FindOneOptions, NoNeedToReleaseEntityManagerError, Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 import { DropboxService } from 'src/dropbox/dropbox.service';
 import { UserService } from 'src/user/service/user.service';
@@ -153,8 +153,7 @@ export class PostService {
   }
 
   async getIsLike(postId: number, userId: number) {
-    const post = await this.postRepository.findOneBy({id: postId, likes: {user:{id: userId}}})
-    return !!post
+   return await this.likeService.getIsLike(userId, postId, LikeType.POST)
   }
 
 
