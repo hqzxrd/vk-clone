@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { FriendRequestService } from './friend-request.service';
 import { UserService } from 'src/user/service/user.service';
 import { USER_ALREADY_FRIENDS, USER_NOT_FRIENDS } from '../constants/friend.error.constants';
@@ -22,7 +22,8 @@ export class FriendService {
     }
 
     async responseOnFriendRequest(fromUserId: number, toUserId: number, isAccept: boolean) {
-      await this.friendRequestService.answerRequest(fromUserId, toUserId, isAccept)
+      await this.friendRequestService.removeFriendRequest(fromUserId, toUserId)
+      if(isAccept) await this.addFriend(fromUserId, toUserId)
     }
 
 

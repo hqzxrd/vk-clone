@@ -56,7 +56,7 @@ export class UserEntity extends AbstractEntity {
     avatar: string
 
     @ManyToMany(() => UserEntity)
-    @JoinTable()
+    @JoinTable({name: 'friend'})
     friends: UserEntity[]
 
     // * Входящие заявки

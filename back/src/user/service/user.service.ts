@@ -1,24 +1,35 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
-import { Repository } from 'typeorm';
+import { FindOptionsSelect, Repository } from 'typeorm';
 import { DropboxService } from 'src/dropbox/dropbox.service';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { RegistrationDto } from 'src/auth/dto/registration.dto';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
+import { USER_NOT_FOUND } from '../constants/user.error.constants';
+import { FriendRequestType } from 'src/friend/friend-request.enum';
+import { FriendRequestService } from 'src/friend/service/friend-request.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
-    private readonly dropboxService: DropboxService
+    private readonly dropboxService: DropboxService,
+    private readonly friendRequestService: FriendRequestService
   ){}
 
-  readonly returnKeyUser: (keyof UserEntity)[] = [
-      'id', 'createDate', 'birthday',
-      'name', 'surname', 'nickname', 'status',
-      'avatar', 'gender', 'city'
-    ]
+  readonly returnBaseKeyUser: FindOptionsSelect<UserEntity> = {
+    id: true, 
+    name: true,
+    surname: true,
+    nickname: true,
+    avatar: true,
+    status: true,
+    createDate: true,
+    birthday: true,
+    city: true,
+    gender: true
+}
   
   async byEmail(email: string) {
     const user = await this.userRepository.findOneBy({email})
@@ -28,7 +39,7 @@ export class UserService {
   async byId(id: number) {
     const user = await this.userRepository.findOne({
       where: {id},
-      select: this.returnKeyUser
+      select: this.returnBaseKeyUser
     })
     return user
   }
@@ -40,7 +51,7 @@ export class UserService {
 
   async getAll() {
     const users = await this.userRepository.find({
-      select: this.returnKeyUser
+      select: this.returnBaseKeyUser
     })
     return users
   }
@@ -72,6 +83,36 @@ export class UserService {
     await this.userRepository.save(user)
   }
 
+  async getFriends(userId: number, page: number, count: number) {
+    const data: any = await this.userRepository.createQueryBuilder('user')
+          .select('user.id')
+          .loadRelationCountAndMap('user.countFriends', 'user.friends')
+          .where("user.id = :id", { id: userId })
+          .getOne()
+
+    if(!data) throw new BadRequestException(USER_NOT_FOUND)
+
+
+    const friends = await this.userRepository.query(
+      `SELECT * FROM users U
+       WHERE U.id <> $1
+          AND EXISTS(
+            SELECT *
+            FROM friend F
+            WHERE (F."usersId_1" = $1 AND F."usersId_2" = U.id )
+            OR (F."usersId_2" = $1 AND F."usersId_1" = U.id )
+            OFFSET $2 LIMIT $3
+          ); `,
+      [userId, page * count - count, count],
+    );
+
+    return [friends, data.countFriends]
+  }
+
+  async getFriendRequest(id: number, type: FriendRequestType, page: number, count: number) {
+    return await this.friendRequestService.getFriendRequest(id, type, page, count)
+  }
+
   async findFriend(userId: number, friendId: number) {
     const user = await this.userRepository.findOne({
       where: {id: userId, friends: {id: friendId}}
@@ -99,14 +140,5 @@ export class UserService {
     secondUser.friends = secondUser.friends.filter(user => user.id !== firstUserId)
 
     await this.userRepository.save([firstUser, secondUser])
-  }
-
-  async get(id) {
-    const user = await this.userRepository.findOne({
-      where: {id},
-      relations: {incomingRequests: true, friends: true, outgoingRequests: true}
-    })
-    console.log(user)
-    return user
   }
 }
