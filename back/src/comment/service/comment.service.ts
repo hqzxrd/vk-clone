@@ -7,13 +7,15 @@ import { Repository } from 'typeorm';
 import { PostService } from 'src/post/service/post.service';
 import { LikeService } from 'src/like/service/like.service';
 import { LikeType } from 'src/like/like.enum';
+import { UserService } from 'src/user/service/user.service';
 
 @Injectable()
 export class CommentService {
   constructor(
     @InjectRepository(CommentEntity) private readonly commentRepository: Repository<CommentEntity>,
     private readonly postService: PostService,
-    private readonly likeService: LikeService
+    private readonly likeService: LikeService,
+    private readonly userService: UserService
   ){}
   async create({text, postId}: CreateCommentDto, userId: number) {
      const post = await this.postService.findOne(postId)
@@ -50,48 +52,53 @@ export class CommentService {
   }
 
   async findOne(id: number, userId?: number) {
-    const comment = await this.commentRepository.findOne({
-      relations: ['post', 'likes', 'likes.user', 'author'],
-      select: {
-        likes: {id: true, user: {id: true}}
-      },
-      where: {id}
-    })
-    let isLike = false
-    if(userId) {
-      const likeOfUser = comment.likes.find(like => like.user.id === userId)
-      isLike = !!likeOfUser
+    const selectUser = Object.keys(this.userService.returnBaseKeyUser).map(key => `author.${key}`);
+    const comment = await this.commentRepository
+      .createQueryBuilder('comment')
+      .leftJoin('comment.post', 'post')
+      .leftJoin('comment.author', 'author')
+      .addSelect(selectUser)
+      .addSelect('post.id')
+      .loadRelationCountAndMap('comment.countLikes', 'comment.likes')
+      .where('comment.id = :id', { id })
+      .getOne();
+
+    if(!comment) throw new NotFoundException()
+    let isLike = false;
+    if (userId) {
+      isLike = await this.getIsLike(id, userId);
     }
-    const count = comment.likes.length
-    delete comment.likes
-    return {...comment, likes: count, isLike}
+    return { ...comment, isLike };
   }
 
-  async findAllByPostId(page: number, count: number, postId?: number, userId?: number) {
-    const commentAndCount = await this.commentRepository.findAndCount({
-      relations: ['post', 'likes', 'likes.user', 'author'],
-      take: count, 
-      skip: page * count - count,
-      where: {post: {id: postId}},
-      order: {createDate: 'DESC'},
-      select: {
-        likes: {id: true, user: {id: true}},
-        author: {id: true, avatar: true, name: true, surname: true, nickname: true}
-      }
-    })
+  async findAllByPostId(page: number, count: number, postId: number, userId?: number) {
+    const selectUser = Object.keys(this.userService.returnBaseKeyUser).map(key => `author.${key}`);
+    
+    const commentsAndCount = await this.commentRepository
+      .createQueryBuilder('comment')
+      .leftJoin('comment.author', 'author')
+      .leftJoin('comment.post', 'post')
+      .addSelect(selectUser)
+      .addSelect('post.id')
+      .loadRelationCountAndMap('comment.countLikes', 'comment.likes')
+      .take(count)
+      .skip(page * count - count)
+      .orderBy('comment.createDate', 'DESC')
+      .where('post.id = :id', { id: postId })
+      .getManyAndCount()
 
-    const comments = commentAndCount[0].map(comment => {
-      let isLike = false
-      if(userId) {
-        const likeOfUser = comment.likes.find(like => like.user.id === userId)
-        isLike = !!likeOfUser
-      }
-      const count = comment.likes.length
-      delete comment.likes
-      return {...comment, likes: count, isLike}
-    })
+      const comments = await Promise.all(commentsAndCount[0].map(async comment => {
+        let isLike = false
+        if(userId) isLike = await this.getIsLike(comment.id, userId);
+        return {...comment, isLike}
+      }))
 
-    return [comments, commentAndCount[1]]
+      return [comments, commentsAndCount[1]]
+  }
+
+  async getIsLike(commentId: number, userId: number) {
+    const comment = await this.commentRepository.findOneBy({id: commentId, likes: {user:{id: userId}}})
+    return !!comment
   }
   
   async likeComment(userId: number, commentId: number) {
