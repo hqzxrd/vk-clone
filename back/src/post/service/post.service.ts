@@ -3,7 +3,7 @@ import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PostEntity } from '../entities/post.entity';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, NoNeedToReleaseEntityManagerError, Repository } from 'typeorm';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 import { DropboxService } from 'src/dropbox/dropbox.service';
 import { UserService } from 'src/user/service/user.service';
@@ -29,7 +29,6 @@ export class PostService {
       const index = photos.indexOf(photo)
       photo.originalname = index + photo.originalname
     })
-    console.log(photos)
 
     const urlsObject: Array<{url: string, originalname: string}> = []
     await Promise.all(photos.map(async (photo) => {
@@ -49,37 +48,48 @@ export class PostService {
   }
 
   async findAll(page: number, count: number, queryUserId?: number, userId?: number) {
-    const postsAndCount = await this.postRepository.findAndCount({
-      take: count, 
-      skip: count * page - count,
-      where: {author: {id: queryUserId}},
-      order: {createDate: 'DESC'},
-      ...this.getParamsFind()
-    })
+    const selectUser = Object.keys(this.userService.returnBaseKeyUser).map(key => `author.${key}`);
 
-    const posts = postsAndCount[0].map(post => {
-      let isLike = false
-      if(userId) {
-         isLike = this.getIsLike(post, userId)
-      }
-      const statistic = this.statisticsPost(post)
-      return {...statistic, isLike}
-    })
+    const postsAndCount = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoin('post.author', 'author')
+      .addSelect(selectUser)
+      .loadRelationCountAndMap('post.countComments', 'post.comments')
+      .loadRelationCountAndMap('post.countLikes', 'post.likes')
+      .take(count)
+      .skip(page * count - count)
+      .orderBy('post.createDate', 'DESC')
+      .where(queryUserId ? 'author.id = :id': '' , { id: queryUserId })
+      .getManyAndCount()
 
-    return [posts, postsAndCount[1]]
+      const posts = await Promise.all(postsAndCount[0].map(async post => {
+        let isLike = false
+        if(userId) isLike = await this.getIsLike(post.id, userId);
+        return {...post, isLike}
+      }))
+
+      return [posts, postsAndCount[1]]
   }
   
 
   async findOne(id: number, userId?: number) {
-    const post = await this.postRepository.findOne({
-      where: {id},
-      ...this.getParamsFind()
-    })
+    const selectUser = Object.keys(this.userService.returnBaseKeyUser).map(key => `author.${key}`);
+    const post = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoin('post.author', 'author')
+      .addSelect(selectUser)
+      .loadRelationCountAndMap('post.countComments', 'post.comments')
+      .loadRelationCountAndMap('post.countLikes', 'post.likes')
+      .where('post.id = :id', { id })
+      .getOne();
+
     if(!post) throw new NotFoundException()
-    let isLike = false
-    if(userId) isLike = this.getIsLike(post, userId)
-    const statisticPost =  this.statisticsPost(post)
-    return {...statisticPost, isLike}
+    let isLike = false;
+    if (userId) {
+      isLike = await this.getIsLike(id, userId);
+    }
+    return { ...post, isLike };
+    
   }
 
   async update(id: number, userId: number,  updatePostDto: UpdatePostDto, files: MulterFile[]) {
@@ -142,13 +152,9 @@ export class PostService {
     return {...post, countLikes, countComments}
   }
 
-  getIsLike(post: PostEntity, userId: number) {
-    let isLike = false
-
-    const likeUser = post.likes.find(like => like.user.id === userId)
-    if(likeUser) isLike = true
-
-    return isLike
+  async getIsLike(postId: number, userId: number) {
+    const post = await this.postRepository.findOneBy({id: postId, likes: {user:{id: userId}}})
+    return !!post
   }
 
 
