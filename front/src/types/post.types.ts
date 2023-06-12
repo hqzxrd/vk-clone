@@ -22,6 +22,6 @@ export interface IComment {
 	updateDate: string
 	id: number
 	isLike: boolean
-	likes: number
+	countLikes: number
 	text: string
 }

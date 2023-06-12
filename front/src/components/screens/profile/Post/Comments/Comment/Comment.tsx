@@ -19,7 +19,9 @@ interface props {
 }
 
 const Comment: FC<props> = ({ post, comment }) => {
-	const [likes, setLikes] = useState<number>(comment.likes)
+	console.log(comment)
+
+	const [likes, setLikes] = useState<number>(comment.countLikes)
 	const [isLike, setIsLike] = useState<boolean>(comment.isLike)
 	const [isUpdate, setIsUpdate] = useState<boolean>(false)
 	const { user } = useAuth()
