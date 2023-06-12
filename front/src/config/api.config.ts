@@ -9,3 +9,5 @@ export const PostUrl = (str: string) => `/post${str}`
 export const CommentUrl = (str: string) => `/comment${str}`
 
 export const FilesUrl = (str: string) => `${API_URL}/file/${str}`
+
+export const FriendUrl = (str: string) => `/friend${str}`

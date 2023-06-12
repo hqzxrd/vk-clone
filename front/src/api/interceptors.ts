@@ -5,6 +5,8 @@ import Cookies from 'js-cookie'
 
 import { API_URL } from '@/config/api.config'
 
+import { toastError } from '@/utils/toastError'
+
 export const baseAxios = axios.create({
 	baseURL: API_URL,
 	headers: {
@@ -30,24 +32,24 @@ filesAxios.interceptors.request.use((config) => checkAuth(config))
 
 authAxios.interceptors.request.use((config) => checkAuth(config))
 
-// authAxios.interceptors.response.use(
-// 	(config) => config,
-// 	async (error) => {
-// 		const request = error.config
+authAxios.interceptors.response.use(
+	(config) => config,
+	async (error) => {
+		const request = error.config
 
-// 		if (error.response.status === 401 && !error.config._isRetry) {
-// 			error.config._isRetry = true
-// 			console.log(`asdasd`)
+		if (error.response.status === 401 && !error.config._isRetry) {
+			error.config._isRetry = true
 
-// 			try {
-// 				AuthService.getNewsTokens()
-// 				return authAxios.request(request)
-// 			} catch (err) {
-// 				removeTokensCookie()
-// 			}
-// 		}
-// 	}
-// )
+			try {
+				await AuthService.getNewsTokens()
+				return authAxios.request(request)
+			} catch (err) {
+				AuthService.logout()
+				toastError(err, `Авторизация закончилась`)
+			}
+		}
+	}
+)
 
 function checkAuth(config: InternalAxiosRequestConfig<any>) {
 	const accessToken = Cookies.get(`AccessToken`)

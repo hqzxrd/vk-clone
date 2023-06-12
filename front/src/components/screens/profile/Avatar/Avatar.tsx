@@ -1,3 +1,4 @@
+import { FriendService } from '@/services/friends/friends.service'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
@@ -14,6 +15,10 @@ const Avatar = () => {
 	const { user } = useAuth()
 	const { push } = useRouter()
 	const color = useAvatarGenerate(profile?.name!)
+
+	const sendRequest = async () => {
+		FriendService.sendRequest(profile!.id)
+	}
 
 	return (
 		<div className={styles.avatar}>
@@ -43,7 +48,7 @@ const Avatar = () => {
 				</div>
 			) : (
 				<>
-					<div>Добавить в друзья</div>
+					<div onClick={() => sendRequest()}>Добавить в друзья</div>
 					<div>Написать сообщение</div>
 				</>
 			)}

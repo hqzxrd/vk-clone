@@ -1,0 +1,25 @@
+.friends_wrapper {
+	display: flex;
+	justify-content: center;
+	.friends {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		min-width: 500px;
+		background-color: var(--extra-background);
+		border: 1px solid var(--primary-border);
+		border-radius: var(--primary-border-radius);
+		padding: 20px;
+		.tabs {
+			display: flex;
+			gap: 10px;
+			.tabItem {
+				user-select: none;
+				cursor: pointer;
+				padding: 2px 10px;
+				border: 1px solid var(--primary-border);
+				border-radius: var(--primary-border-radius);
+			}
+		}
+	}
+}

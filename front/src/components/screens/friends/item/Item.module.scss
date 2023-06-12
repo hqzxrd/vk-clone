@@ -12,6 +12,14 @@
 		.status {
 			color: var(--secondary-color);
 		}
+
+		.actions {
+			.addOrDelete {
+				user-select: none;
+				cursor: pointer;
+			}
+		}
+
 		> a {
 			width: fit-content;
 		}

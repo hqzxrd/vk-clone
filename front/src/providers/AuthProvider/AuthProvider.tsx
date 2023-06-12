@@ -16,7 +16,6 @@ const AuthProvider: FC<TypeComponentAuth> = ({
 	const DynamicCheckRole = dynamic(() => import(`./CheckRole`), { ssr: false })
 
 	const { pathname } = useRouter()
-	const { isAutorized } = useAuth()
 	const { logout } = useActions()
 
 	useEffect(() => {
@@ -26,7 +25,7 @@ const AuthProvider: FC<TypeComponentAuth> = ({
 
 	useEffect(() => {
 		const refreshToken = Cookies.get(`RefreshToken`)
-		if (!refreshToken && isAutorized) logout()
+		if (!refreshToken) logout()
 	}, [pathname])
 
 	return !isOnlyUser ? (
