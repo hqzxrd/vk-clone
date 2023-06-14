@@ -42,4 +42,15 @@ export class LikeService {
     const countLikes = await this.likeRepository.countBy({type: columnType, [columnType]: {id: columnId}})
     return {isLike, countLikes}
   }
+
+  async getIsLike(userId: number, columnId: number, columnType: LikeType ) {
+    const findOrCreateObject = {
+      type: columnType,
+      [columnType]: {id: columnId},
+      user: {id: userId}
+    }
+
+    const like = await this.likeRepository.findOneBy(findOrCreateObject)
+    return !!like
+  }
 }
