@@ -37,7 +37,7 @@ export class FriendService {
       const friend = await this.checkFriends(fromUserId, toUserId)
       if(!friend) throw new BadRequestException(USER_NOT_FRIENDS)
       await this.userService.removeFriend(fromUserId, toUserId)
-      await this.friendRequestService.createRequest(fromUserId, toUserId)
+      await this.friendRequestService.createRequest(toUserId, fromUserId)
     }
 
     async checkFriends(fromUserId: number, toUserId: number) {
