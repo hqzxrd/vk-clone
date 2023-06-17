@@ -29,10 +29,20 @@ export class FriendController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete('/:userId')
   removeFriend(
-    @User('id') userId: number,
-    @Param('userId', ParseIntPipe) id: number,
+    @User('id') id: number,
+    @Param('userId', ParseIntPipe) userId: number,
   ) {
     return this.friendService.removeFriend(userId, id)
+  }
+
+  
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Get('cancel/:userId')
+  cancelRequest(
+    @User('id') id: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.friendService.cancelRequest(id, userId)
   }
 
 }

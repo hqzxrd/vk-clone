@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, forwardRef } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { FriendRequestService } from './friend-request.service';
 import { UserService } from 'src/user/service/user.service';
 import { USER_ALREADY_FRIENDS, USER_NOT_FRIENDS } from '../constants/friend.error.constants';
@@ -37,7 +37,7 @@ export class FriendService {
       const friend = await this.checkFriends(fromUserId, toUserId)
       if(!friend) throw new BadRequestException(USER_NOT_FRIENDS)
       await this.userService.removeFriend(fromUserId, toUserId)
-      await this.friendRequestService.createRequest(toUserId, fromUserId)
+      await this.friendRequestService.createRequest(fromUserId, toUserId)
     }
 
     async checkFriends(fromUserId: number, toUserId: number) {
@@ -48,6 +48,10 @@ export class FriendService {
 
       const user = await this.userService.findFriend(fromUserId, toUserId)
       return user
+    }
+
+    async cancelRequest(fromUserId: number, toUserId: number) {
+      await this.friendRequestService.removeFriendRequest(fromUserId, toUserId)
     }
 
 }
