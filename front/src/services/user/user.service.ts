@@ -28,4 +28,15 @@ export const UserService = {
 			return await filesAxios.patch(UserUrl(``), formData)
 		}
 	},
+
+	async getFriends(id: number) {
+		return await baseAxios.get<[IUser[], number]>(UserUrl(`/${id}/friends`))
+	},
+
+	async getRequest(type: string) {
+		const res = await authAxios.get<[IUser[], number]>(
+			UserUrl(`/request?type=${type}`)
+		)
+		return res
+	},
 }
