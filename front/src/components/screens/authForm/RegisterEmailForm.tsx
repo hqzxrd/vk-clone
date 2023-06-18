@@ -20,10 +20,10 @@ interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> {}
 const RegisterForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
-	const { isAutorized } = useAuth()
+	const { isAuth } = useAuth()
 
 	useEffect(() => {
-		isAutorized && replace(`/profile`)
+		isAuth && replace(`/profile`)
 	}, [])
 
 	const onSubmit: SubmitHandler<IEmail> = (data) => {

@@ -7,7 +7,7 @@ import { UserUrl } from '@/config/api.config'
 
 export const UserService = {
 	async getById(id: number) {
-		return await baseAxios.get<IUser>(UserUrl(`/${id}`))
+		return await authAxios.get<IUser>(UserUrl(`/${id}`))
 	},
 
 	async getAll() {

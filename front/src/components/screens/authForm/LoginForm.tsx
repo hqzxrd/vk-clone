@@ -22,10 +22,10 @@ const LoginForm: FC = () => {
 	})
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
-	const { isAutorized } = useAuth()
+	const { isAuth } = useAuth()
 
 	useEffect(() => {
-		isAutorized && replace(`/users/profile`)
+		isAuth && replace(`/users/profile`)
 	}, [])
 
 	const onSubmit: SubmitHandler<ILoginFields> = async (data: any) => {

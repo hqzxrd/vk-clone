@@ -54,9 +54,10 @@ export const AuthService = {
 			}
 		)
 
-		console.log(res)
-
-		if (res.data.accessToken) saveToStorage(res.data)
+		if (res.data.accessToken) {
+			saveToStorage(res.data)
+			localStorage.setItem(`auth`, JSON.stringify(true))
+		}
 
 		return res
 	},
@@ -65,7 +66,7 @@ export const AuthService = {
 		baseAxios.get(AuthUrl(`/logout`))
 		removeTokensCookie()
 		localStorage.removeItem(`user`)
-		localStorage.removeItem(`isAutorized`)
+		localStorage.removeItem(`auth`)
 	},
 
 	async getNewsTokens() {
@@ -80,7 +81,7 @@ export const AuthService = {
 const saveToStorage = (data: ILoginRegisterResponse) => {
 	Cookies.set(`AccessToken`, data.accessToken)
 	localStorage.setItem(`user`, JSON.stringify(data.user))
-	localStorage.setItem(`isAutorized`, JSON.stringify(true))
+	localStorage.setItem(`auth`, JSON.stringify(true))
 }
 
 const updateStorage = (str: string, prop: Partial<IUserDto>) => {

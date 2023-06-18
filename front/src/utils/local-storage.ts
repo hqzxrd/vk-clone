@@ -11,13 +11,13 @@ export const getUserLocalStore = (name: string): IUserDto | null => {
 	return null
 }
 
-export const getAutorizeStatusLocalStore = (name: string): boolean => {
+export const getAuthStatusLocalStore = (name: string): true | null => {
 	if (process.browser) {
 		const ls = localStorage.getItem(name)
 		return ls ? JSON.parse(ls) : false
 	}
 
-	return false
+	return null
 }
 
 export const saveTheme = (name: `theme`, theme: TypeTheme): void => {
