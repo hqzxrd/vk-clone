@@ -13,11 +13,13 @@ export class UserController {
     private readonly userService: UserService,
   ) {}
 
+  @AccessJwtGuard()
   @Get(':id')
-  getOne(
-    @Param('id', ParseIntPipe) id: number
+  profileById(
+    @Param('id', ParseIntPipe) id: number,
+    @User('id') userId: number
   ) {
-    return this.userService.byId(id)
+    return this.userService.profileById(id, userId)
   }
 
   @Get()

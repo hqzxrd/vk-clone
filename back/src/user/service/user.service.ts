@@ -9,6 +9,7 @@ import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 import { USER_NOT_FOUND } from '../constants/user.error.constants';
 import { FriendRequestType } from 'src/friend/friend-request.enum';
 import { FriendRequestService } from 'src/friend/service/friend-request.service';
+import { Relationship } from '../relationship.enum';
 
 @Injectable()
 export class UserService {
@@ -40,8 +41,36 @@ export class UserService {
     const user = await this.userRepository.findOne({
       where: {id},
       select: this.returnBaseKeyUser
-    })
+    }) 
     return user
+  }
+
+  async profileById(id: number, userId?: number) {
+    const selectUser = Object.keys(this.returnBaseKeyUser).map(key => `user.${key}`);
+    const profileUser = await this.userRepository.createQueryBuilder('user')
+          .select(selectUser)
+          .loadRelationCountAndMap('user.countFriends', 'user.friends')
+          .loadRelationCountAndMap('user.countIncomingRequests', 'user.incomingRequests')
+          .leftJoin('user.friends', 'friends')
+          .addSelect('friends.id')
+          .where('user.id = :id', { id })
+          .getOne()
+  
+    let typeRelationship: Relationship = Relationship.NONE
+
+    if(userId && userId !== id) {
+      const user = profileUser.friends.find(friend => friend.id === userId)
+      if(user) {
+        typeRelationship = Relationship.FRIEND
+      }else {
+        const typeRequest = await this.friendRequestService.getTypeRequest(id, userId)
+        typeRelationship = typeRequest
+      }
+    }
+
+    delete profileUser.friends
+
+    return {...profileUser, typeRelationship}
   }
 
   async create(dto: RegistrationDto) {
