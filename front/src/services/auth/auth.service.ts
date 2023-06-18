@@ -64,7 +64,7 @@ export const AuthService = {
 
 	logout() {
 		baseAxios.get(AuthUrl(`/logout`))
-		removeTokensCookie()
+		Cookies.remove(`AccessToken`)
 		localStorage.removeItem(`user`)
 		localStorage.removeItem(`auth`)
 	},
@@ -97,9 +97,4 @@ const updateStorage = (str: string, prop: Partial<IUserDto>) => {
 		}
 		localStorage.setItem(str, JSON.stringify(user))
 	}
-}
-
-export const removeTokensCookie = () => {
-	Cookies.remove(`AccessToken`)
-	Cookies.remove(`RefreshToken`)
 }
