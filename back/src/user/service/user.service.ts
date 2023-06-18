@@ -7,7 +7,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 import { RegistrationDto } from 'src/auth/dto/registration.dto';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 import { USER_NOT_FOUND } from '../constants/user.error.constants';
-import { FriendRequestType } from 'src/friend/friend-request.enum';
+import { FriendRequestType } from 'src/friend/friend-request.type.enum';
 import { FriendRequestService } from 'src/friend/service/friend-request.service';
 import { Relationship } from '../relationship.enum';
 
