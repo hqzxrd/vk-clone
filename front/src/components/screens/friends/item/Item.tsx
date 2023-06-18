@@ -24,7 +24,18 @@ const buttons: IButtons = {
 			Удалить из друзей
 		</div>
 	),
-	2: (user, qClient) => <div className={styles.addOrDelete}>Отменить</div>,
+	2: (user, qClient) => (
+		<div
+			className={styles.addOrDelete}
+			onClick={async () => {
+				const res = await FriendService.cancelRequest(user.id)
+				console.log(res)
+				if (res.status === 204) qClient.invalidateQueries(`get_outgoing`)
+			}}
+		>
+			Отменить
+		</div>
+	),
 	1: (user, qClient) => (
 		<>
 			<div

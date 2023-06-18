@@ -7,6 +7,10 @@ export const FriendService = {
 		return await authAxios.get(FriendUrl(`/send/${toUserId}`))
 	},
 
+	async cancelRequest(UserId: number) {
+		return await authAxios.get(FriendUrl(`/cancel/${UserId}`))
+	},
+
 	async removeFriend(UserId: number) {
 		return await authAxios.delete(FriendUrl(`/${UserId}`))
 	},
