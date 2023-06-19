@@ -13,6 +13,7 @@ import { PostModule } from './post/post.module';
 import { CommentModule } from './comment/comment.module';
 import { LikeModule } from './like/like.module';
 import { FriendModule } from './friend/friend.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { FriendModule } from './friend/friend.module';
     PostModule,
     CommentModule,
     LikeModule,
-    FriendModule
+    FriendModule,
+    NotificationModule
   ]
 })
 export class AppModule {}

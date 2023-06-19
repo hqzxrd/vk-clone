@@ -1,4 +1,5 @@
 import { LikeEntity } from "src/like/entities/like.entity";
+import { NotificationEntity } from "src/notification/entities/notification.entity";
 import { PostEntity } from "src/post/entities/post.entity";
 import { UserEntity } from "src/user/entities/user.entity";
 import { AbstractEntity } from "src/utils/base.entity";
@@ -17,4 +18,8 @@ export class CommentEntity extends AbstractEntity{
 
     @OneToMany(() => LikeEntity, like => like.comment, {cascade: true})
     likes: LikeEntity[]
+
+
+    @OneToMany(() => NotificationEntity, notification => notification.comment) 
+    _notifications: NotificationEntity[]
 }
