@@ -2,7 +2,7 @@ import { TypeComponentAuth } from '@/types/auth.types'
 import { useRouter } from 'next/router'
 import React, { FC } from 'react'
 
-import { useTypedSelector } from '@/hooks/useTypedSelector'
+import { useActions } from '@/hooks/useActions'
 
 const CheckRole: FC<TypeComponentAuth> = ({
 	children,
@@ -10,11 +10,12 @@ const CheckRole: FC<TypeComponentAuth> = ({
 }) => {
 	const { pathname, replace } = useRouter()
 	const isAuth = localStorage.getItem(`auth`)
-	const { isAuth: reduxAuth } = useTypedSelector((st) => st.user)
+	const { logout } = useActions()
+
 	if (isAuth && isOnlyUser) {
 		return <>{children}</>
 	} else {
-		// reduxAuth(null)
+		logout()
 		pathname !== `/auth/login` && replace(`/auth/login`)
 	}
 

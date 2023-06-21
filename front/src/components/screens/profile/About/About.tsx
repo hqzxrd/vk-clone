@@ -10,7 +10,7 @@ import styles from './About.module.scss'
 
 const About = () => {
 	const { query } = useRouter()
-	const { profile } = useProfile()
+	const { isLoading, profile } = useProfile()
 	const { posts } = usePosts(`?user=${query.id}`)
 
 	const { day, month, year } = useDate(profile ? profile.birthday : ``)
@@ -25,6 +25,10 @@ const About = () => {
 		} else {
 			return `Мужской`
 		}
+	}
+
+	if (isLoading) {
+		return <></>
 	}
 
 	return (
