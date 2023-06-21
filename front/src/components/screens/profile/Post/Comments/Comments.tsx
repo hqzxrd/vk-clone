@@ -46,9 +46,8 @@ const Comments: FC<props> = ({ post }) => {
 			})}
 
 			<div className={styles.create_comment}>
-				<div>
-					<AvatarMini user={profile} width={33} height={33} isLink={false} />
-				</div>
+				<AvatarMini user={user} width={32} height={32} isLink={false} />
+
 				<div className={styles.textarea_wrapper}>
 					<Textarea
 						text={text}
