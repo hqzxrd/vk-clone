@@ -11,12 +11,11 @@ import {
 
 import styles from './Textarea.module.scss'
 
-interface props {
+interface props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	text: string
 	setText: Dispatch<SetStateAction<string>>
 	resize: boolean
 	placeholder?: string
-	style?: CSSProperties
 }
 
 const Textarea: FC<props> = ({

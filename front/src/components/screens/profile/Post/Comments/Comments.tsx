@@ -1,7 +1,7 @@
 import Comment from './Comment/Comment'
 import { PostService } from '@/services/post/post.service'
 import { IPost } from '@/types/post.types'
-import { FC, useState } from 'react'
+import { FC, KeyboardEvent, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
@@ -25,6 +25,13 @@ const Comments: FC<props> = ({ post }) => {
 	const { profile } = useProfile()
 	const { comments } = useComments(post.id, `?post=${post.id}`)
 	const queryClient = useQueryClient()
+
+	const pressEnter = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.key === `Enter` && e.shiftKey == false) {
+			e.preventDefault()
+			sendComment()
+		}
+	}
 
 	const sendComment = async () => {
 		if (!text) return
@@ -55,6 +62,7 @@ const Comments: FC<props> = ({ post }) => {
 						resize={true}
 						placeholder="Написать комментарий..."
 						style={{ overflow: `hidden`, height: 35 }}
+						onKeyDown={(e) => pressEnter(e)}
 					/>
 				</div>
 				<div className={styles.send}>
