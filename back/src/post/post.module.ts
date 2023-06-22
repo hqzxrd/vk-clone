@@ -6,6 +6,7 @@ import { PostEntity } from './entities/post.entity';
 import { DropboxModule } from 'src/dropbox/dropbox.module';
 import { UserModule } from 'src/user/user.module';
 import { LikeModule } from 'src/like/like.module';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   controllers: [PostController],
@@ -14,6 +15,7 @@ import { LikeModule } from 'src/like/like.module';
     DropboxModule,
     UserModule,
     LikeModule,
+    NotificationModule
   ],
   providers: [PostService],
   exports: [PostService]
