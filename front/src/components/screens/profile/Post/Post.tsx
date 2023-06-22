@@ -17,6 +17,7 @@ import { FilesUrl } from '@/config/api.config'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useComments } from '@/hooks/useComments'
+import { useDate } from '@/hooks/useDate'
 
 import styles from './Post.module.scss'
 
@@ -31,6 +32,7 @@ const Post: FC<props> = ({ post }) => {
 	const [commentsIsHide, setCommentsIsHide] = useState<boolean>(true)
 	const { user } = useAuth()
 	const { comments } = useComments(post.id, `?post=${post.id}`)
+	const { day, month, year, time } = useDate(post.createDate)
 	const queryClient = useQueryClient()
 
 	const likePost = async () => {
@@ -76,6 +78,10 @@ const Post: FC<props> = ({ post }) => {
 					<Link href={`/users/${post.author.id}`}>
 						{post.author.name} {post.author.surname}
 					</Link>
+					<div className={styles.date}>
+						{day}.{month}.{year} в {time}
+						{post.createDate !== post.updateDate ? ` (ред.)` : ``}
+					</div>
 				</div>
 			</div>
 			{isUpdate ? (

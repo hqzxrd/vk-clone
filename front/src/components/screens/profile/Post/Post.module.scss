@@ -23,9 +23,12 @@
 
 		.whosePost {
 			display: flex;
-			align-items: center;
-			cursor: pointer;
-			user-select: none;
+			flex-direction: column;
+		}
+
+		.date {
+			color: var(--secondary-color);
+			font-size: 12px;
 		}
 	}
 
