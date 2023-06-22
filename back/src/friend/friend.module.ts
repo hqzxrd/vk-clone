@@ -5,13 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FriendRequestEntity } from './entities/friend-request.entity';
 import { FriendRequestService } from './service/friend-request.service';
 import { UserModule } from 'src/user/user.module';
+import { NotificationModule } from 'src/notification/notification.module';
 
 @Module({
   controllers: [FriendController],
   providers: [FriendService, FriendRequestService],
   imports: [
     TypeOrmModule.forFeature([FriendRequestEntity]),
-    forwardRef(() => UserModule)
+    forwardRef(() => UserModule),
+    NotificationModule
   ],
   exports: [FriendRequestService, FriendService]
 })
