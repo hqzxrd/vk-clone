@@ -20,6 +20,10 @@
 				border: 1px solid var(--primary-border);
 				border-radius: var(--primary-border-radius);
 			}
+
+			.tabItem_active {
+				background-color: var(--primary-border);
+			}
 		}
 	}
 }

@@ -11,7 +11,7 @@ import { IUserDto } from '@/types/auth.types'
 import { createSlice } from '@reduxjs/toolkit'
 
 import {
-	getAutorizeStatusLocalStore,
+	getAuthStatusLocalStore,
 	getUserLocalStore,
 } from '@/utils/local-storage'
 
@@ -24,7 +24,7 @@ export const initialUser: IUserDto = {
 
 const initialState: IInitialState = {
 	user: getUserLocalStore(`user`) || initialUser,
-	isAutorized: getAutorizeStatusLocalStore(`isAutorized`),
+	isAuth: getAuthStatusLocalStore(`auth`),
 	isLoading: false,
 }
 export const userSlice = createSlice({
@@ -59,7 +59,7 @@ export const userSlice = createSlice({
 		builder.addCase(register.fulfilled, (state, { payload }) => {
 			state.isLoading = false
 			state.user = payload.user
-			state.isAutorized = true
+			state.isAuth = true
 		})
 		builder.addCase(register.rejected, (state) => {
 			state.isLoading = false
@@ -73,7 +73,7 @@ export const userSlice = createSlice({
 			state.isLoading = false
 
 			state.user = payload.user
-			state.isAutorized = true
+			state.isAuth = true
 		})
 		builder.addCase(login.rejected, (state) => {
 			state.isLoading = false
@@ -83,7 +83,7 @@ export const userSlice = createSlice({
 		builder.addCase(logout.fulfilled, (state) => {
 			state.isLoading = false
 			state.user = initialUser
-			state.isAutorized = false
+			state.isAuth = null
 		})
 		builder.addCase(checkAuth.fulfilled, (state, { payload }) => {
 			state.user = payload.user

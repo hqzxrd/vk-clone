@@ -7,7 +7,7 @@ import { UserUrl } from '@/config/api.config'
 
 export const UserService = {
 	async getById(id: number) {
-		return await baseAxios.get<IUser>(UserUrl(`/${id}`))
+		return await authAxios.get<IUser>(UserUrl(`/${id}`))
 	},
 
 	async getAll() {
@@ -27,5 +27,16 @@ export const UserService = {
 			console.log(formData)
 			return await filesAxios.patch(UserUrl(``), formData)
 		}
+	},
+
+	async getFriends(id: number) {
+		return await baseAxios.get<[IUser[], number]>(UserUrl(`/${id}/friends`))
+	},
+
+	async getRequest(type: string) {
+		const res = await authAxios.get<[IUser[], number]>(
+			UserUrl(`/request?type=${type}`)
+		)
+		return res
 	},
 }

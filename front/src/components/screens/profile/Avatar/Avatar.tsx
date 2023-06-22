@@ -1,6 +1,9 @@
 import { FriendService } from '@/services/friends/friends.service'
+import { Relationship } from '@/types/user.types'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { useQueryClient } from 'react-query'
 
 import { FilesUrl } from '@/config/api.config'
 
@@ -11,13 +14,39 @@ import { useProfile } from '@/hooks/useProfile'
 import styles from './Avatar.module.scss'
 
 const Avatar = () => {
-	const { isLoading, profile } = useProfile()
+	const [stateRequestFriend, setStateRequestFriend] =
+		useState<Relationship>('none')
+	const { profile } = useProfile()
 	const { user } = useAuth()
-	const { push } = useRouter()
+	const { push, query } = useRouter()
 	const color = useAvatarGenerate(profile?.name!)
+	const queryClient = useQueryClient()
+
+	useEffect(() => {
+		if (profile) setStateRequestFriend(profile.typeRelationship)
+	}, [profile])
 
 	const sendRequest = async () => {
-		FriendService.sendRequest(profile!.id)
+		const res = await FriendService.sendRequest(profile!.id)
+		res.status === 200 && queryClient.invalidateQueries(query)
+		console.log(res.status)
+	}
+
+	const cancelRequest = async () => {
+		const res = await FriendService.cancelRequest(profile!.id)
+		res.status === 204 && queryClient.invalidateQueries(query)
+		console.log(res.status)
+	}
+
+	const resOnFriendRequest = async (bool: boolean) => {
+		const res = await FriendService.resOnFriendRequest(profile!.id, bool)
+		res.status === 204 && queryClient.invalidateQueries(query)
+		console.log(res.status)
+	}
+
+	const removeFriend = async () => {
+		const res = await FriendService.removeFriend(profile!.id)
+		res.status === 204 && queryClient.invalidateQueries(query)
 	}
 
 	return (
@@ -48,7 +77,23 @@ const Avatar = () => {
 				</div>
 			) : (
 				<>
-					<div onClick={() => sendRequest()}>Добавить в друзья</div>
+					{stateRequestFriend === 'none' && (
+						<div onClick={() => sendRequest()}>Добавить в друзья</div>
+					)}
+					{stateRequestFriend === 'outgoing' && (
+						<div onClick={() => cancelRequest()}>Отменить заявку</div>
+					)}
+					{stateRequestFriend === 'incoming' && (
+						<>
+							<div onClick={() => resOnFriendRequest(true)}>Принять запрос</div>
+							<div onClick={() => resOnFriendRequest(false)}>
+								Отказаться от дружбы
+							</div>
+						</>
+					)}
+					{stateRequestFriend === 'friend' && (
+						<div onClick={() => removeFriend()}>Удалить из друзей</div>
+					)}
 					<div>Написать сообщение</div>
 				</>
 			)}

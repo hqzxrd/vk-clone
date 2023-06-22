@@ -8,16 +8,16 @@ import { useAuth } from '@/hooks/useAuth'
 import styles from './Header.module.scss'
 
 const Header: FC = () => {
-	const { isAutorized } = useAuth()
+	const { isAuth: auth } = useAuth()
 
 	const [isAuth, setIsAuth] = useState<boolean>(true)
 
 	useEffect(() => {
-		if (!isAutorized) {
+		if (!auth) {
 			setIsAuth(false)
 			return
 		}
-		setIsAuth(isAutorized)
+		setIsAuth(auth)
 	}, [])
 
 	return (

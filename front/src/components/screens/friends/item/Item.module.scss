@@ -14,6 +14,8 @@
 		}
 
 		.actions {
+			display: flex;
+			gap: 10px;
 			.addOrDelete {
 				user-select: none;
 				cursor: pointer;

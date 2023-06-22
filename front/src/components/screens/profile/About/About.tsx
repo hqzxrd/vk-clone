@@ -50,7 +50,11 @@ const About = () => {
 			</div>
 
 			<div className={styles.info}>
-				<AboutCount name="Друзей" value={0} />
+				<AboutCount name="Друзей" value={profile ? profile?.countFriends : 0} />
+				<AboutCount
+					name="Подписчиков"
+					value={profile ? profile?.countIncomingRequests : 0}
+				/>
 				<AboutCount name="Постов" value={posts ? posts[1] : 0} />
 			</div>
 		</div>
