@@ -23,23 +23,22 @@ const Header: FC = () => {
 	return (
 		<header className={styles.header}>
 			<div className={styles.wrapper}>
-				<div className={styles.logo}>
-					<Link href="/">
-						<Image src={`/vk_logo.ico`} alt="logo" height={24} width={24} />
-						<div>ВКонтакте</div>
-					</Link>
-				</div>
+				<Link className={styles.logo} href="/">
+					<Image src={`/vk_logo.ico`} alt="logo" height={24} width={24} />
+					<div>ВКонтакте</div>
+				</Link>
+
 				{isAuth ? (
 					<AuthHeader />
 				) : (
-					<div>
-						<Link href="/auth/login">
-							<div className={styles.sign}>Войти</div>
+					<>
+						<Link className={styles.signin} href="/auth/login">
+							Войти
 						</Link>
-						<Link href="/auth/register#email">
-							<div className={styles.sign}>Регистрация</div>
+						<Link className={styles.register} href="/auth/register#email">
+							Регистрация
 						</Link>
-					</div>
+					</>
 				)}
 			</div>
 		</header>

@@ -1,0 +1,14 @@
+.dropdown {
+	word-wrap: break-word;
+	max-width: 400px;
+	position: absolute;
+	display: flex;
+	gap: 10px;
+	top: 43.5px;
+	right: -1px;
+	padding: 10px;
+	background-color: var(--extra-background);
+	border: 1px solid var(--primary-border);
+	border-radius: 0 0 var(--primary-border-radius) var(--primary-border-radius);
+	box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.3);
+}
