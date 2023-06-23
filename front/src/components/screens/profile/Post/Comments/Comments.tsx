@@ -5,7 +5,6 @@ import { FC, KeyboardEvent, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
-import PencilIcon from '@/components/ui/Icon/PencilIcon'
 import SendIcon from '@/components/ui/Icon/Send'
 import Textarea from '@/components/ui/Textarea/Textarea'
 
@@ -61,7 +60,7 @@ const Comments: FC<props> = ({ post }) => {
 						setText={setText}
 						resize={true}
 						placeholder="Написать комментарий..."
-						style={{ overflow: `hidden`, height: 35 }}
+						style={{ overflow: `hidden`, height: 35, fontSize: 14 }}
 						onKeyDown={(e) => pressEnter(e)}
 					/>
 				</div>

@@ -1,5 +1,4 @@
 import {
-	CSSProperties,
 	ChangeEvent,
 	Dispatch,
 	FC,
