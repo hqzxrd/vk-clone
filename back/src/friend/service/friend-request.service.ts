@@ -2,7 +2,7 @@ import { BadRequestException, Inject, Injectable, forwardRef } from "@nestjs/com
 import { InjectRepository } from "@nestjs/typeorm";
 import { FriendRequestEntity } from "../entities/friend-request.entity";
 import { Repository } from "typeorm";
-import { FriendRequestType } from "../friend-request.enum";
+import { FriendRequestType } from "../friend-request.type.enum";
 import { UserEntity } from "src/user/entities/user.entity";
 import { REQUEST_NOT_FOUND } from "../constants/friend.error.constants";
 import { UserService } from "src/user/service/user.service";

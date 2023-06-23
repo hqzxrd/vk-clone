@@ -10,6 +10,9 @@ import { UserService } from 'src/user/service/user.service';
 import { arrayComparison } from 'src/utils/array-comparison';
 import { LikeService } from 'src/like/service/like.service';
 import { LikeType } from 'src/like/like.enum';
+import { NotificationService } from 'src/notification/service/notification.service';
+import { SendNotificationPostDto } from '../dto/send-notification.post.dto';
+import { NotificationType } from 'src/notification/enums/notification.type.enum';
 
 @Injectable()
 export class PostService {
@@ -18,7 +21,8 @@ export class PostService {
     @InjectRepository(PostEntity) private readonly postRepository: Repository<PostEntity>,
     private readonly dropboxService: DropboxService,
     private readonly likeService: LikeService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly notificationService: NotificationService
   ) {}
 
   
@@ -138,9 +142,27 @@ export class PostService {
   }
 
   async likePost(userId: number, postId: number) {
-    const post = await this.postRepository.findOneBy({id: postId})
+    const post = await this.postRepository.findOne({
+      where: {id: postId},
+      select: {id: true, author: {id: true}},
+      relations: {author: true}
+    })
     if(!post) throw new NotFoundException()
-    return await this.likeService.like(userId, postId, LikeType.POST)
+    const like = await this.likeService.like(userId, postId, LikeType.POST)
+
+    if(like.isLike) {
+      await this.sendLikeNotification({postId, fromUserId: userId, userId: post.author.id})
+    }
+    return like
+  }
+  
+  async sendLikeNotification(dto: Omit<SendNotificationPostDto, 'type'>) {
+   const notification = await this.notificationService.getOne({...dto, type: NotificationType.LIKE, column_type: 'post', column_id: dto.postId})
+   if(!notification) await this.sendNotification({...dto, type: NotificationType.LIKE})
+  }
+
+  async sendNotification(dto: SendNotificationPostDto) {
+    await this.notificationService.send({...dto, column_id: dto.postId, column_type: 'post'})
   }
 
   statisticsPost(post: PostEntity) {

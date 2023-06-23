@@ -2,6 +2,7 @@ import { TokenEntity } from "src/auth/entities/token.entity";
 import { CommentEntity } from "src/comment/entities/comment.entity";
 import { FriendRequestEntity } from "src/friend/entities/friend-request.entity";
 import { LikeEntity } from "src/like/entities/like.entity";
+import { NotificationEntity } from "src/notification/entities/notification.entity";
 import { PostEntity } from "src/post/entities/post.entity";
 import { AbstractEntity } from "src/utils/base.entity";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
@@ -78,4 +79,10 @@ export class UserEntity extends AbstractEntity {
 
     @OneToMany(() => TokenEntity, (token) => token.user, {cascade: true})
     tokens: TokenEntity[]
+
+    @OneToMany(() => NotificationEntity, notification => notification.user) 
+    notifications: NotificationEntity[]
+
+    @OneToMany(() => NotificationEntity, notification => notification.fromUser)
+    _fromNotification: NotificationEntity[]
 }
