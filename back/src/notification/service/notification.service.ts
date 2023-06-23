@@ -9,24 +9,26 @@ import { NotificationStatus } from '../enums/notification.status.enum';
 
 @Injectable()
 export class NotificationService {
-  private notificationEvents: Record<string, Subject<any>> = {}
+  private notificationEvents: Record<string, Subject<unknown>> = {}
 
   constructor(
     @InjectRepository(NotificationEntity) private readonly notificationRepository: Repository<NotificationEntity>
   ) {}
 
-  handleConnection(id: number) {
+  async handleConnection(id: number) {
     if(!this.notificationEvents[id]) {
       this.notificationEvents[id] = new Subject()
     }
+    const count = await this.countNoRead(id)
+    setTimeout(() => this.notificationEvents[id].next({ data: {count} }), 0)
     return this.notificationEvents[id].asObservable();
   }
 
  async send(dto: CreateNotificationDto) {
-    if(!this.notificationEvents[dto.userId]) return
-    if(dto.userId === dto.fromUserId) return
+    if(!this.notificationEvents[dto.userId] || (dto.userId === dto.fromUserId)) return
     const notification = await this.create(dto)
-    this.notificationEvents[dto.userId].next({ data: { ...notification } });
+    const count = await this.countNoRead(dto.userId)
+    this.notificationEvents[dto.userId].next({ data: { ...notification, count } });
  }
 
   private async create(createDto: CreateNotificationDto) {
@@ -37,7 +39,23 @@ export class NotificationService {
     }
     if(createDto.type === NotificationType.MESSAGE) return dto
     const notification = this.notificationRepository.create({...dto,  [createDto.column_type]: {id: createDto.column_id}})
-    return await this.notificationRepository.save(notification)
+    await this.notificationRepository.save(notification)
+
+    return await this.notificationRepository.findOne({
+      relations: {comment: true, fromUser: true, post: true},
+      select: {
+        fromUser: {id: true, surname: true, name: true, nickname: true, avatar: true},
+      },
+      where: {id: notification.id}
+    })
+  }
+
+  private async countNoRead(id: number) {
+    const count = await this.notificationRepository.countBy({
+      status: NotificationStatus.NOT_READ,
+      user: {id}
+    })
+    return count
   }
 
   async delete(userId: number, fromUserId: number, type: NotificationType) {
