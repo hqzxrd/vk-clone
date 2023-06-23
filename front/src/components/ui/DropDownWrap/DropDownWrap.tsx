@@ -19,7 +19,6 @@ const DropDownWrap: FC<props> = ({ isOpen, setIsOpen, children, ...rest }) => {
 			const target: Node = e.target as Node
 			const button = dropdown.current.previousSibling
 			const icon = dropdown.current.previousSibling?.lastChild
-			console.log(target.nodeName)
 
 			if (target === button || target === icon || target.nodeName === 'path') {
 				return

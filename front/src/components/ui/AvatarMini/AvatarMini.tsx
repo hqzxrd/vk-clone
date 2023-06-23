@@ -11,7 +11,6 @@ import styles from './AvatarMini.module.scss'
 
 const AvatarMini: FC<IAvatarMiniProps> = ({ user, width, height, isLink }) => {
 	const color = useAvatarGenerate(user.name)
-	console.log(user.avatar)
 
 	if (isLink) {
 		return (

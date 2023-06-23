@@ -1,0 +1,11 @@
+.link {
+	display: flex;
+	gap: 10px;
+	width: 400px;
+	height: 50px;
+	.info {
+		span {
+			color: var(--primary-button);
+		}
+	}
+}

@@ -11,3 +11,5 @@ export const CommentUrl = (str: string) => `/comment${str}`
 export const FilesUrl = (str: string) => `${API_URL}/file/${str}`
 
 export const FriendUrl = (str: string) => `/friend${str}`
+
+export const notificationUrl = (str: string) => `${API_URL}/notification${str}`

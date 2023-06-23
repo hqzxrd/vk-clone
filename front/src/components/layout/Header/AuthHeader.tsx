@@ -1,7 +1,10 @@
+import { NotificationService } from '@/services/notification/notification.service'
 import cn from 'classnames'
 import Link from 'next/link'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
+import Notification from '@/components/screens/notification/Notification'
+import { INotificationDto } from '@/components/screens/notification/Notification.interface'
 import DropDownWrap from '@/components/ui/DropDownWrap/DropDownWrap'
 import NotificIcon from '@/components/ui/Icon/NotificIcon'
 import ThemeIcon from '@/components/ui/Icon/ThemeIcon'
@@ -11,24 +14,39 @@ import { useActions } from '@/hooks/useActions'
 import styles from './Header.module.scss'
 
 const AuthHeader: FC = () => {
-	const [notify, setNotify] = useState<boolean>(false)
+	const [isOpen, setIsOpen] = useState<boolean>(false)
+	const [notifications, setNotifications] = useState<INotificationDto[]>([])
 	const { logout, changeTheme } = useActions()
+
+	const handleClick = async () => {
+		setIsOpen(!isOpen)
+		if (!isOpen) {
+			const res = await NotificationService.getAllNotifications()
+			setNotifications(res.data[0])
+		}
+	}
 
 	return (
 		<>
 			<div>
 				<button
 					className={
-						notify
+						isOpen
 							? cn(styles.notification, styles.activeHeaderElem)
 							: cn(styles.notification, styles.headerHover)
 					}
-					onClick={() => setNotify(!notify)}
+					onClick={() => handleClick()}
 				>
 					<NotificIcon />
 				</button>
-				<DropDownWrap isOpen={notify} setIsOpen={setNotify}>
-					<div>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</div>
+				<DropDownWrap isOpen={isOpen} setIsOpen={setIsOpen}>
+					{notifications.length ? (
+						notifications.map((notif) => {
+							return <Notification notif={notif} key={notif.id} />
+						})
+					) : (
+						<>Уведомлений нет</>
+					)}
 				</DropDownWrap>
 			</div>
 
