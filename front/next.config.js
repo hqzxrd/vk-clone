@@ -8,7 +8,7 @@ const nextConfig = {
 		API_URL: process.env.API_URL,
 	},
 	images: {
-		domains: ['localhost', `109.184.83.104`],
+		domains: ['localhost', `109.184.59.10`],
 		remotePatterns: [
 			{
 				protocol: 'http',

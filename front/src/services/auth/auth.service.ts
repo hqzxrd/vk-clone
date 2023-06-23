@@ -1,4 +1,4 @@
-import { baseAxios } from '@/api/interceptors'
+import { authAxios, baseAxios } from '@/api/interceptors'
 import {
 	ILoginRegisterResponse,
 	IRegisterFieldsDto,
@@ -56,7 +56,6 @@ export const AuthService = {
 
 		if (res.data.accessToken) {
 			saveToStorage(res.data)
-			localStorage.setItem(`auth`, JSON.stringify(true))
 		}
 
 		return res
@@ -72,7 +71,10 @@ export const AuthService = {
 	async getNewsTokens() {
 		const res = await baseAxios.get(AuthUrl(`/refresh`))
 
-		if (res.data.accessToken) saveToStorage(res.data)
+		if (res.data.accessToken) {
+			Cookies.set(`AccessToken`, res.data.accessToken)
+			localStorage.setItem(`auth`, JSON.stringify(true))
+		}
 
 		return res
 	},

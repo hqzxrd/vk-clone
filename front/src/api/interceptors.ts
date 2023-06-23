@@ -1,4 +1,4 @@
-import { AuthService, removeTokensCookie } from '@/services/auth/auth.service'
+import { AuthService } from '@/services/auth/auth.service'
 import axios, { InternalAxiosRequestConfig } from 'axios'
 import { error } from 'console'
 import Cookies from 'js-cookie'
@@ -33,17 +33,37 @@ filesAxios.interceptors.request.use((config) => checkAuth(config))
 
 authAxios.interceptors.request.use((config) => checkAuth(config))
 
+let isRetry = false
+const retrySubscribers: any = []
+
 authAxios.interceptors.response.use(
 	(config) => config,
-	async (error) => {
-		const request = error.config
+	async (error: any) => {
+		const {
+			config,
+			response: { status },
+		} = error
+		const originalRequest = config
+		console.log(originalRequest, status)
 
-		if (error.response.status === 401 && !error.config._isRetry) {
-			error.config._isRetry = true
-
+		if (status === 401) {
 			try {
-				await AuthService.getNewsTokens()
-				return authAxios.request(request)
+				const retryOrigReq = new Promise((resolve) => {
+					retrySubscribers.push(() => {
+						resolve(authAxios.request(originalRequest))
+					})
+				})
+
+				if (!isRetry) {
+					isRetry = true
+					await AuthService.getNewsTokens().then(() => {
+						isRetry = false
+						retrySubscribers.map((cb: any) => cb())
+						retrySubscribers.length = 0
+					})
+				}
+
+				return await retryOrigReq
 			} catch (err) {
 				AuthService.logout()
 				toastError(err, `Авторизация закончилась`)
@@ -51,6 +71,26 @@ authAxios.interceptors.response.use(
 		}
 	}
 )
+
+// authAxios.interceptors.response.use(
+// 	(config) => config,
+// 	async (error) => {
+// 		const originalRequest = error.config
+
+// 		if (error.response.status === 401 && !error.config._isRetry) {
+// 			error.config._isRetry = true
+// 			console.log(error.config)
+
+// 			try {
+// 				await AuthService.getNewsTokens()
+// 				return authAxios.request(originalRequest)
+// 			} catch (err) {
+// 				AuthService.logout()
+// 				toastError(err, `Авторизация закончилась`)
+// 			}
+// 		}
+// 	}
+// )
 
 function checkAuth(config: InternalAxiosRequestConfig<any>) {
 	const accessToken = Cookies.get(`AccessToken`)

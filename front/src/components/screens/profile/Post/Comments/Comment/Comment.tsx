@@ -2,6 +2,7 @@ import UpdateComment from '../UpdateComment/UpdateComment'
 import { PostService } from '@/services/post/post.service'
 import { IComment, IPost } from '@/types/post.types'
 import cn from 'classnames'
+import Link from 'next/link'
 import { FC, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
@@ -47,10 +48,10 @@ const Comment: FC<props> = ({ post, comment }) => {
 
 	return (
 		<div className={styles.comment}>
-			{user.id === comment.author.id ? (
+			{user.id === post.author.id || user.id === comment.author.id ? (
 				<div className={styles.comment_actions}>
 					<div className={styles.update} onClick={() => setIsUpdate(!isUpdate)}>
-						<PencilIcon />
+						{user.id === comment.author.id ? <PencilIcon /> : <></>}
 					</div>
 					<div className={styles.delete} onClick={() => deleteComment()}>
 						X
@@ -69,9 +70,9 @@ const Comment: FC<props> = ({ post, comment }) => {
 				/>
 
 				<div className={styles.content}>
-					<div className={styles.name}>
+					<Link href={`/users/${comment.author.id}`} className={styles.name}>
 						{comment.author.name} {comment.author.surname}
-					</div>
+					</Link>
 					{isUpdate ? (
 						<UpdateComment
 							post={post}

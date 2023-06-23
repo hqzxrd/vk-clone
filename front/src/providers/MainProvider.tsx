@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { Provider } from 'react-redux'
 
 import Layout from '@/components/layout/Layout'
+import SseNotif from '@/components/screens/notification/SseNotif'
 
 import { store } from '@/store/store'
 
@@ -19,6 +20,7 @@ const MainProvider: FC<TypeComponentAuth> = ({ children, Component }) => {
 			<ReduxToast />
 			<QueryClientProvider client={queryClient}>
 				<AuthProvider Component={Component}>
+					<SseNotif />
 					<Layout>{children}</Layout>
 				</AuthProvider>
 			</QueryClientProvider>

@@ -20,7 +20,7 @@ const AuthProvider: FC<TypeComponentAuth> = ({
 
 	useEffect(() => {
 		const accessToken = Cookies.get(`AccessToken`)
-		accessToken ? checkAuth() : logout()
+		accessToken && checkAuth()
 	}, [])
 
 	return !isOnlyUser ? (

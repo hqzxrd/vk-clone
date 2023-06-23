@@ -1,0 +1,25 @@
+.dropdown {
+	width: fit-content;
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	top: 43.5px;
+	right: -1px;
+	padding: 10px;
+	background-color: var(--extra-background);
+	border: 1px solid var(--primary-border);
+	border-radius: 0 0 var(--primary-border-radius) var(--primary-border-radius);
+	box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.3);
+	animation: dropOn 100ms ease-out;
+}
+
+@keyframes dropOn {
+	0% {
+		transform: scale(0.9);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}

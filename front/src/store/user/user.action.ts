@@ -75,6 +75,7 @@ export const logout = createAsyncThunk(`auth/logout`, () => {
 export const checkAuth = createAsyncThunk<ILoginRegisterResponse>(
 	`auth/check-auth`,
 	async (_, thunkApi) => {
+		console.log(`checkAuthHook`)
 		try {
 			const res = await AuthService.getNewsTokens()
 			return res.data

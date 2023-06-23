@@ -20,6 +20,7 @@ export const initialUser: IUserDto = {
 	email: ``,
 	name: ``,
 	surname: ``,
+	avatar: ``,
 }
 
 const initialState: IInitialState = {
@@ -86,7 +87,7 @@ export const userSlice = createSlice({
 			state.isAuth = null
 		})
 		builder.addCase(checkAuth.fulfilled, (state, { payload }) => {
-			state.user = payload.user
+			// state.user = payload.user
 		})
 	},
 })

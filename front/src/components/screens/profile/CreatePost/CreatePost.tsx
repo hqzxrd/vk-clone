@@ -1,7 +1,7 @@
 import Preview from './preview/Preview'
 import { PostService } from '@/services/post/post.service'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { KeyboardEvent, useRef, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import Button from '@/components/ui/Form/Button'
@@ -20,6 +20,13 @@ const CreatePost = () => {
 	const { query } = useRouter()
 	const queryClient = useQueryClient()
 
+	const pressEnter = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+		if (e.key === `Enter` && e.shiftKey == false) {
+			e.preventDefault()
+			createPost()
+		}
+	}
+
 	const createPost = async () => {
 		clear()
 		setText(``)
@@ -35,6 +42,7 @@ const CreatePost = () => {
 					setText={setText}
 					resize={false}
 					placeholder="Что у вас нового?"
+					onKeyDown={(e) => pressEnter(e)}
 				/>
 			</div>
 			<Preview photos={photos} remove={removePhoto} />
