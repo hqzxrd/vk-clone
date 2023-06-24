@@ -20,7 +20,8 @@ export class NotificationService {
       this.notificationEvents[id] = new Subject()
     }
     const count = await this.countNoRead(id)
-    setTimeout(() => this.notificationEvents[id].next({ data: {count} }), 0)
+    const countRequestFriendNotification = await this.countRequestFriendNotification(id)
+    setTimeout(() => this.notificationEvents[id].next({ data: {count, countRequestFriendNotification} }), 0)
     return this.notificationEvents[id].asObservable();
   }
 
@@ -28,7 +29,15 @@ export class NotificationService {
     if(!this.notificationEvents[dto.userId] || (dto.userId === dto.fromUserId)) return
     const notification = await this.create(dto)
     const count = await this.countNoRead(dto.userId)
-    this.notificationEvents[dto.userId].next({ data: { ...notification, count } });
+    const countRequestFriendNotification = await this.countRequestFriendNotification(dto.userId)
+    this.notificationEvents[dto.userId].next({ data: { ...notification, count, countRequestFriendNotification } });
+ }
+
+ async sendCount(id: number) {
+  if(!this.notificationEvents[id]) return
+  const count = await this.countNoRead(id)
+  const countRequestFriendNotification = await this.countRequestFriendNotification(id)
+  this.notificationEvents[id].next({ data: {count, countRequestFriendNotification} })
  }
 
   private async create(createDto: CreateNotificationDto) {
@@ -53,6 +62,15 @@ export class NotificationService {
   private async countNoRead(id: number) {
     const count = await this.notificationRepository.countBy({
       status: NotificationStatus.NOT_READ,
+      user: {id}
+    })
+    return count
+  }
+
+  private async countRequestFriendNotification(id: number) {
+    const count = await this.notificationRepository.countBy({
+      status: NotificationStatus.NOT_READ,
+      type: NotificationType.FRIEND_REQUEST,
       user: {id}
     })
     return count
@@ -94,8 +112,18 @@ export class NotificationService {
       n.status = NotificationStatus.READ
     })
 
-    setTimeout(async () => await this.notificationRepository.save(notificationsAndCount[0]), 0)
-
+    setTimeout(async () => {
+      await this.notificationRepository.save(notificationsAndCount[0])
+      await this.sendCount(id)
+    }, 0)
     return notificationsAndCount
+  }
+
+  async readIncomingRequest(id: number) { 
+    const notifications = await this.notificationRepository.find({
+      where: {user: {id}, type: NotificationType.FRIEND_REQUEST}
+    })
+    notifications.forEach(notification => notification.status = NotificationStatus.READ )
+    await this.notificationRepository.save(notifications)
   }
 }
