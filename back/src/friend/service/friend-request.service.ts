@@ -7,13 +7,15 @@ import { UserEntity } from "src/user/entities/user.entity";
 import { REQUEST_NOT_FOUND } from "../constants/friend.error.constants";
 import { UserService } from "src/user/service/user.service";
 import { Relationship } from "src/user/relationship.enum";
+import { NotificationService } from "src/notification/service/notification.service";
 
 @Injectable()
 export class FriendRequestService {
     constructor(
         @InjectRepository(FriendRequestEntity) private readonly friendRequestRepository: Repository<FriendRequestEntity>,
         @Inject(forwardRef(() => UserService))
-        private readonly userService: UserService
+        private readonly userService: UserService,
+        private readonly notificationService: NotificationService
     ){}
 
     async createRequest(fromUserId: number, toUserId: number) {
@@ -25,10 +27,10 @@ export class FriendRequestService {
         if(reverseRequest) throw new BadRequestException('Пользователь уже отправил вам заявку')
 
         const oldFriendRequest = await this.friendRequestRepository.findOneBy(dto)
-        if(oldFriendRequest) return oldFriendRequest
-
-        const friendRequest = this.friendRequestRepository.create(dto)
-        return await this.friendRequestRepository.save(friendRequest)
+        if(!oldFriendRequest) {
+            const friendRequest = this.friendRequestRepository.create(dto)
+            return await this.friendRequestRepository.save(friendRequest)
+        }
     }
 
     async removeFriendRequest(fromUserId: number, toUserId: number) {
@@ -54,6 +56,8 @@ export class FriendRequestService {
                 select: { fromUser: this.userService.returnBaseKeyUser }
             })
             friendRequestAndCount = [friendRequest[0].map(request => request.fromUser), friendRequest[1]]
+            await this.notificationService.readIncomingRequest(id)
+            await this.notificationService.sendCount(id)
         }else {
             const friendRequest = await this.friendRequestRepository.findAndCount({
                 ...paginationOptions,
