@@ -5,6 +5,7 @@ import { LikeEntity } from "src/like/entities/like.entity";
 import { NotificationEntity } from "src/notification/entities/notification.entity";
 import { PostEntity } from "src/post/entities/post.entity";
 import { AbstractEntity } from "src/utils/base.entity";
+import { transformer } from "src/utils/transformer.date";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 
 export enum Gender {
@@ -26,16 +27,7 @@ export class UserEntity extends AbstractEntity {
     @Column()
     surname: string
 
-    @Column({
-        transformer: {
-            to(value: Date | string | null): string {
-              return value instanceof Date ? value.toISOString() : value;
-            },
-            from(value: string | null): Date {
-              return value ? new Date(`${value}Z`) : null;
-            },
-        }
-    })
+    @Column({ transformer })
     birthday: Date
 
     @Column({type: 'enum', enum: Gender})
