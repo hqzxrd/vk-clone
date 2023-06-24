@@ -19,10 +19,9 @@ export class FriendService {
       if(friend) throw new BadRequestException(USER_ALREADY_FRIENDS)
 
       const friendRequest = await this.friendRequestService.createRequest(fromUserId, toUserId)
-
+      if(!friendRequest) throw new BadRequestException('Пользователь уже отправил вам заявку')
       // * notification
       await this.sendNotificationRequestFriend(toUserId, fromUserId)
-
       return friendRequest
     }
 
@@ -34,8 +33,9 @@ export class FriendService {
       if(isAccept) {
         await this.addFriend(fromUserId, toUserId)
         // * notification
-        await this.sendNotificationAccessRequest(fromUserId, toUserId)
+        return await this.sendNotificationAccessRequest(fromUserId, toUserId)
       }
+      await this.notificationService.sendCount(fromUserId)
     }
 
     async addFriend(firstUserId: number, secondUserId: number) {
@@ -65,6 +65,7 @@ export class FriendService {
       await this.friendRequestService.removeFriendRequest(fromUserId, toUserId)
       // * notification
       await this.deleteFriendNotification(toUserId, fromUserId, NotificationType.FRIEND_REQUEST)
+      await this.notificationService.sendCount(toUserId)
     }
 
     private async sendNotificationRequestFriend(userId: number, fromUserId: number) {
