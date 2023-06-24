@@ -44,7 +44,6 @@ authAxios.interceptors.response.use(
 			response: { status },
 		} = error
 		const originalRequest = config
-		console.log(originalRequest, status)
 
 		if (status === 401) {
 			try {

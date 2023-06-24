@@ -1,13 +1,18 @@
 import { IUser } from '@/types/user.types'
+import { number } from 'prop-types'
 
-export interface INotification {
-	type: 'friend_request' | 'comment' | 'access_request' | 'like'
-	fromUser: { id: number }
-	user: { id: number }
+export interface ICountNotifSSE {
+	count: number
+}
+
+export interface INotificationSSE {
+	type: 'friend_request' | 'access_request' | 'comment' | 'like'
+	fromUser: { id: number; name: string; surname: string; nickname: string }
 	id: number
 	createDate: string
 	updateDate: string
 	status: 'not_read'
+	count: number
 }
 
 export interface INotificationDto {
@@ -17,6 +22,6 @@ export interface INotificationDto {
 	id: number
 	post: any
 	status: 'read' | 'not_read'
-	type: 'friend_request' | 'comment' | 'access_request' | 'like'
+	type: 'friend_request' | 'access_request' | 'comment' | 'like'
 	updateDate: string
 }

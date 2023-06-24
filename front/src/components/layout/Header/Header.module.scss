@@ -60,6 +60,26 @@
 		}
 
 		.notification {
+			position: relative;
+			.notifCount {
+				position: absolute;
+				top: 6px;
+				right: 6px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				font-size: 10px;
+				width: 14px;
+				height: 14px;
+				padding-right: 1.5px;
+				color: white;
+				background-color: #e52b50;
+				border-radius: 50%;
+				outline: 3px solid var(--extra-background);
+			}
+		}
+		.notifCount {
+			color: white;
 		}
 
 		.theme {

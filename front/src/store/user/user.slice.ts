@@ -27,11 +27,16 @@ const initialState: IInitialState = {
 	user: getUserLocalStore(`user`) || initialUser,
 	isAuth: getAuthStatusLocalStore(`auth`),
 	isLoading: false,
+	notificationCount: 0,
 }
 export const userSlice = createSlice({
 	name: `user`,
 	initialState,
-	reducers: {},
+	reducers: {
+		setNotifCount: (state, { payload }: { payload: number }) => {
+			state.notificationCount = payload
+		},
+	},
 	extraReducers: (builder) => {
 		builder.addCase(confirmation.pending, (state) => {
 			state.isLoading = true
@@ -88,8 +93,11 @@ export const userSlice = createSlice({
 		})
 		builder.addCase(checkAuth.fulfilled, (state, { payload }) => {
 			// state.user = payload.user
+			state.isLoading = false
 		})
 	},
 })
+
+export const { setNotifCount } = userSlice.actions
 
 export const { reducer } = userSlice
