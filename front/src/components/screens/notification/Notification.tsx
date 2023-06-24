@@ -25,7 +25,7 @@ const notification: {
 		<>
 			<div className={styles.info}>
 				<span>{`${notif.fromUser.name} ${notif.fromUser.surname} `}</span>
-				написал комментарий
+				прокомментировал вашу запись от ...
 			</div>
 		</>
 	),
@@ -42,7 +42,7 @@ const notification: {
 		<>
 			<div className={styles.info}>
 				<span>{`${notif.fromUser.name} ${notif.fromUser.surname} `}</span>
-				что-то лайкнул
+				лайкнул вашу запись от ...
 			</div>
 		</>
 	),

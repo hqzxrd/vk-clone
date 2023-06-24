@@ -4,4 +4,5 @@ export interface IInitialState {
 	user: IUserDto
 	isAuth: true | null
 	isLoading: boolean
+	notificationCount: number
 }

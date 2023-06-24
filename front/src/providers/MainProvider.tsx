@@ -18,9 +18,9 @@ const MainProvider: FC<TypeComponentAuth> = ({ children, Component }) => {
 	return (
 		<Provider store={store}>
 			<ReduxToast />
+			<SseNotif />
 			<QueryClientProvider client={queryClient}>
 				<AuthProvider Component={Component}>
-					<SseNotif />
 					<Layout>{children}</Layout>
 				</AuthProvider>
 			</QueryClientProvider>
