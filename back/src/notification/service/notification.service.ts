@@ -50,7 +50,6 @@ export class NotificationService {
     if(createDto.type === NotificationType.MESSAGE) return dto
     const notification = this.notificationRepository.create({...dto})
     await this.notificationRepository.save(notification)
-
     return await this.byIdForReturn(notification.id)
   }
 
@@ -114,17 +113,27 @@ export class NotificationService {
         fromUser: true,
         post: true,
       },
+      select: {
+        fromUser: {id: true, surname: true, name: true, nickname: true, avatar: true},
+        comment: {
+          id: true,
+          createDate: true,
+          text: true,
+          post: {
+            id: true, 
+            createDate: true
+          }
+        }
+      },
       where: {user: {id}},
       order: {createDate: 'DESC'},
       take: count,
       skip: page * count - count
     })
-
-    notificationsAndCount[0].forEach(n => {
-      n.status = NotificationStatus.READ
-    })
-
     setTimeout(async () => {
+      notificationsAndCount[0].forEach(n => {
+        n.status = NotificationStatus.READ
+      })
       await this.notificationRepository.save(notificationsAndCount[0])
       await this.sendCount(id)
     }, 0)
