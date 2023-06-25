@@ -108,11 +108,7 @@ export class NotificationService {
 
   async getAll(id: number, page: number, count: number) {
     const notificationsAndCount = await this.notificationRepository.findAndCount({
-      relations: {
-        comment: true,
-        fromUser: true,
-        post: true,
-      },
+      relations: ['post', 'fromUser', 'comment', 'comment.post'],
       select: {
         fromUser: {id: true, surname: true, name: true, nickname: true, avatar: true},
         comment: {
