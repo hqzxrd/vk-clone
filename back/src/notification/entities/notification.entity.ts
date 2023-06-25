@@ -22,15 +22,15 @@ export class NotificationEntity extends AbstractEntity {
     status: NotificationStatus
 
 
-    @ManyToOne(() => UserEntity, user => user._fromNotification)
+    @ManyToOne(() => UserEntity, user => user._fromNotification, {onDelete: 'CASCADE'})
     fromUser: UserEntity
 
     @ManyToOne(() => UserEntity, user => user.notifications)
     user: UserEntity
 
-    @ManyToOne(() => CommentEntity, comment => comment._notifications)
+    @ManyToOne(() => CommentEntity, comment => comment._notifications, {onDelete: 'CASCADE'})
     comment: CommentEntity
 
-    @ManyToOne(() => PostEntity, post => post._notifications)
+    @ManyToOne(() => PostEntity, post => post._notifications, {onDelete: 'CASCADE'})
     post: PostEntity
 }

@@ -20,6 +20,6 @@ export class CommentEntity extends AbstractEntity{
     likes: LikeEntity[]
 
 
-    @OneToMany(() => NotificationEntity, notification => notification.comment) 
+    @OneToMany(() => NotificationEntity, notification => notification.comment, {cascade: true}) 
     _notifications: NotificationEntity[]
 }

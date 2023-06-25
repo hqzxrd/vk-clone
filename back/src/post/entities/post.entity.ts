@@ -23,6 +23,6 @@ export class PostEntity extends AbstractEntity {
     @OneToMany(() => LikeEntity, like => like.post, {cascade: true})
     likes: LikeEntity[]
 
-    @OneToMany(() => NotificationEntity, notification => notification.post) 
+    @OneToMany(() => NotificationEntity, notification => notification.post, {cascade: true}) 
     _notifications: NotificationEntity[]
 }

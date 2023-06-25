@@ -75,6 +75,6 @@ export class UserEntity extends AbstractEntity {
     @OneToMany(() => NotificationEntity, notification => notification.user) 
     notifications: NotificationEntity[]
 
-    @OneToMany(() => NotificationEntity, notification => notification.fromUser)
+    @OneToMany(() => NotificationEntity, notification => notification.fromUser, {cascade: true})
     _fromNotification: NotificationEntity[]
 }
