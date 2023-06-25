@@ -1,3 +1,4 @@
+import { IComment, IPost } from '@/types/post.types'
 import { IUser } from '@/types/user.types'
 import { number } from 'prop-types'
 
@@ -16,12 +17,17 @@ export interface INotificationSSE {
 }
 
 export interface INotificationDto {
-	comment: any
+	comment?: ICommentNotifDto
 	createDate: string
-	fromUser: IUser
+	fromUser: Pick<IUser, `id` | `avatar` | `name` | `surname` | `nickname`>
 	id: number
-	post: any
+	post?: Pick<IPost, `createDate` | `id` | `text`>
 	status: 'read' | 'not_read'
 	type: 'friend_request' | 'access_request' | 'comment' | 'like'
 	updateDate: string
+}
+
+export interface ICommentNotifDto
+	extends Pick<IComment, `createDate` | `id` | `text`> {
+	post: Pick<IPost, `createDate` | `id`>
 }
