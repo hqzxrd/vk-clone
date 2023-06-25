@@ -157,8 +157,8 @@ export class PostService {
   }
   
   async sendLikeNotification(dto: Omit<SendNotificationPostDto, 'type'>) {
-   const notification = await this.notificationService.getOne({...dto, type: NotificationType.LIKE, column_type: 'post', column_id: dto.postId})
-   if(!notification) await this.sendNotification({...dto, type: NotificationType.LIKE})
+   const notification = await this.notificationService.getOne({...dto, type: NotificationType.LIKE_POST, column_type: 'post', column_id: dto.postId})
+   if(!notification) await this.sendNotification({...dto, type: NotificationType.LIKE_POST})
   }
 
   async sendNotification(dto: SendNotificationPostDto) {

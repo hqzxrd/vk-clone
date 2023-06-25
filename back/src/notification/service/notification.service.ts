@@ -44,19 +44,31 @@ export class NotificationService {
     const dto: DeepPartial<NotificationEntity>= {
       user: {id: createDto.userId}, 
       fromUser: {id: createDto.fromUserId},
-      type: createDto.type
+      type: createDto.type,
+      [createDto.column_type]: {id: createDto.column_id}
     }
     if(createDto.type === NotificationType.MESSAGE) return dto
-    const notification = this.notificationRepository.create({...dto,  [createDto.column_type]: {id: createDto.column_id}})
+    const notification = this.notificationRepository.create({...dto})
     await this.notificationRepository.save(notification)
 
-    return await this.notificationRepository.findOne({
-      relations: {comment: true, fromUser: true, post: true},
+    return await this.byIdForReturn(notification.id)
+  }
+
+  async byIdForReturn(id: number) {
+    const { fromUser, createDate, comment, post, status, type } = await this.notificationRepository.findOne({
+      where: {id},
+      relations: ['post', 'fromUser', 'comment', 'comment.post'],
       select: {
         fromUser: {id: true, surname: true, name: true, nickname: true, avatar: true},
-      },
-      where: {id: notification.id}
+        comment: {
+          id: true,
+          createDate: true,
+          text: true,
+          post: {id: true, createDate: true}
+      }
+      }
     })
+    return {fromUser, status, type, createDate, comment, post}
   }
 
   private async countNoRead(id: number) {

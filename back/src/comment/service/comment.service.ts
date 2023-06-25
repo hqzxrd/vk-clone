@@ -25,13 +25,15 @@ export class CommentService {
      const post = await this.postService.findOne(postId)
     //  ! need set error
     if(!post) throw new BadRequestException()
-    const comment = this.commentRepository.create({text, post: {id: postId}, author: {id: userId}})
+    const newComment = this.commentRepository.create({text, post: {id: postId}, author: {id: userId}})
     const countComments = await this.commentRepository.countBy({post:{id: postId}})
+
+    const comment = await this.commentRepository.save(newComment)
 
     // * notification
     await this.sendNotification({commentId: comment.id, fromUserId: userId, type: NotificationType.COMMENT, userId: post.author.id})
     
-    return {...await this.commentRepository.save(comment), countComments}
+    return {comment, countComments}
   }
 
   async update(id: number, updateCommentDto: UpdateCommentDto, userId: number) {
@@ -127,8 +129,8 @@ export class CommentService {
   }
 
   async sendLikeNotification(dto: Omit<SendNotificationCommentDto, 'type'>) {
-    const notification = await this.notificationService.getOne({...dto, type: NotificationType.LIKE, column_type: 'comment', column_id: dto.commentId})
-    if(!notification) await this.sendNotification({...dto, type: NotificationType.LIKE})
+    const notification = await this.notificationService.getOne({...dto, type: NotificationType.LIKE_COMMENT, column_type: 'comment', column_id: dto.commentId})
+    if(!notification) await this.sendNotification({...dto, type: NotificationType.LIKE_COMMENT})
    }
 
   async sendNotification(dto: SendNotificationCommentDto) {
