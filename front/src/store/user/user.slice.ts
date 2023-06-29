@@ -6,7 +6,7 @@ import {
 	logout,
 	register,
 } from './user.action'
-import { IInitialState } from './user.interface'
+import { IInitialState, INotifications } from './user.interface'
 import { IUserDto } from '@/types/auth.types'
 import { createSlice } from '@reduxjs/toolkit'
 
@@ -27,14 +27,17 @@ const initialState: IInitialState = {
 	user: getUserLocalStore(`user`) || initialUser,
 	isAuth: getAuthStatusLocalStore(`auth`),
 	isLoading: false,
-	notificationCount: 0,
+	notifications: {
+		notificationCount: 0,
+		notificationIncomingCount: 0,
+	},
 }
 export const userSlice = createSlice({
 	name: `user`,
 	initialState,
 	reducers: {
-		setNotifCount: (state, { payload }: { payload: number }) => {
-			state.notificationCount = payload
+		setNotifCount: (state, { payload }: { payload: INotifications }) => {
+			state.notifications = payload
 		},
 	},
 	extraReducers: (builder) => {

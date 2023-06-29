@@ -12,13 +12,14 @@ import ThemeIcon from '@/components/ui/Icon/ThemeIcon'
 
 import { useActions } from '@/hooks/useActions'
 import { useAuth } from '@/hooks/useAuth'
+import { useTypedSelector } from '@/hooks/useTypedSelector'
 
 import { setNotifCount } from '@/store/user/user.slice'
 
 import styles from './Header.module.scss'
 
 const AuthHeader: FC = () => {
-	const { notificationCount } = useAuth()
+	const { notifications: notif } = useTypedSelector((st) => st.user)
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 	const [notifications, setNotifications] = useState<INotificationDto[]>([])
 	const { logout, changeTheme } = useActions()
@@ -29,7 +30,9 @@ const AuthHeader: FC = () => {
 		if (!isOpen) {
 			const res = await NotificationService.getAllNotifications()
 			setNotifications(res.data[0])
-			dispatch(setNotifCount(0))
+			dispatch(
+				setNotifCount({ notificationCount: 0, notificationIncomingCount: 0 })
+			)
 		}
 	}
 
@@ -44,10 +47,8 @@ const AuthHeader: FC = () => {
 					}
 					onClick={() => handleClick()}
 				>
-					{notificationCount ? (
-						<div className={styles.notifCount}>{notificationCount}</div>
-					) : (
-						<></>
+					{notif.notificationCount !== 0 && (
+						<div className={styles.notifCount}>{notif.notificationCount}</div>
 					)}
 
 					<NotificIcon />

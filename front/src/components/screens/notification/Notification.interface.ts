@@ -8,12 +8,13 @@ export interface ICountNotifSSE {
 
 export interface INotificationSSE {
 	type: 'friend_request' | 'access_request' | 'comment' | 'like'
-	fromUser: { id: number; name: string; surname: string; nickname: string }
+	fromUser: Pick<IUser, `id` | `name` | `surname` | `nickname`>
 	id: number
 	createDate: string
 	updateDate: string
 	status: 'not_read'
 	count: number
+	countRequestFriendNotification: number
 }
 
 export interface INotificationDto {

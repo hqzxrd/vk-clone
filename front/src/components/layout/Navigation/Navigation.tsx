@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { FC, useState } from 'react'
 
+import NotificationBadge from '@/components/screens/friends/NotificationBadge'
 import FriendsIcon from '@/components/ui/Icon/FriendsIcon'
 import MessangerIcon from '@/components/ui/Icon/MessangerIcon'
 import PeoplesIcon from '@/components/ui/Icon/PeoplesIcon'
@@ -40,6 +41,8 @@ const Navigation: FC = () => {
 						</div>
 
 						<div>Друзья</div>
+
+						<NotificationBadge />
 					</div>
 				</Link>
 				<Link href="/peoples">
