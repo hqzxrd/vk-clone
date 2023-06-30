@@ -138,6 +138,22 @@ export class UserService {
     return [friends, data.countFriends]
   }
 
+  async getFriendIds(id: number) {
+    const friends = await this.userRepository.query(
+      `SELECT id FROM users U
+       WHERE U.id <> $1
+          AND EXISTS(
+            SELECT *
+            FROM friend F
+            WHERE (F."usersId_1" = $1 AND F."usersId_2" = U.id )
+            OR (F."usersId_2" = $1 AND F."usersId_1" = U.id )
+          ); `,
+      [id],
+    );
+
+    return friends.map(friend => friend.id)
+  }
+
   async getFriendRequest(id: number, type: FriendRequestType, page: number, count: number) {
     return await this.friendRequestService.getFriendRequest(id, type, page, count)
   }

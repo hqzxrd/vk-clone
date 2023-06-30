@@ -179,26 +179,27 @@ export class PostService {
   }
 
 
-  getParamsFind(): FindOneOptions<PostEntity> {
-    return {
-      relations: ['author', 'likes', 'likes.user', 'comments', 'comments.author'],
-      select: {
-        author: {
-          id: true, 
-          avatar: true, 
-          name: true, 
-          surname: true, 
-          nickname: true
-        },
-        likes: {
-          id: true,
-          user: {id: true}
-        },
-        comments: {
-          id: true,
-          author: {id: true}
-        }
-      }
-    }
+  async newsLine(userId: number, page: number, count: number) {
+    const selectUser = Object.keys(this.userService.returnBaseKeyUser).map(key => `author.${key}`);
+    const friendIds = await this.userService.getFriendIds(userId)
+    const postsAndCount = await this.postRepository
+      .createQueryBuilder('post')
+      .leftJoin('post.author', 'author')
+      .addSelect(selectUser)
+      .loadRelationCountAndMap('post.countComments', 'post.comments')
+      .loadRelationCountAndMap('post.countLikes', 'post.likes')
+      .take(count)
+      .skip(page * count - count)
+      .orderBy('post.createDate', 'DESC')
+      .where('author.id IN (:...ids)', {ids: [...friendIds, userId]})
+      .getManyAndCount()
+
+      const posts = await Promise.all(postsAndCount[0].map(async post => {
+        let isLike = false
+        if(userId) isLike = await this.getIsLike(post.id, userId);
+        return {...post, isLike}
+      }))
+
+      return [posts, postsAndCount[1]]
   }
 }
