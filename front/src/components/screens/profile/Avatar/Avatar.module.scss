@@ -1,40 +1,37 @@
 .avatar {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	height: 200px;
 	.avatar_img {
 		display: flex;
 		justify-content: center;
-		align-items: center;
-		margin-bottom: 10px;
 		min-width: 300px;
-		display: flex;
+		position: relative;
+		top: -70px;
+		// img {
+		// 	align-items: center;
+		// 	border: 1px solid var(--primary-border);
+		// 	border-radius: 50%;
+		// 	padding: 3px;
+		// 	width: auto;
+		// 	height: auto;
+		// 	max-width: 300px;
+		// 	max-height: 420px;
+		// }
 
-		img {
-			align-items: center;
-			border: 1px solid var(--primary-border);
-			border-radius: var(--primary-border-radius);
-			padding: 3px;
-			width: auto;
-			height: auto;
-			max-width: 300px;
-			max-height: 420px;
-		}
-
-		.avatar_placeholder {
-			font-size: 82px;
-			user-select: none;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			border: 1px solid var(--primary-border);
-			border-radius: var(--primary-border-radius);
-			width: 300px;
-			height: 300px;
-			color: white;
-			overflow: hidden;
-		}
+		// .avatar_placeholder {
+		// 	font-size: 82px;
+		// 	user-select: none;
+		// 	display: flex;
+		// 	justify-content: center;
+		// 	align-items: center;
+		// 	border: 1px solid var(--primary-border);
+		// 	border-radius: var(--primary-border-radius);
+		// 	width: 300px;
+		// 	height: 300px;
+		// 	color: white;
+		// 	overflow: hidden;
+		// }
 	}
 
 	> div:not(:first-child) {

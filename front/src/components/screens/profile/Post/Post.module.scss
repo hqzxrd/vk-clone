@@ -11,15 +11,6 @@
 	.postHeader {
 		display: flex;
 		gap: 15px;
-		.postAvatar {
-			> img {
-				border: 1px solid var(--primary-border);
-				border-radius: 50%;
-				cursor: pointer;
-				user-select: none;
-				object-fit: cover;
-			}
-		}
 
 		.whosePost {
 			display: flex;
@@ -72,11 +63,11 @@
 			align-items: center;
 			gap: 5px;
 			padding: 5px 10px;
-			background-color: var(--primary-hover);
+			background-color: var(--post-action);
 			color: #b2b2b2;
 			border-radius: 20px;
 			&:hover {
-				background-color: var(--primary-border);
+				background-color: var(--secondary-hover);
 			}
 		}
 		.isLiked {

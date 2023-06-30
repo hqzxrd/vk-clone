@@ -67,7 +67,6 @@ const notification: {
 }
 
 const Notification: FC<props> = ({ notif }) => {
-	console.log(notif)
 	return (
 		<Link className={styles.link} href={`/users/${notif.fromUser.id}`}>
 			<AvatarMini user={notif.fromUser} width={30} height={30} isLink={false} />

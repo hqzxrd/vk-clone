@@ -9,9 +9,9 @@ import React, { FC, useEffect, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
-import CommentsIcon from '@/components/ui/Icon/CommentsIcon'
-import LikeIcon from '@/components/ui/Icon/LikeIcon'
-import PencilIcon from '@/components/ui/Icon/PencilIcon'
+import PencilIcon from '@/components/ui/Icons/PencilIcon'
+import CommentsIcon from '@/components/ui/Icons/Post/CommentsIcon'
+import LikeIcon from '@/components/ui/Icons/Post/LikeIcon'
 
 import { FilesUrl } from '@/config/api.config'
 

@@ -6,7 +6,7 @@ import { FC, useEffect, useRef, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import Button from '@/components/ui/Form/Button'
-import CamIcon from '@/components/ui/Icon/CamIcon'
+import CamIcon from '@/components/ui/Icons/Post/CamIcon'
 import Textarea from '@/components/ui/Textarea/Textarea'
 
 import useSeveralPhotos from '@/hooks/useSeveralPhotos'

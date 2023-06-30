@@ -7,8 +7,8 @@ import { FC, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
-import LikeIcon from '@/components/ui/Icon/LikeIcon'
-import PencilIcon from '@/components/ui/Icon/PencilIcon'
+import PencilIcon from '@/components/ui/Icons/PencilIcon'
+import LikeIcon from '@/components/ui/Icons/Post/LikeIcon'
 
 import { useAuth } from '@/hooks/useAuth'
 

@@ -1,4 +1,5 @@
 import AboutCount from '../AboutCount/AboutCount'
+import UserActions from '../UserActions/UserActions'
 import { IUser } from '@/types/user.types'
 import { useRouter } from 'next/router'
 
@@ -34,13 +35,14 @@ const About = () => {
 	return (
 		<div className={styles.about}>
 			<div className={styles.about_header}>
-				<div
-					className={styles.name}
-				>{`${profile?.name} ${profile?.surname}`}</div>
+				<div className={styles.name}>
+					{profile?.name} {profile?.surname}
+				</div>
 				<div className={styles.status}>{profile?.status}</div>
+				<div className={styles.personalInfo}>Личная информация</div>
 			</div>
 
-			<div className={styles.about_field}>
+			{/* <div className={styles.about_field}>
 				<div>Город:</div>
 				<div>{profile?.city}</div>
 			</div>
@@ -51,15 +53,23 @@ const About = () => {
 			<div className={styles.about_field}>
 				<div>Дата рождения:</div>
 				<div>{`${day}.${month}.${year}`}</div>
-			</div>
+			</div> */}
 
 			<div className={styles.info}>
-				<AboutCount name="Друзей" value={profile ? profile?.countFriends : 0} />
-				<AboutCount
-					name="Подписчиков"
-					value={profile ? profile?.countIncomingRequests : 0}
-				/>
-				<AboutCount name="Постов" value={posts ? posts[1] : 0} />
+				<div className={styles.userActions}>
+					<UserActions />
+				</div>
+				<div className={styles.userStats}>
+					<AboutCount
+						name="Друзей"
+						value={profile ? profile?.countFriends : 0}
+					/>
+					<AboutCount
+						name="Подписчиков"
+						value={profile ? profile?.countIncomingRequests : 0}
+					/>
+					<AboutCount name="Постов" value={posts ? posts[1] : 0} />
+				</div>
 			</div>
 		</div>
 	)

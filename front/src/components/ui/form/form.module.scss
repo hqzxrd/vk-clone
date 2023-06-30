@@ -20,7 +20,7 @@
 	background-color: var(--primary-button);
 	border-radius: var(--primary-border-radius);
 	padding: 8.5px 0px;
-
+	font-weight: bold;
 	&:active {
 		position: relative;
 		transform: translateY(1px);
