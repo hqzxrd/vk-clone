@@ -3,9 +3,10 @@
 	gap: 10px;
 	width: 400px;
 	height: 50px;
+	border-radius: var(--primary-border-radius);
 	.info {
 		span {
-			color: #447bba;
+			color: var(--primary-button);
 		}
 	}
 }

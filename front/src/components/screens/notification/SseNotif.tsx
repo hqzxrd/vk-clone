@@ -6,18 +6,21 @@ import { toastr } from 'react-redux-toastr'
 
 import { notificationUrl } from '@/config/api.config'
 
-import { useAuth } from '@/hooks/useAuth'
-
 import { setNotifCount } from '@/store/user/user.slice'
 
 const SseNotif = () => {
-	const { user } = useAuth()
 	const dispatch = useDispatch()
 
 	const hanleMessage = (e: MessageEvent<any>) => {
 		const message: INotificationSSE = JSON.parse(e.data)
+		console.log(message)
 
-		dispatch(setNotifCount(message.count))
+		dispatch(
+			setNotifCount({
+				notificationCount: message.count,
+				notificationIncomingCount: message.countRequestFriendNotification,
+			})
+		)
 
 		if (message)
 			if (message.type === 'friend_request') {
@@ -48,22 +51,20 @@ const SseNotif = () => {
 			)
 		}
 	}
-
+	const token = Cookies.get(`AccessToken`)
 	useEffect(() => {
 		let es: EventSource | undefined
-		if (typeof window !== 'undefined') {
-			es = new window.EventSource(
-				notificationUrl(`/sse?token=${Cookies.get(`AccessToken`)}`),
-				{
-					withCredentials: true,
-				}
-			)
+
+		if (typeof window !== 'undefined' && token) {
+			es = new window.EventSource(notificationUrl(`/sse?token=${token}`), {
+				withCredentials: true,
+			})
 		}
 
 		es && es.addEventListener('message', hanleMessage)
 
 		return () => es && es.removeEventListener('message', hanleMessage)
-	}, [])
+	}, [token])
 	return <></>
 }
 

@@ -1,0 +1,21 @@
+.actions {
+	display: flex;
+	gap: 10px;
+	> div {
+		display: flex;
+		align-items: center;
+		user-select: none;
+		cursor: pointer;
+		font-weight: bold;
+		background-color: var(--primary-button);
+		padding: 10px 15px;
+		border-radius: 12px;
+		color: var(--primary-button-color);
+		> svg {
+			display: flex;
+			stroke: var(--primary-color);
+			width: 30px;
+			height: auto;
+		}
+	}
+}

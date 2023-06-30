@@ -1,5 +1,7 @@
+import NotificationBadge from './NotificationBadge'
 import Item from './item/Item'
 import { UserService } from '@/services/user/user.service'
+import { IUser } from '@/types/user.types'
 import cn from 'classnames'
 import { useEffect, useState } from 'react'
 import { useQuery, useQueryClient } from 'react-query'
@@ -8,10 +10,17 @@ import { useAuth } from '@/hooks/useAuth'
 
 import styles from './Friends.module.scss'
 
-const tabs = [`Все друзья`, `Входящие`, `Исходящие`]
+const tabs = [
+	<div>Все друзья</div>,
+	<div className={styles.tab}>
+		Входящие <NotificationBadge />
+	</div>,
+	<div>Исходящие</div>,
+]
 
 const Friends = () => {
 	const [activeTab, setActiveTab] = useState<number>(0)
+	const [list, setList] = useState<IUser[]>([])
 	const { user } = useAuth()
 	const queryClient = useQueryClient()
 	const { data: friends } = useQuery(
@@ -19,6 +28,7 @@ const Friends = () => {
 		() => UserService.getFriends(user.id),
 		{
 			select: ({ data }) => data,
+			enabled: activeTab === 0,
 		}
 	)
 
@@ -27,6 +37,7 @@ const Friends = () => {
 		() => UserService.getRequest(`incoming`),
 		{
 			select: ({ data }) => data,
+			enabled: activeTab === 1,
 		}
 	)
 
@@ -35,14 +46,9 @@ const Friends = () => {
 		() => UserService.getRequest(`outgoing`),
 		{
 			select: ({ data }) => data,
+			enabled: activeTab === 2,
 		}
 	)
-
-	useEffect(() => {
-		if (activeTab === 0) queryClient.invalidateQueries(`get_friends`)
-		if (activeTab === 1) queryClient.invalidateQueries(`get_incoming`)
-		if (activeTab === 2) queryClient.invalidateQueries(`get_outgoing`)
-	}, [activeTab])
 
 	return (
 		<div className={styles.friends_wrapper}>

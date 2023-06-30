@@ -5,7 +5,7 @@ import { FC, KeyboardEvent, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
-import SendIcon from '@/components/ui/Icon/Send'
+import SendIcon from '@/components/ui/Icons/Send'
 import Textarea from '@/components/ui/Textarea/Textarea'
 
 import { useAuth } from '@/hooks/useAuth'

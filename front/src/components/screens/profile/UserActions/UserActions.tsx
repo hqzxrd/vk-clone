@@ -1,21 +1,21 @@
 import { FriendService } from '@/services/friends/friends.service'
 import { Relationship } from '@/types/user.types'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
-import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
-
-import { FilesUrl } from '@/config/api.config'
+import AcceptIcon from '@/components/ui/Icons/Profile/AcceptIcon'
+import DeleteFriendIcon from '@/components/ui/Icons/Profile/DeleteFriendIcon'
+import DenyIcon from '@/components/ui/Icons/Profile/DenyIcon'
+import MessageIcon from '@/components/ui/Icons/Profile/MessageIcon'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useAvatarGenerate } from '@/hooks/useAvatarGenerate'
 import { useProfile } from '@/hooks/useProfile'
 
-import styles from './Avatar.module.scss'
+import styles from './UserActions.module.scss'
 
-const Avatar = () => {
+const UserActions = () => {
 	const [stateRequestFriend, setStateRequestFriend] =
 		useState<Relationship>('none')
 	const { profile } = useProfile()
@@ -56,29 +56,37 @@ const Avatar = () => {
 	}
 
 	return (
-		<div className={styles.avatar}>
-			<div className={styles.avatar_img}>
-				<AvatarMini user={profile} width={250} height={250} isLink={false} />
-				{/* {profile?.avatar ? (
-					<Image
-						priority={true}
-						src={`${FilesUrl(profile?.avatar)}`}
-						width={300}
-						height={300}
-						quality={100}
-						alt="avatar"
-					/>
-				) : (
-					<div
-						style={{ backgroundColor: color }}
-						className={styles.avatar_placeholder}
-					>
-						{profile?.name[0]}
+		<div className={styles.actions}>
+			{user.id === profile?.id ? (
+				<div onClick={() => push(`/users/profile/edit`)}>
+					Редактировать профиль
+				</div>
+			) : (
+				<>
+					{stateRequestFriend === 'none' && (
+						<div onClick={() => sendRequest()}>Добавить в друзья</div>
+					)}
+					{stateRequestFriend === 'outgoing' && (
+						<div onClick={() => cancelRequest()}>Отменить заявку</div>
+					)}
+					{stateRequestFriend === 'incoming' && (
+						<>
+							<div onClick={() => resOnFriendRequest(true)}>Принять</div>
+							<div onClick={() => resOnFriendRequest(false)}>Отказать</div>
+						</>
+					)}
+					{stateRequestFriend === 'friend' && (
+						<div onClick={() => removeFriend()}>
+							<DeleteFriendIcon />
+						</div>
+					)}
+					<div>
+						<MessageIcon />
 					</div>
-				)} */}
-			</div>
+				</>
+			)}
 		</div>
 	)
 }
 
-export default Avatar
+export default UserActions

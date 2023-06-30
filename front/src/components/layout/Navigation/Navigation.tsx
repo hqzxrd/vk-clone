@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { FC, useState } from 'react'
 
-import FriendsIcon from '@/components/ui/Icon/FriendsIcon'
-import MessangerIcon from '@/components/ui/Icon/MessangerIcon'
-import PeoplesIcon from '@/components/ui/Icon/PeoplesIcon'
-import ProfileIcon from '@/components/ui/Icon/ProfileIcon'
+import NotificationBadge from '@/components/screens/friends/NotificationBadge'
+import FriendsIcon from '@/components/ui/Icons/LeftSideMenu/FriendsIcon'
+import MessangerIcon from '@/components/ui/Icons/LeftSideMenu/MessangerIcon'
+import PeoplesIcon from '@/components/ui/Icons/LeftSideMenu/PeoplesIcon'
+import ProfileIcon from '@/components/ui/Icons/LeftSideMenu/ProfileIcon'
 
 import { useAuth } from '@/hooks/useAuth'
 
@@ -40,6 +41,8 @@ const Navigation: FC = () => {
 						</div>
 
 						<div>Друзья</div>
+
+						<NotificationBadge />
 					</div>
 				</Link>
 				<Link href="/peoples">

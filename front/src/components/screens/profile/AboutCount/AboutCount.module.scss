@@ -6,7 +6,7 @@
 	border: 1px solid var(--primary-border);
 	border-radius: var(--primary-border-radius);
 	&:hover {
-		background-color: var(--primary-border);
+		background-color: var(--primary-hover);
 	}
 	> div:first-child {
 		font-size: 100%;
