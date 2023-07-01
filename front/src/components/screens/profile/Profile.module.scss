@@ -4,4 +4,10 @@
 	flex-direction: column;
 	gap: 15px;
 	margin-top: 50px;
+	.noPosts {
+		margin-top: 25px;
+		font-size: 24px;
+		text-align: center;
+		color: var(--secondary-color);
+	}
 }

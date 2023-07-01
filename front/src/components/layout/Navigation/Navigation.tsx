@@ -4,6 +4,7 @@ import { FC, useState } from 'react'
 import NotificationBadge from '@/components/screens/friends/NotificationBadge'
 import FriendsIcon from '@/components/ui/Icons/LeftSideMenu/FriendsIcon'
 import MessangerIcon from '@/components/ui/Icons/LeftSideMenu/MessangerIcon'
+import NewsIcon from '@/components/ui/Icons/LeftSideMenu/NewsIcon'
 import PeoplesIcon from '@/components/ui/Icons/LeftSideMenu/PeoplesIcon'
 import ProfileIcon from '@/components/ui/Icons/LeftSideMenu/ProfileIcon'
 
@@ -23,6 +24,14 @@ const Navigation: FC = () => {
 							<ProfileIcon />
 						</div>
 						<div>Моя страница</div>
+					</div>
+				</Link>
+				<Link href={`/newsline`}>
+					<div>
+						<div className={style.icon}>
+							<NewsIcon />
+						</div>
+						<div>Лента</div>
 					</div>
 				</Link>
 				<Link href="/messanger">
