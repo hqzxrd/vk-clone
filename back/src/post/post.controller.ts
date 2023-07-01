@@ -6,6 +6,7 @@ import { AccessJwtGuard } from 'src/auth/decorators/access-jwt.decorator';
 import { User } from 'src/user/decorators/user.decorator';
 import { FilesInterceptor,  MulterFile } from '@webundsoehne/nest-fastify-file-upload';
 import { ProductQueryDto } from './dto/product.query.dto';
+import { PaginationQueryDto } from 'src/utils/pagination.query.dto';
 
 @AccessJwtGuard()
 @Controller('post')
@@ -60,6 +61,16 @@ export class PostController {
     ) files: MulterFile[]
   ) {
     return this.postService.update(id, userId, updatePostDto, files);
+  }
+
+  @UsePipes(new ValidationPipe({transform: true}))
+  @AccessJwtGuard()
+  @Get('newsline')
+  newsLine(
+    @Query() {count, page} : PaginationQueryDto,
+    @User('id') userId: number
+  ) {
+    return this.postService.newsLine(userId, page, count) 
   }
 
   
