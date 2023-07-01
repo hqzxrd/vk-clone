@@ -1,9 +1,13 @@
 import { TokenEntity } from "src/auth/entities/token.entity";
+import { ChatEntity } from "src/chat/entities/chat.entity";
 import { CommentEntity } from "src/comment/entities/comment.entity";
 import { FriendRequestEntity } from "src/friend/entities/friend-request.entity";
 import { LikeEntity } from "src/like/entities/like.entity";
+import { MessageStatusEntity } from "src/message/entities/message-status.entity";
+import { MessageEntity } from "src/message/entities/message.entity";
 import { NotificationEntity } from "src/notification/entities/notification.entity";
 import { PostEntity } from "src/post/entities/post.entity";
+import { RoomEntity } from "src/room/entities/room.entity";
 import { AbstractEntity } from "src/utils/base.entity";
 import { transformer } from "src/utils/transformer.date";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
@@ -67,7 +71,19 @@ export class UserEntity extends AbstractEntity {
     likes: LikeEntity[]
 
     @OneToMany(() => PostEntity, post => post.author)
-    posts: PostEntity
+    posts: PostEntity[]
+
+    @ManyToMany(() => ChatEntity)
+    privateChats: ChatEntity[] 
+
+    @OneToMany(() => RoomEntity, room => room.owner) 
+    ownerRooms: RoomEntity[]
+
+    @OneToMany(() => MessageEntity, message => message.author)
+    messages: MessageEntity[]
+
+    @OneToMany(() => MessageStatusEntity, messageStatus => messageStatus.author)
+    _messageStatus: MessageStatusEntity[]
 
     @OneToMany(() => TokenEntity, (token) => token.user, {cascade: true})
     tokens: TokenEntity[]
