@@ -4,7 +4,7 @@
 	background-color: var(--extra-background);
 	border: 1px solid var(--primary-border);
 	border-radius: var(--primary-border-radius);
-	max-width: 320px;
+	min-width: 320px;
 	padding: 20px;
 	margin: 0 auto;
 	form {

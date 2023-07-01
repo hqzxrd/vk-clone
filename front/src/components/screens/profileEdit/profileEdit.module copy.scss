@@ -1,0 +1,83 @@
+.auth {
+	display: flex;
+	justify-content: center;
+	background-color: var(--extra-background);
+	border: 1px solid var(--primary-border);
+	border-radius: var(--primary-border-radius);
+	// max-width: 320px;
+	padding: 20px;
+	margin: 0 auto;
+	form {
+		// width: 80%;
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+
+		.heading {
+			text-align: center;
+		}
+
+		.wrapper {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			border-bottom: 1px solid var(--secondary-border);
+			padding: 10px 0;
+
+			.hover_wrapper {
+				width: 80px;
+				height: 80px;
+				background-color: black;
+				border-radius: 50%;
+
+				.avatar_placeholder {
+					user-select: none;
+					cursor: pointer;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 80px;
+					height: 80px;
+					font-size: 400%;
+					color: white;
+					border-radius: 50%;
+					text-transform: uppercase;
+					&:hover {
+						opacity: 0.7;
+					}
+				}
+				> img {
+					cursor: pointer;
+					user-select: none;
+					border-radius: 50%;
+					object-fit: cover;
+					outline: 2px solid var(--primary-border);
+					&:hover {
+						opacity: 0.7;
+					}
+				}
+			}
+
+			span {
+				font-size: 12px;
+				color: var(--secondary-color);
+			}
+		}
+
+		> :nth-child(3) {
+			margin-top: 10px;
+		}
+
+		.link {
+			a {
+				color: var(--primary-button-color);
+			}
+			cursor: pointer;
+			text-align: center;
+			background-color: var(--primary-button);
+			border-radius: var(--primary-border-radius);
+			padding: 8.5px 0px;
+			margin-bottom: 10px;
+		}
+	}
+}
