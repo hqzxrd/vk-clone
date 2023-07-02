@@ -14,6 +14,10 @@ import { CommentModule } from './comment/comment.module';
 import { LikeModule } from './like/like.module';
 import { FriendModule } from './friend/friend.module';
 import { NotificationModule } from './notification/notification.module';
+import { ChatModule } from './chat/chat.module';
+import { ChatEventsModule } from './chat-events/chat-events.module';
+import { RoomModule } from './room/room.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -36,7 +40,11 @@ import { NotificationModule } from './notification/notification.module';
     CommentModule,
     LikeModule,
     FriendModule,
-    NotificationModule
+    NotificationModule,
+    ChatModule,
+    ChatEventsModule,
+    RoomModule,
+    MessageModule
   ]
 })
 export class AppModule {}

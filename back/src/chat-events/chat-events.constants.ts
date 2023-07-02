@@ -1,0 +1,1 @@
+export const PRIVATE_CHAT_EVENT = 'private chat event'
