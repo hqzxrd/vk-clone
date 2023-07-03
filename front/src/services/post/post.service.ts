@@ -8,27 +8,41 @@ import {
 
 import { CommentUrl, PostUrl } from '@/config/api.config'
 
+import { toastError } from '@/utils/toastError'
+
 export const PostService = {
 	async getNewsline(query: string) {
-		return await filesAxios.get(PostUrl(`/newsline${query}`))
+		try {
+			return await filesAxios.get(PostUrl(`/newsline${query}`))
+		} catch (error) {
+			toastError(error)
+		}
 	},
 
 	async getAll(query: string) {
-		return await filesAxios.get(PostUrl(query))
+		try {
+			return await filesAxios.get(PostUrl(query))
+		} catch (error) {
+			toastError(error)
+		}
 	},
 
 	async createPost(text: TypePostText, files: TypePostFiles) {
-		const formData = new FormData()
+		try {
+			const formData = new FormData()
 
-		if (files[0]) {
-			files.forEach((file, i) => {
-				formData.append(`photos`, file, file.name)
-			})
+			if (files[0]) {
+				files.forEach((file, i) => {
+					formData.append(`photos`, file, file.name)
+				})
+			}
+
+			formData.append(`text`, text)
+
+			return await filesAxios.post(PostUrl(``), formData)
+		} catch (error) {
+			toastError(error)
 		}
-
-		formData.append(`text`, text)
-
-		return await filesAxios.post(PostUrl(``), formData)
 	},
 
 	async updatePost(
@@ -37,51 +51,82 @@ export const PostService = {
 		files: TypePostFiles,
 		oldPhotos: string[]
 	) {
-		console.log(oldPhotos)
-		const formData = new FormData()
+		try {
+			const formData = new FormData()
 
-		if (files[0]) {
-			files.map((file) => {
-				formData.append(`newPhotos`, file, file.name)
-			})
+			if (files[0]) {
+				files.map((file) => {
+					formData.append(`newPhotos`, file, file.name)
+				})
+			}
+
+			if (oldPhotos[0]) {
+				oldPhotos.map((str) => {
+					formData.append(`photos[]`, str)
+				})
+			}
+
+			formData.append(`text`, text)
+
+			return await filesAxios.patch(PostUrl(`/${id}`), formData)
+		} catch (error) {
+			toastError(error)
 		}
-
-		if (oldPhotos[0]) {
-			oldPhotos.map((str) => {
-				formData.append(`photos[]`, str)
-			})
-		}
-
-		formData.append(`text`, text)
-
-		return await filesAxios.patch(PostUrl(`/${id}`), formData)
 	},
 
 	async detelePost(id: number) {
-		return await authAxios.delete(PostUrl(`/${id}`))
+		try {
+			return await authAxios.delete(PostUrl(`/${id}`))
+		} catch (error) {
+			toastError(error)
+		}
 	},
 
 	async likePost(id: number) {
-		return await authAxios.get(PostUrl(`/like/${id}`))
+		try {
+			return await authAxios.get(PostUrl(`/like/${id}`))
+		} catch (error) {
+			toastError(error)
+		}
 	},
 
 	async createComment(postId: number, text: string) {
-		return await authAxios.post(CommentUrl(``), { postId, text })
+		try {
+			return await authAxios.post(CommentUrl(``), { postId, text })
+		} catch (error) {
+			toastError(error)
+		}
 	},
 
 	async getCommentsByPostId(query: string) {
-		return await authAxios.get<[IComment[], number]>(CommentUrl(query))
+		try {
+			return await authAxios.get<[IComment[], number]>(CommentUrl(query))
+		} catch (error) {
+			toastError(error)
+		}
 	},
 
 	async deleteComment(commentId: number) {
-		return await authAxios.delete(CommentUrl(`/${commentId}`))
+		try {
+			return await authAxios.delete(CommentUrl(`/${commentId}`))
+		} catch (error) {
+			toastError(error)
+		}
 	},
 
 	async updateComment(commentId: number, text: string) {
-		return await authAxios.patch(CommentUrl(`/${commentId}`), { text })
+		try {
+			return await authAxios.patch(CommentUrl(`/${commentId}`), { text })
+		} catch (error) {
+			toastError(error)
+		}
 	},
 
 	async likeComment(commentId: number) {
-		return await authAxios.get(CommentUrl(`/like/${commentId}`))
+		try {
+			return await authAxios.get(CommentUrl(`/like/${commentId}`))
+		} catch (error) {
+			toastError(error)
+		}
 	},
 }

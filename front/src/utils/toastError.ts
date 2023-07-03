@@ -7,7 +7,6 @@ export const toastError = (error: any, title?: string) => {
 				? error.response.data.message[0]
 				: error.response.data.message
 			: error.message
-	console.log(message)
 
 	toastr.error(title || `${error.response.status}` || `Ошибка`, message)
 	throw message
