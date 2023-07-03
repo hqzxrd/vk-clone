@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMessageDto } from '../dto/create-message.dto';
 import { UpdateMessageDto } from '../dto/update-message.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MessageEntity } from '../entities/message.entity';
 import { Repository } from 'typeorm';
+import { UserService } from 'src/user/service/user.service';
 
 @Injectable()
 export class MessageService {
 
   constructor(
-    @InjectRepository(MessageEntity) private readonly messageRepository: Repository<MessageEntity>
+    @InjectRepository(MessageEntity) private readonly messageRepository: Repository<MessageEntity>,
+    private readonly userService: UserService
   ){}
 
   
@@ -25,19 +27,53 @@ export class MessageService {
     return await this.messageRepository.save(message)
   }
 
-  findAll() {
-    return `This action returns all message`;
+  async getMessagesByChatId(chatId: number, page: number, count: number) {
+    const messages = await this.messageRepository.findAndCount({
+      where: {
+        chat: {id: chatId}
+      },
+      relations: ['chat', 'chat.users', 'author'],
+      select: {
+        author: this.userService.returnBaseKeyUser,
+        chat: {
+          id: true,
+          users: {id: true}
+        }
+      },
+      take: count,
+      skip: page * count - count
+    })
+    return messages
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} message`;
+  async findOne(id: number) {
+    const message = await this.messageRepository.findOne({
+      where: {id},
+      relations: ['chat', 'chat.users', 'author'],
+      select: {
+        author: this.userService.returnBaseKeyUser,
+        chat: {
+          id: true,
+          users: {id: true}
+        }
+      }
+    }) 
+    return message
   }
 
-  update(id: number, updateMessageDto: UpdateMessageDto) {
-    return `This action updates a #${id} message`;
+  async update(id: number, text: string, userId: number) {
+    const message = await this.findOne(id)
+    if(!message) throw new NotFoundException()
+    if(message.author.id !== userId) throw new ForbiddenException()
+    
+    return await this.messageRepository.save({...message, text})
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} message`;
+  async delete(id: number, userId: number) {
+    const message = await this.findOne(id)
+    if(!message) throw new NotFoundException()
+    if(message.author.id !== userId) throw new ForbiddenException()
+    await this.messageRepository.remove(message)
+    return message
   }
 }
