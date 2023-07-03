@@ -202,4 +202,9 @@ export class UserService {
     user.socketIds = user.socketIds.filter(id => id !== socketId)
     await this.userRepository.save(user)
   }
+
+  async getSocketIds(id: number) {
+    const {socketIds} = await this.userRepository.findOneBy({id})
+    return socketIds
+  }
 }
