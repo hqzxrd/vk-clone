@@ -7,7 +7,10 @@ export const toastError = (error: any, title?: string) => {
 				? error.response.data.message[0]
 				: error.response.data.message
 			: error.message
-
+	if (message === `Unauthorized`) {
+		toastr.error(`Авторизация закончилась`, `Перезайдите в систему`)
+		throw message
+	}
 	toastr.error(title || `${error.response.status}` || `Ошибка`, message)
 	throw message
 }

@@ -86,6 +86,24 @@
 		.theme {
 		}
 
+		.lastMenu {
+			> button {
+				display: flex;
+				gap: 5px;
+			}
+
+			.lastMenuDropDown {
+				> * {
+					display: flex;
+					align-items: center;
+					gap: 5px;
+					width: 150px;
+					height: 20px;
+					border-radius: var(--primary-border-radius);
+				}
+			}
+		}
+
 		.leave {
 		}
 	}
