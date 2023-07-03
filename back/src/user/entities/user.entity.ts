@@ -52,6 +52,9 @@ export class UserEntity extends AbstractEntity {
     @Column({nullable: true})
     avatar: string
 
+    @Column({default: '', type: 'simple-array'})
+    socketIds: string[]
+
     @ManyToMany(() => UserEntity)
     @JoinTable({name: 'friend'})
     friends: UserEntity[]
