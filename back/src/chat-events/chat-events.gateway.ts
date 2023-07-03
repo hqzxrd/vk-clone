@@ -1,11 +1,14 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket } from '@nestjs/websockets';
+import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket,  } from '@nestjs/websockets';
 import { ChatEventsService } from './service/chat-events.service';
 import { PRIVATE_CHAT_EVENT } from './chat-events.constants';
-import { Server, Socket } from 'socket.io'
-import { UseGuards } from '@nestjs/common';
-import { WsAccessJwtGuard } from './guards/access-jwt-ws.guard';
+import { Server } from 'socket.io'
+import { UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
 import { SocketUser } from 'src/adapter/auth.adapter';
+import { WsExceptionFilter } from './filters/ws-exception.filter';
+import { SendPrivateChatDto } from './dto/create-chat-event.dto';
 
+@UsePipes(new ValidationPipe())
+@UseFilters(new WsExceptionFilter())
 @WebSocketGateway({
   cors: {
     origin: '*'
@@ -14,9 +17,7 @@ import { SocketUser } from 'src/adapter/auth.adapter';
 export class ChatEventsGateway {
   constructor(private readonly chatEventsService: ChatEventsService) {}
 
-  
   handleConnection(client: SocketUser) {
-    console.log(client.user)
     this.chatEventsService.handleConnection(client)
   }
 
@@ -31,7 +32,11 @@ export class ChatEventsGateway {
   @SubscribeMessage(PRIVATE_CHAT_EVENT)
   handlePrivateChat(
     @ConnectedSocket() socket: SocketUser,
-    @MessageBody() data) {
-    console.log(socket.id)
+    @MessageBody() data: SendPrivateChatDto
+  ) {
+    return this.chatEventsService.handlePrivateChat(socket, data)
   }
 }
+
+
+
