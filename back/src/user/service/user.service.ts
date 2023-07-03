@@ -186,4 +186,20 @@ export class UserService {
 
     await this.userRepository.save([firstUser, secondUser])
   }
+
+  async setSocketId(id: number, socketId: string) {
+    const user = await this.userRepository.findOneBy({id})
+    user.socketIds.push(socketId)
+    
+    if(user.socketIds.length > 3) {
+      user.socketIds.shift()
+    }
+    await this.userRepository.save(user)
+  }
+
+  async deleteSocketId(id: number, socketId: string) {
+    const user = await this.userRepository.findOneBy({id})
+    user.socketIds = user.socketIds.filter(id => id !== socketId)
+    await this.userRepository.save(user)
+  }
 }
