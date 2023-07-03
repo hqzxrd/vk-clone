@@ -76,7 +76,7 @@ export class UserEntity extends AbstractEntity {
     @OneToMany(() => PostEntity, post => post.author)
     posts: PostEntity[]
 
-    @ManyToMany(() => ChatEntity)
+    @ManyToMany(() => ChatEntity, chat => chat.users)
     privateChats: ChatEntity[] 
 
     @OneToMany(() => RoomEntity, room => room.owner) 
