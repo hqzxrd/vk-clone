@@ -10,6 +10,7 @@ import { MessageStatusEntity } from './entities/message-status.entity';
     TypeOrmModule.forFeature([MessageEntity, MessageStatusEntity])
   ],
   controllers: [MessageController],
-  providers: [MessageService]
+  providers: [MessageService],
+  exports: [MessageService]
 })
 export class MessageModule {}

@@ -4,11 +4,9 @@ import { MessageStatusEntity } from "./message-status.entity";
 import { UserEntity } from "src/user/entities/user.entity";
 import { RoomEntity } from "src/room/entities/room.entity";
 import { ChatEntity } from "src/chat/entities/chat.entity";
+import { MessageType } from "../message.type.enum";
 
-enum MessageType {
-    CHAT = 'chat',
-    ROOM = 'room'
-}
+
 
 @Entity('messages')
 export class MessageEntity extends AbstractEntity {
