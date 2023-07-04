@@ -21,7 +21,6 @@ interface props {
 const Comments: FC<props> = ({ post }) => {
 	const [text, setText] = useState<string>(``)
 	const { user } = useAuth()
-	const { profile } = useProfile()
 	const { comments } = useComments(post.id, `?post=${post.id}`)
 	const queryClient = useQueryClient()
 
@@ -43,7 +42,7 @@ const Comments: FC<props> = ({ post }) => {
 		}
 	}
 
-	if (!profile || !comments) return <></>
+	if (!comments) return <></>
 
 	return (
 		<div className={styles.comments}>

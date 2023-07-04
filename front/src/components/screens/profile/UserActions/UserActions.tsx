@@ -76,9 +76,7 @@ const UserActions = () => {
 						</>
 					)}
 					{stateRequestFriend === 'friend' && (
-						<div onClick={() => removeFriend()}>
-							<DeleteFriendIcon />
-						</div>
+						<div onClick={() => removeFriend()}>Удалить из друзей</div>
 					)}
 					<div>
 						<MessageIcon />

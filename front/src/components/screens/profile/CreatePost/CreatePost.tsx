@@ -1,7 +1,7 @@
 import Preview from './preview/Preview'
 import { PostService } from '@/services/post/post.service'
 import { useRouter } from 'next/router'
-import { KeyboardEvent, useRef, useState } from 'react'
+import { FC, KeyboardEvent, useRef, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
 import Button from '@/components/ui/Form/Button'
@@ -12,7 +12,11 @@ import useSeveralPhotos from '@/hooks/useSeveralPhotos'
 
 import styles from './CreatePost.module.scss'
 
-const CreatePost = () => {
+interface props {
+	getNewsline?: () => Promise<void>
+}
+
+const CreatePost: FC<props> = ({ getNewsline }) => {
 	const inputFiles = useRef<HTMLInputElement>(null)
 	const [text, setText] = useState<string>(``)
 	const { file, photos, handleChange, removePhoto, clear } = useSeveralPhotos()
@@ -31,7 +35,10 @@ const CreatePost = () => {
 		clear()
 		setText(``)
 		const res = await PostService.createPost(text, file)
-		res.status === 201 && queryClient.invalidateQueries(`userPosts${query.id}`)
+		if (res.status === 201) {
+			queryClient.invalidateQueries(`userPosts${query.id}`)
+			getNewsline && getNewsline()
+		}
 	}
 
 	return (

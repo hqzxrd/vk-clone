@@ -23,15 +23,17 @@ import styles from './Post.module.scss'
 
 interface props {
 	post: IPost
+	getNewsline?: () => Promise<void>
 }
 
-const Post: FC<props> = ({ post }) => {
+const Post: FC<props> = ({ post, getNewsline }) => {
 	const [isUpdate, setIsUpdate] = useState<boolean>(false)
 	const [isLike, setIsLike] = useState<boolean>(post.isLike)
 	const [countLiked, setCountLiked] = useState<number>(post.countLikes)
 	const [commentsIsHide, setCommentsIsHide] = useState<boolean>(true)
 	const { user } = useAuth()
-	const { comments } = useComments(post.id, `?post=${post.id}`)
+
+	const { comments } = useComments(post.id, `?post=${post.id}`, commentsIsHide)
 	const { day, month, year, time } = useDate(post.createDate)
 	const queryClient = useQueryClient()
 
@@ -44,7 +46,10 @@ const Post: FC<props> = ({ post }) => {
 
 	const deletePost = async () => {
 		const res = await PostService.detelePost(post.id)
-		if (res.status === 204) queryClient.invalidateQueries(`userPosts${user.id}`)
+		if (res.status === 204) {
+			queryClient.invalidateQueries(`userPosts${user.id}`)
+			getNewsline && getNewsline()
+		}
 	}
 
 	useEffect(() => {
@@ -52,13 +57,9 @@ const Post: FC<props> = ({ post }) => {
 		setCountLiked(post.countLikes)
 	}, [post])
 
-	if (!comments) {
-		return <></>
-	}
-
 	return (
 		<div className={styles.post}>
-			{user.id === post.author.id ? (
+			{user.id === post.author.id && getNewsline === undefined ? (
 				<div className={styles.post_actions}>
 					<div className={styles.update} onClick={() => setIsUpdate(!isUpdate)}>
 						<PencilIcon />
@@ -67,9 +68,7 @@ const Post: FC<props> = ({ post }) => {
 						X
 					</div>
 				</div>
-			) : (
-				``
-			)}
+			) : null}
 			<div className={styles.postHeader}>
 				<div className={styles.postAvatar}>
 					<AvatarMini user={post.author} width={60} height={60} isLink={true} />

@@ -9,8 +9,28 @@ import { useAvatarGenerate } from '@/hooks/useAvatarGenerate'
 
 import styles from './AvatarMini.module.scss'
 
-const AvatarMini: FC<IAvatarMiniProps> = ({ user, width, height, isLink }) => {
+const AvatarMini: FC<IAvatarMiniProps> = ({
+	user,
+	width,
+	height,
+	isLink,
+	image,
+}) => {
 	const color = useAvatarGenerate(user.name)
+
+	if (image) {
+		return (
+			<div>
+				<Image
+					src={image}
+					width={width}
+					height={height}
+					alt="avatar"
+					className={styles.avatar}
+				/>
+			</div>
+		)
+	}
 
 	if (isLink) {
 		return (

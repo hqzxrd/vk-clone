@@ -5,4 +5,5 @@ export interface IAvatarMiniProps {
 	width: number
 	height: number
 	isLink: boolean
+	image?: string
 }

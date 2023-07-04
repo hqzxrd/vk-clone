@@ -8,8 +8,16 @@ export interface IUpdateFields
 export interface IUserAdditionalInfoFields {
 	city: string | null
 	status: string | null
+	nickname: string | null
 }
 
 export interface IUpdateFieldsDto
-	extends Omit<IUser, 'createDate' | 'avatar'>,
+	extends Omit<
+			IUser,
+			| 'createDate'
+			| 'avatar'
+			| 'countFriends'
+			| 'countIncomingRequests'
+			| 'typeRelationship'
+		>,
 		IUserAdditionalInfoFields {}

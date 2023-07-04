@@ -9,6 +9,10 @@ import {
 import { CommentUrl, PostUrl } from '@/config/api.config'
 
 export const PostService = {
+	async getNewsline(query: string) {
+		return await filesAxios.get(PostUrl(`/newsline${query}`))
+	},
+
 	async getAll(query: string) {
 		return await filesAxios.get(PostUrl(query))
 	},
