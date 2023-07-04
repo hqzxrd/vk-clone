@@ -1,24 +1,25 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import {Server, Socket} from 'socket.io'
 import { SocketUser } from 'src/adapter/auth.adapter';
 import { ChatService } from 'src/chat/service/chat.service';
 import { UserService } from 'src/user/service/user.service';
-import { SendPrivateChatDto } from '../dto/create-chat-event.dto';
+import { SendPrivateChatDto } from '../dto/send-private-message.dto';
 import { MessageService } from 'src/message/service/message.service';
 import { MessageType } from 'src/message/message.type.enum';
 import { MessageEntity } from 'src/message/entities/message.entity';
-import { RECEIVE_MESSAGE_EVENT } from '../chat-events.constants';
+import { RECEIVE_DELETE_MESSAGE_EVENT, RECEIVE_MESSAGE_EVENT, RECEIVE_UPDATE_MESSAGE_EVENT } from '../chat-events.constants';
+import { SendUpdateMessageDto } from '../dto/send-update-message.dto';
+import { GetMessagesDto } from '../dto/get-messages.dto';
 
 @Injectable()
 export class ChatEventsService {
-// ! replace console to logger
    constructor(
       private readonly userService: UserService,
       private readonly chatService: ChatService,
       private readonly messageService: MessageService,
       private readonly logger: Logger,
    ) {}
-
+   
    server: Server
 
    async handleConnection(client: SocketUser) {
@@ -39,16 +40,36 @@ export class ChatEventsService {
          text: dto.text, 
          userId: client.user.id
       }) 
-      await this.sendPrivateMessage(dto.toUserId, message)
+      await this.sendPrivateMessage(RECEIVE_MESSAGE_EVENT, dto.toUserId, message)
       return message
    }
 
-   private async sendPrivateMessage(toUserId: number, message: MessageEntity) {
-      const {socketIds} = await this.userService.byId(toUserId)
-      socketIds.forEach(socketId => {
-         this.server.to(socketId).emit(RECEIVE_MESSAGE_EVENT, message) 
-      })
+   async handleUpdateMessage(client: SocketUser, {id, text}: SendUpdateMessageDto) {
+      const userId = client.user.id
+      const message = await this.messageService.update(id, text, userId)
+      const [toUser] = message.chat.users.filter(user => user.id !== userId)
+      await this.sendPrivateMessage(RECEIVE_UPDATE_MESSAGE_EVENT, toUser.id, message)
+      return message
    }
 
+   async handleDeleteMessage(client: SocketUser, messageId: number) {
+      const userId = client.user.id
+      const message = await this.messageService.delete(messageId, userId)
+      const [toUser] = message.chat.users.filter(user => user.id !== userId)
+      await this.sendPrivateMessage(RECEIVE_DELETE_MESSAGE_EVENT, toUser.id, message)
+   }
 
+   async handleGetMessages(userId: number, { id, page, count }: GetMessagesDto) {
+      const isCheckUser = await this.chatService.checkUser(id, userId)
+      if(!isCheckUser) throw new ForbiddenException()
+      const messages = await this.messageService.getMessagesByChatId(id, page, count)
+      return messages
+   }
+
+   private async sendPrivateMessage(event: string, toUserId: number, message: MessageEntity) {
+      const socketIds = await this.userService.getSocketIds(toUserId)
+      socketIds.forEach(socketId => {
+         this.server.to(socketId).emit(event, message) 
+      })
+   }
 }
