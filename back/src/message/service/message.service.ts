@@ -41,7 +41,8 @@ export class MessageService {
         }
       },
       take: count,
-      skip: page * count - count
+      skip: page * count - count,
+      order: {createDate: 'DESC'}
     })
     return messages
   }
