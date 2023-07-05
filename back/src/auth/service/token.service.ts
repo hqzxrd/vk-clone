@@ -46,4 +46,13 @@ export class TokenService {
     async delete(id: number) {
         await this.tokenRepository.delete(id)
     }
+
+    async verifyAccessToken(accessToken: string) {
+        try {
+            const data = this.jwtService.verify(accessToken, {secret: this.configService.get(ACCESS_SECRET)})
+            return data
+        }catch(e) {
+            return null
+        }
+    }
 }

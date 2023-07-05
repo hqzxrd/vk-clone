@@ -22,6 +22,7 @@ import { ConfirmationService } from './service/confirmation.service';
     UserModule,
     PassportModule,
     MailModule
-  ]
+  ],
+  exports: [TokenService]
 })
 export class AuthModule {}
