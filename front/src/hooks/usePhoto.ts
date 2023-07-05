@@ -38,7 +38,7 @@ const usePhoto = () => {
 		}
 	}
 
-	return { file, avatar, errorSize, handleChange }
+	return { file, avatar, setAvatar, errorSize, handleChange }
 }
 
 export default usePhoto

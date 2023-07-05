@@ -1,8 +1,6 @@
 import { IUpdateFields, IUpdateFieldsDto } from './profileEdit.interface'
 import { UserService } from '@/services/user/user.service'
 import { TypeGender } from '@/types/auth.types'
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FC, MouseEvent, useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -14,16 +12,16 @@ import BirthDateFields from '@/components/ui/BirthDateFields/BirthDateFields'
 import Button from '@/components/ui/Form/Button'
 import Input from '@/components/ui/Form/Input'
 import GenderSelector from '@/components/ui/GenderSelector/GenderSelector'
-import Textarea from '@/components/ui/Textarea/Textarea'
 
-import { FilesUrl } from '@/config/api.config'
-
+import { useActions } from '@/hooks/useActions'
 import { useAuth } from '@/hooks/useAuth'
-import { useAvatarGenerate } from '@/hooks/useAvatarGenerate'
 import usePhotos from '@/hooks/usePhoto'
 import { useProfile } from '@/hooks/useProfile'
 
 import { NAME_REGEX } from '@/shared/regex'
+
+import { store } from '@/store/store'
+import { deleteAvatar } from '@/store/user/user.action'
 
 import styles from './profileEdit.module.scss'
 
@@ -34,8 +32,9 @@ const ProfileEdit: FC = () => {
 	const { user } = useAuth()
 	const { profile } = useProfile(user.id)
 	const [gender, setGender] = useState<TypeGender>(profile?.gender || `male`)
-	const { file, avatar, errorSize, handleChange } = usePhotos()
-	const color = useAvatarGenerate(profile ? profile.name : user.name)
+	const { file, avatar, setAvatar, handleChange } = usePhotos()
+	const queryClient = useQueryClient()
+
 	const {
 		register: reg,
 		handleSubmit,
@@ -63,7 +62,16 @@ const ProfileEdit: FC = () => {
 
 		const res = await UserService.updateProfile(userDto, file)
 
-		res.status === 200 ? push(`/users/${user.id}`) : null
+		if (res) res.status === 200 ? push(`/users/${user.id}`) : null
+	}
+
+	const handleClickDeleteAvatar = async () => {
+		setAvatar(``)
+		const result = await store.dispatch(deleteAvatar())
+
+		if (result.meta.requestStatus === 'fulfilled') {
+			queryClient.invalidateQueries(`${user.id}`)
+		}
 	}
 
 	const copy = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
@@ -111,7 +119,9 @@ const ProfileEdit: FC = () => {
 							<Button type="button" onClick={() => inputFiles.current?.click()}>
 								Изменить
 							</Button>
-							<Button type="button">Удалить</Button>
+							<Button type="button" onClick={() => handleClickDeleteAvatar()}>
+								Удалить
+							</Button>
 						</div>
 
 						<GenderSelector gender={gender} setGender={setGender} />

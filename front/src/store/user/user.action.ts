@@ -1,4 +1,5 @@
 import { AuthService } from '@/services/auth/auth.service'
+import { UserService } from '@/services/user/user.service'
 import {
 	ICodeEmailDto,
 	ILoginFields,
@@ -75,9 +76,21 @@ export const logout = createAsyncThunk(`auth/logout`, () => {
 export const checkAuth = createAsyncThunk<ILoginRegisterResponse>(
 	`auth/check-auth`,
 	async (_, thunkApi) => {
-		console.log(`checkAuthHook`)
 		try {
 			const res = await AuthService.getNewsTokens()
+			return res.data
+		} catch (error) {
+			toastError(error)
+			return thunkApi.rejectWithValue(error)
+		}
+	}
+)
+
+export const deleteAvatar = createAsyncThunk<ILoginRegisterResponse>(
+	`user/deleteAvatar`,
+	async (_, thunkApi) => {
+		try {
+			const res = await UserService.deleteAvatar()
 			return res.data
 		} catch (error) {
 			toastError(error)

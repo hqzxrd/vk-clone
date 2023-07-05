@@ -22,7 +22,7 @@ import { setNotifCount } from '@/store/user/user.slice'
 import styles from './Header.module.scss'
 
 const AuthHeader: FC = () => {
-	const { user } = useAuth()
+	const { user, isAuth } = useAuth()
 	const { theme } = useTypedSelector((st) => st.theme)
 	const { notifications: notif } = useTypedSelector((st) => st.user)
 	const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false)
@@ -40,6 +40,10 @@ const AuthHeader: FC = () => {
 				setNotifCount({ notificationCount: 0, notificationIncomingCount: 0 })
 			)
 		}
+	}
+
+	if (!isAuth) {
+		return <></>
 	}
 
 	return (
@@ -83,7 +87,7 @@ const AuthHeader: FC = () => {
 					}
 					onClick={() => setIsOpen(!isOpen)}
 				>
-					<AvatarMini user={user} width={20} height={20} isLink={false} />
+					<AvatarMini user={user} width={22} height={22} isLink={false} />
 					<ArrowDownIcon />
 				</button>
 
@@ -93,7 +97,8 @@ const AuthHeader: FC = () => {
 					setIsOpen={setIsOpen}
 				>
 					<button onClick={() => changeTheme()}>
-						<ThemeIcon /> Тема: {theme === `dark` ? 'Тёмная' : 'Светлая'}
+						<ThemeIcon /> Тема:{' '}
+						<span>{theme === `dark` ? 'Тёмная' : 'Светлая'}</span>
 					</button>
 					<Link
 						className={styles.leave}

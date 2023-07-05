@@ -44,6 +44,10 @@ export const UserService = {
 		}
 	},
 
+	async deleteAvatar() {
+		return await authAxios.delete(UserUrl(``))
+	},
+
 	async getFriends(id: number) {
 		try {
 			return await baseAxios.get<[IUser[], number]>(UserUrl(`/${id}/friends`))

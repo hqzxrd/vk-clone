@@ -12,10 +12,10 @@ export type TypeComponentAuth = { Component: TypeRole } & IChildren
 
 export interface IUserDto {
 	id: number
-	email: string
+	email?: string
 	name: string
 	surname: string
-	avatar: string
+	avatar: string | null
 }
 
 export type TypeGender = `male` | `female`
