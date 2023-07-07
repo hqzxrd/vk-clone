@@ -1,14 +1,10 @@
 import { socket } from '@/api/interceptors'
-import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-import { io } from 'socket.io-client'
 
 import CamIcon from '@/components/ui/Icons/Post/CamIcon'
 import SendIcon from '@/components/ui/Icons/Send'
 import Textarea from '@/components/ui/Textarea/Textarea'
-
-import { API_URL } from '@/config/api.config'
 
 import styles from './UserDialog.module.scss'
 
