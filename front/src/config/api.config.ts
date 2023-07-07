@@ -1,4 +1,5 @@
 export const API_URL = process.env.API_URL
+export const WS_URL = process.env.SERVER_URL ? process.env.SERVER_URL : ``
 
 export const AuthUrl = (str: string) => `/auth${str}`
 

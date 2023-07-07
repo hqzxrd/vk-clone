@@ -16,7 +16,6 @@ const useSeveralPhotos = () => {
 		}
 
 		const files = e.currentTarget.files
-		console.log(files)
 
 		for (let i = 0; i < files.length; i++) {
 			let reader = new FileReader()

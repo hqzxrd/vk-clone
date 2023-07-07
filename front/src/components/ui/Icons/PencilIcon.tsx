@@ -1,6 +1,6 @@
 import { FC, SVGProps } from 'react'
 
-const CamIcon: FC<SVGProps<SVGSVGElement>> = ({ ...rest }) => {
+const PencilIcon: FC<SVGProps<SVGSVGElement>> = ({ ...rest }) => {
 	return (
 		<svg
 			{...rest}
@@ -18,4 +18,4 @@ const CamIcon: FC<SVGProps<SVGSVGElement>> = ({ ...rest }) => {
 	)
 }
 
-export default CamIcon
+export default PencilIcon

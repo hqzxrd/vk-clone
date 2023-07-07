@@ -1,5 +1,6 @@
 import { FriendService } from '@/services/friends/friends.service'
 import { Relationship } from '@/types/user.types'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useQueryClient } from 'react-query'
@@ -31,19 +32,16 @@ const UserActions = () => {
 	const sendRequest = async () => {
 		const res = await FriendService.sendRequest(profile!.id)
 		res.status === 200 && queryClient.invalidateQueries(query)
-		console.log(res.status)
 	}
 
 	const cancelRequest = async () => {
 		const res = await FriendService.cancelRequest(profile!.id)
 		res.status === 204 && queryClient.invalidateQueries(query)
-		console.log(res.status)
 	}
 
 	const resOnFriendRequest = async (bool: boolean) => {
 		const res = await FriendService.resOnFriendRequest(profile!.id, bool)
 		res.status === 204 && queryClient.invalidateQueries(query)
-		console.log(res.status)
 	}
 
 	const removeFriend = async () => {
@@ -78,9 +76,9 @@ const UserActions = () => {
 					{stateRequestFriend === 'friend' && (
 						<div onClick={() => removeFriend()}>Удалить из друзей</div>
 					)}
-					<div>
+					<Link href={`/users/${profile.id}/dialog`}>
 						<MessageIcon />
-					</div>
+					</Link>
 				</>
 			)}
 		</div>

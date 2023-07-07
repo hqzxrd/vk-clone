@@ -30,17 +30,24 @@ const Textarea: FC<props> = ({
 		setText(e.target.value)
 
 		if (textarea.current && resize) {
-			textarea.current.style.height = 'auto'
-			textarea.current.style.height = `${textarea.current.scrollHeight}px`
+			textarea.current.style.height = `0`
+			textarea.current.style.height = `${textarea.current.scrollHeight + 3}px`
 		}
 	}
 
 	useEffect(() => {
 		if (textarea.current && resize) {
-			textarea.current.style.height = 'auto'
-			textarea.current.style.height = `${textarea.current.scrollHeight}px`
+			textarea.current.style.height = `0`
+			textarea.current.style.height = `${textarea.current.scrollHeight + 3}px`
 		}
 	}, [])
+
+	useEffect(() => {
+		if (!textarea.current?.value && resize) {
+			textarea.current.style.height = `0`
+			textarea.current.style.height = `${textarea.current.scrollHeight + 3}px`
+		}
+	}, [text])
 
 	return (
 		<textarea

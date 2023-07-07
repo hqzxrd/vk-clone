@@ -7,7 +7,7 @@
 	border: 1px solid var(--primary-border);
 	border-radius: var(--primary-border-radius);
 	padding: 20px;
-	max-width: 900px;
+	max-width: 100%;
 	.postHeader {
 		display: flex;
 		gap: 15px;
@@ -24,6 +24,7 @@
 	}
 
 	.postMain {
+		max-width: 748px;
 		word-wrap: break-word;
 		white-space: pre-wrap;
 	}

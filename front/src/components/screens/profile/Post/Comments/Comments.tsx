@@ -10,7 +10,6 @@ import Textarea from '@/components/ui/Textarea/Textarea'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useComments } from '@/hooks/useComments'
-import { useProfile } from '@/hooks/useProfile'
 
 import styles from './Comments.module.scss'
 
@@ -51,7 +50,7 @@ const Comments: FC<props> = ({ post }) => {
 			})}
 
 			<div className={styles.create_comment}>
-				<AvatarMini user={user} width={32} height={32} isLink={false} />
+				<AvatarMini user={user} width={24} height={24} isLink={false} />
 
 				<div className={styles.textarea_wrapper}>
 					<Textarea
@@ -59,7 +58,6 @@ const Comments: FC<props> = ({ post }) => {
 						setText={setText}
 						resize={true}
 						placeholder="Написать комментарий..."
-						style={{ overflow: `hidden`, height: 35, fontSize: 14 }}
 						onKeyDown={(e) => pressEnter(e)}
 					/>
 				</div>

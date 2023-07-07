@@ -29,7 +29,6 @@ const buttons: IButtons = {
 			className={styles.addOrDelete}
 			onClick={async () => {
 				const res = await FriendService.cancelRequest(user.id)
-				console.log(res)
 				if (res.status === 204) qClient.invalidateQueries(`get_outgoing`)
 			}}
 		>
@@ -42,7 +41,6 @@ const buttons: IButtons = {
 				className={styles.addOrDelete}
 				onClick={async () => {
 					const res = await FriendService.resOnFriendRequest(user.id, true)
-					console.log(res.status)
 					if (res.status === 204) qClient.invalidateQueries(`get_incoming`)
 				}}
 			>

@@ -13,7 +13,6 @@ const SseNotif = () => {
 
 	const hanleMessage = (e: MessageEvent<any>) => {
 		const message: INotificationSSE = JSON.parse(e.data)
-		console.log(message)
 
 		dispatch(
 			setNotifCount({

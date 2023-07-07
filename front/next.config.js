@@ -7,6 +7,7 @@ const nextConfig = {
 	env: {
 		API_URL: process.env.API_URL,
 		CLIENT_URL: process.env.CLIENT_URL,
+		SERVER_URL: process.env.SERVER_URL,
 	},
 	images: {
 		domains: ['localhost', process.env.CLIENT_URL],
