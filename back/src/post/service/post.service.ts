@@ -150,7 +150,7 @@ export class PostService {
       where: {id, author: {id: authorId}}
     })
     if(!post) throw new NotFoundException()
-    post.photos.forEach((path) => this.dropboxService.remove(path))
+    post.photos.forEach((path) => this.fileService.deleteFile(path))
     await this.postRepository.remove(post)
   }
 
