@@ -61,10 +61,9 @@ export class ChatEventsService {
       await this.sendPrivateMessage(RECEIVE_DELETE_MESSAGE_EVENT, toUser.id, message)
    }
 
-   async handleGetMessages(userId: number, { chatId, page, count }: GetMessagesDto) {
-      const isCheckUser = await this.chatService.checkUser(chatId, userId)
-      if(!isCheckUser) throw new ForbiddenException()
-      const messages = await this.messageService.getMessagesByChatId(chatId, page, count)
+   async handleGetMessages(userOneId: number, { userId, page, count }: GetMessagesDto) {
+      const chat = await this.chatService.createOrFind([userId, userOneId])
+      const messages = await this.messageService.getMessagesByChatId(chat.id, page, count)
       return messages
    }
 

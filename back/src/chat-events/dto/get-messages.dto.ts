@@ -3,5 +3,5 @@ import { PaginationQueryDto } from "src/utils/pagination.query.dto";
 
 export class GetMessagesDto extends PaginationQueryDto {
     @IsInt()
-    chatId: number
+    userId: number
 }

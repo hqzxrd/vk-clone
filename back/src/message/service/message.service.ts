@@ -34,7 +34,13 @@ export class MessageService {
       },
       relations: ['chat', 'chat.userA', 'chat.userB', 'author'],
       select: {
-        author: this.userService.returnBaseKeyUser,
+        author: {
+          id: true,
+          name: true,
+          surname: true,
+          nickname: true,
+          avatar: true
+        },
         chat: {
           id: true,
           userA: {id: true},
