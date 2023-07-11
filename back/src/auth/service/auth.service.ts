@@ -9,6 +9,7 @@ import { UserEntity } from 'src/user/entities/user.entity';
 import { MailService } from 'src/mail/mail.service';
 import { generateCode } from 'src/utils/gencode';
 import { ConfirmationService } from './confirmation.service';
+import { ChangePasswordDto } from '../dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -91,5 +92,16 @@ export class AuthService {
     const code = generateCode()
     await this.confirmationService.setCodeOrCreate(email, code)
     await this.mailService.sendCode(email, code)
+  }
+
+  async changePassword(userId: number, {password, newPassword}: ChangePasswordDto) {
+    const user = await this.userService.byId(userId)
+    if(!user) throw new UnauthorizedException()
+
+    const isMatch = await compare(password, user.password)
+    if(!isMatch) throw new BadRequestException(INCORRECT_PASSWORD)
+    const salt = await genSalt(8)
+    const hashPassword = await hash(newPassword, salt)
+    await this.userService.setPassword(userId, hashPassword)
   }
 }

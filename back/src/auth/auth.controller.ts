@@ -9,8 +9,10 @@ import { User } from 'src/user/decorators/user.decorator';
 import { Cookie } from './decorators/cookie.decorator';
 import { CookieSerializeOptions } from '@fastify/cookie';
 import { CodeVerifDto } from './dto/code-verif.dto';
+import { AccessJwtGuard } from './decorators/access-jwt.decorator';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
-
+@UsePipes(new ValidationPipe())
 @Controller('auth')
 export class AuthController {
 
@@ -19,7 +21,6 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @HttpCode(HttpStatus.OK)
-  @UsePipes(new ValidationPipe())
   @Post('registration')
   async registration(
     @Body() registrationDto: RegistrationDto,
@@ -34,7 +35,6 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  @UsePipes(new ValidationPipe())
   async login(
     @Body() loginDto: LoginDto,
     @Res({passthrough: true}) res: FastifyReply
@@ -71,7 +71,6 @@ export class AuthController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('code')
-  @UsePipes(new ValidationPipe())
   codeVerification(
       @Body() {code, email}: CodeVerifDto
   ) {
@@ -80,10 +79,19 @@ export class AuthController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('confirmation')
-  @UsePipes(new ValidationPipe())
   confirmationEmail(
     @Body() {email} : Pick<CodeVerifDto, 'email'>
   ) {
     return this.authService.confirmationEmail(email)
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @AccessJwtGuard()
+  @Post('changePassword')
+  changePassword(
+    @User('id') userId: number,
+    @Body() changePasswordDto: ChangePasswordDto
+  ) {
+    return this.authService.changePassword(userId, changePasswordDto)
   }
 }
