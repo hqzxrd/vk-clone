@@ -1,7 +1,8 @@
 .actions {
 	display: flex;
 	gap: 10px;
-	> div {
+	> div,
+	a {
 		display: flex;
 		align-items: center;
 		user-select: none;

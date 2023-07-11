@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useState } from 'react'
+import { ChangeEventHandler, FormEvent, useState } from 'react'
 
 const useSeveralPhotos = () => {
 	const [file, setFile] = useState<File[]>([])
@@ -10,16 +10,15 @@ const useSeveralPhotos = () => {
 		arrayPhotoStr[0] !== `data` && oldPhotos.push(str)
 	})
 
-	const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-		if (!e.target.files) {
+	const handleChange = (e: FormEvent<HTMLInputElement>) => {
+		if (!e.currentTarget.files) {
 			return
 		}
 
-		const files = e.target.files
-
-		let reader = new FileReader()
+		const files = e.currentTarget.files
 
 		for (let i = 0; i < files.length; i++) {
+			let reader = new FileReader()
 			reader.readAsDataURL(files[i])
 
 			reader.onloadend = () => {

@@ -32,6 +32,11 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
 	}
 
 	const createPost = async () => {
+		if (!text && !file[0]) {
+			console.log(text)
+
+			return
+		}
 		clear()
 		setText(``)
 		const res = await PostService.createPost(text, file)
@@ -47,17 +52,23 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
 				<Textarea
 					text={text}
 					setText={setText}
-					resize={false}
+					resize={true}
 					placeholder="Что у вас нового?"
 					onKeyDown={(e) => pressEnter(e)}
+					style={{ fontSize: 16 }}
 				/>
 			</div>
 			<Preview photos={photos} remove={removePhoto} />
 			<div className={styles.buttons}>
 				<Button onClick={() => createPost()}>Опубликовать</Button>
-				<CamIcon onClick={() => inputFiles.current?.click()} />
+				<CamIcon
+					onClick={() => {
+						inputFiles.current!.value = ``
+						inputFiles.current?.click()
+					}}
+				/>
 				<input
-					onChange={(e) => handleChange(e)}
+					onInput={(e) => handleChange(e)}
 					style={{ display: 'none' }}
 					type="file"
 					accept=".jpg,.jpeg"

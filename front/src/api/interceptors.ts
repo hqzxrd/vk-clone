@@ -1,11 +1,16 @@
 import { AuthService } from '@/services/auth/auth.service'
 import axios, { InternalAxiosRequestConfig } from 'axios'
-import { error } from 'console'
 import Cookies from 'js-cookie'
+import io from 'socket.io-client'
 
-import { API_URL } from '@/config/api.config'
+import { API_URL, WS_URL } from '@/config/api.config'
 
 import { toastError } from '@/utils/toastError'
+
+const token = Cookies.get(`AccessToken`)
+export const socket = io(WS_URL, {
+	auth: { token: token },
+})
 
 export const baseAxios = axios.create({
 	baseURL: API_URL,
@@ -70,26 +75,6 @@ authAxios.interceptors.response.use(
 		}
 	}
 )
-
-// authAxios.interceptors.response.use(
-// 	(config) => config,
-// 	async (error) => {
-// 		const originalRequest = error.config
-
-// 		if (error.response.status === 401 && !error.config._isRetry) {
-// 			error.config._isRetry = true
-// 			console.log(error.config)
-
-// 			try {
-// 				await AuthService.getNewsTokens()
-// 				return authAxios.request(originalRequest)
-// 			} catch (err) {
-// 				AuthService.logout()
-// 				toastError(err, `Авторизация закончилась`)
-// 			}
-// 		}
-// 	}
-// )
 
 function checkAuth(config: InternalAxiosRequestConfig<any>) {
 	const accessToken = Cookies.get(`AccessToken`)

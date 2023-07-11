@@ -41,9 +41,8 @@ const DropDownWrap: FC<props> = ({ isOpen, setIsOpen, children, ...rest }) => {
 			ref={dropdown}
 			style={{ display: isOpen ? 'block' : 'none' }}
 			className={styles.dropdown}
-			{...rest}
 		>
-			{children}
+			<div {...rest}>{children}</div>
 		</div>
 	)
 }

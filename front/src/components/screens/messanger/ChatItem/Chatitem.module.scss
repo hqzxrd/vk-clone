@@ -1,0 +1,39 @@
+.chatItem {
+	cursor: pointer;
+	display: flex;
+	gap: 15px;
+	padding: 15px 35px;
+	border-radius: var(--primary-border-radius);
+	&:hover {
+		background-color: var(--primary-hover);
+	}
+
+	.chatInfo {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+
+		.upperBlock {
+			display: flex;
+			justify-content: space-between;
+
+			.lastTime {
+				color: var(--secondary-color);
+				padding-right: 10px;
+			}
+		}
+
+		.lastMessage {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+
+			> :last-child {
+				max-width: 600px;
+				word-wrap: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
+	}
+}

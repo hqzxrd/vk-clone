@@ -1,0 +1,41 @@
+.messangerWrapper {
+	max-width: 780px;
+	.messanger {
+		position: relative;
+		background-color: var(--extra-background);
+		border: 1px solid var(--primary-border);
+		border-radius: var(--primary-border-radius);
+		position: relative;
+
+		.header {
+			position: sticky;
+			top: 44px;
+			display: flex;
+			gap: 15px;
+			border-bottom: 1px solid var(--primary-border);
+			border-radius: var(--primary-border-radius) var(--primary-border-radius)
+				0px 0px;
+			background-color: var(--extra-background);
+			padding: 15px 15px;
+			svg {
+				width: 24px;
+				height: auto;
+			}
+
+			input {
+				width: 100%;
+			}
+
+			:last-child {
+				user-select: none;
+				cursor: pointer;
+			}
+		}
+
+		.allChats {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+	}
+}

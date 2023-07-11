@@ -31,19 +31,16 @@ const Avatar = () => {
 	const sendRequest = async () => {
 		const res = await FriendService.sendRequest(profile!.id)
 		res.status === 200 && queryClient.invalidateQueries(query)
-		console.log(res.status)
 	}
 
 	const cancelRequest = async () => {
 		const res = await FriendService.cancelRequest(profile!.id)
 		res.status === 204 && queryClient.invalidateQueries(query)
-		console.log(res.status)
 	}
 
 	const resOnFriendRequest = async (bool: boolean) => {
 		const res = await FriendService.resOnFriendRequest(profile!.id, bool)
 		res.status === 204 && queryClient.invalidateQueries(query)
-		console.log(res.status)
 	}
 
 	const removeFriend = async () => {

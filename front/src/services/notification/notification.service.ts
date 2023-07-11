@@ -2,8 +2,14 @@ import { authAxios } from '@/api/interceptors'
 
 import { notificationUrl } from '@/config/api.config'
 
+import { toastError } from '@/utils/toastError'
+
 export const NotificationService = {
 	async getAllNotifications() {
-		return await authAxios.get(notificationUrl(``))
+		try {
+			return await authAxios.get(notificationUrl(``))
+		} catch (error) {
+			toastError(error)
+		}
 	},
 }

@@ -42,8 +42,6 @@ const UpdatePost: FC<props> = ({
 	const queryClient = useQueryClient()
 
 	const UpdatePost = async () => {
-		console.log(oldPhotos)
-
 		const res = await PostService.updatePost(post.id, text, file, oldPhotos)
 
 		res.status === 200 && queryClient.invalidateQueries(`userPosts${query.id}`)
@@ -59,7 +57,12 @@ const UpdatePost: FC<props> = ({
 	return (
 		<div className={styles.update_post}>
 			<div className={styles.textarea_wrapper}>
-				<Textarea text={text} setText={setText} resize={true} />
+				<Textarea
+					text={text}
+					setText={setText}
+					resize={true}
+					style={{ fontSize: 16 }}
+				/>
 			</div>
 
 			<Preview photos={photos} remove={removePhoto} />

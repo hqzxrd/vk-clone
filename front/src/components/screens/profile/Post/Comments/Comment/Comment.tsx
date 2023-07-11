@@ -20,8 +20,6 @@ interface props {
 }
 
 const Comment: FC<props> = ({ post, comment }) => {
-	console.log(comment)
-
 	const [likes, setLikes] = useState<number>(comment.countLikes)
 	const [isLike, setIsLike] = useState<boolean>(comment.isLike)
 	const [isUpdate, setIsUpdate] = useState<boolean>(false)
@@ -37,7 +35,6 @@ const Comment: FC<props> = ({ post, comment }) => {
 
 	const likeComment = async () => {
 		const res = await PostService.likeComment(comment.id)
-		console.log(res.status)
 
 		if (res.status === 200) {
 			setLikes(res.data.countLikes)

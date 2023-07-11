@@ -2,12 +2,14 @@ import {
 	checkAuth,
 	code,
 	confirmation,
+	deleteAvatar,
 	login,
 	logout,
 	register,
 } from './user.action'
 import { IInitialState, INotifications } from './user.interface'
 import { IUserDto } from '@/types/auth.types'
+import { IUser } from '@/types/user.types'
 import { createSlice } from '@reduxjs/toolkit'
 
 import {
@@ -38,6 +40,15 @@ export const userSlice = createSlice({
 	reducers: {
 		setNotifCount: (state, { payload }: { payload: INotifications }) => {
 			state.notifications = payload
+		},
+
+		updateUserState: (
+			state,
+			{
+				payload,
+			}: { payload: Pick<IUser, `id` | `name` | `surname` | `avatar`> }
+		) => {
+			state.user = payload
 		},
 	},
 	extraReducers: (builder) => {
@@ -94,13 +105,20 @@ export const userSlice = createSlice({
 			state.user = initialUser
 			state.isAuth = null
 		})
-		builder.addCase(checkAuth.fulfilled, (state, { payload }) => {
-			// state.user = payload.user
+		builder.addCase(checkAuth.fulfilled, (state) => {
+			state.isLoading = false
+		})
+
+		builder.addCase(deleteAvatar.fulfilled, (state) => {
+			state.user.avatar = ``
+			const user: IUser = JSON.parse(localStorage.getItem(`user`)!)
+			user.avatar = null
+			localStorage.setItem(`user`, JSON.stringify(user))
 			state.isLoading = false
 		})
 	},
 })
 
-export const { setNotifCount } = userSlice.actions
+export const { setNotifCount, updateUserState } = userSlice.actions
 
 export const { reducer } = userSlice

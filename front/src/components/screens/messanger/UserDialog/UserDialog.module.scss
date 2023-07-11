@@ -1,0 +1,56 @@
+.dialogWrapper {
+	position: relative;
+	width: 100%;
+
+	.dialogWindow {
+		width: 100%;
+		background-color: var(--extra-background);
+		border: 1px solid var(--primary-border);
+		border-radius: var(--primary-border-radius);
+		.header {
+			display: flex;
+			justify-content: space-between;
+			border-bottom: 1px solid var(--primary-border);
+			padding: 15px 10px;
+		}
+
+		.messages {
+			height: 85vh;
+			padding: 5px 25px;
+		}
+
+		.sendMessage {
+			display: flex;
+			align-items: center;
+			padding: 10px 0px;
+			color: antiquewhite;
+			border-top: 1px solid var(--primary-border);
+			display: flex;
+			position: absolute;
+			bottom: 5px;
+			width: 100%;
+
+			.camIcon {
+				position: relative;
+				bottom: 1px;
+				padding: 0px 10px;
+				display: flex;
+				align-self: flex-end;
+				svg {
+					cursor: pointer;
+				}
+			}
+
+			.sendIcon {
+				position: relative;
+				bottom: 4px;
+				padding: 0px 10px;
+				display: flex;
+				align-self: flex-end;
+				svg {
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}

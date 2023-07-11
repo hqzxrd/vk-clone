@@ -6,7 +6,10 @@ import { useDispatch } from 'react-redux'
 
 import Notification from '@/components/screens/notification/Notification'
 import { INotificationDto } from '@/components/screens/notification/Notification.interface'
+import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 import DropDownWrap from '@/components/ui/DropDownWrap/DropDownWrap'
+import ArrowDownIcon from '@/components/ui/Icons/Header/ArrowDownIcon'
+import LeaveIcon from '@/components/ui/Icons/Header/LeaveIcon'
 import NotificIcon from '@/components/ui/Icons/Header/NotificIcon'
 import ThemeIcon from '@/components/ui/Icons/Header/ThemeIcon'
 
@@ -19,21 +22,28 @@ import { setNotifCount } from '@/store/user/user.slice'
 import styles from './Header.module.scss'
 
 const AuthHeader: FC = () => {
+	const { user, isAuth } = useAuth()
+	const { theme } = useTypedSelector((st) => st.theme)
 	const { notifications: notif } = useTypedSelector((st) => st.user)
+	const [isOpenNotification, setIsOpenNotification] = useState<boolean>(false)
 	const [isOpen, setIsOpen] = useState<boolean>(false)
 	const [notifications, setNotifications] = useState<INotificationDto[]>([])
 	const { logout, changeTheme } = useActions()
 	const dispatch = useDispatch()
 
 	const handleClick = async () => {
-		setIsOpen(!isOpen)
-		if (!isOpen) {
+		setIsOpenNotification(!isOpenNotification)
+		if (!isOpenNotification) {
 			const res = await NotificationService.getAllNotifications()
-			setNotifications(res.data[0])
+			if (res) setNotifications(res.data[0])
 			dispatch(
 				setNotifCount({ notificationCount: 0, notificationIncomingCount: 0 })
 			)
 		}
+	}
+
+	if (!isAuth) {
+		return <></>
 	}
 
 	return (
@@ -41,7 +51,7 @@ const AuthHeader: FC = () => {
 			<div>
 				<button
 					className={
-						isOpen
+						isOpenNotification
 							? cn(styles.notification, styles.activeHeaderElem)
 							: cn(styles.notification, styles.headerHover)
 					}
@@ -54,7 +64,10 @@ const AuthHeader: FC = () => {
 					<NotificIcon />
 				</button>
 
-				<DropDownWrap isOpen={isOpen} setIsOpen={setIsOpen}>
+				<DropDownWrap
+					isOpen={isOpenNotification}
+					setIsOpen={setIsOpenNotification}
+				>
 					{notifications.length ? (
 						notifications.map((notif) => {
 							return <Notification notif={notif} key={notif.id} />
@@ -65,17 +78,40 @@ const AuthHeader: FC = () => {
 				</DropDownWrap>
 			</div>
 
-			<button className={styles.theme} onClick={() => changeTheme()}>
-				<ThemeIcon />
-			</button>
+			<div className={styles.lastMenu}>
+				<button
+					className={
+						isOpen
+							? cn(styles.notification, styles.activeHeaderElem)
+							: cn(styles.notification, styles.headerHover)
+					}
+					onClick={() => setIsOpen(!isOpen)}
+				>
+					<AvatarMini user={user} width={22} height={22} isLink={false} />
+					<ArrowDownIcon />
+				</button>
 
-			<Link
-				className={styles.leave}
-				href={`/auth/login`}
-				onClick={() => logout()}
-			>
-				Выйти
-			</Link>
+				<DropDownWrap
+					className={styles.lastMenuDropDown}
+					isOpen={isOpen}
+					setIsOpen={setIsOpen}
+				>
+					<button onClick={() => changeTheme()}>
+						<ThemeIcon /> Тема:{' '}
+						<span>{theme === `dark` ? 'Тёмная' : 'Светлая'}</span>
+					</button>
+					<Link
+						className={styles.leave}
+						href={`/auth/login`}
+						onClick={() => logout()}
+					>
+						<div>
+							<LeaveIcon />
+						</div>
+						<div>Выйти</div>
+					</Link>
+				</DropDownWrap>
+			</div>
 		</>
 	)
 }

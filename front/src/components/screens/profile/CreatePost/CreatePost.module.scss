@@ -1,14 +1,15 @@
 .create_post {
 	display: flex;
 	flex-direction: column;
-	gap: 25px;
+	gap: 10px;
 	padding: 10px;
 	background-color: var(--extra-background);
 	border: 1px solid var(--primary-border);
 	border-radius: var(--primary-border-radius);
+
 	.textarea_wrapper {
-		width: 98.5%;
-		height: 100px;
+		width: 100%;
+		max-height: 150px;
 	}
 
 	.buttons {
