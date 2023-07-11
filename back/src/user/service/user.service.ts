@@ -41,8 +41,7 @@ export class UserService {
 
   async byId(id: number) {
     const user = await this.userRepository.findOne({
-      where: {id},
-      select: this.returnBaseKeyUser
+      where: {id}
     }) 
     return user
   }
@@ -214,5 +213,11 @@ export class UserService {
   async getSocketIds(id: number) {
     const {socketIds} = await this.userRepository.findOneBy({id})
     return socketIds
+  }
+
+  async setPassword(id: number, hashPassword: string) {
+    const user = await this.byId(id)
+    if(!user) throw new BadRequestException()
+    return await this.userRepository.save({...user, password: hashPassword})
   }
 }
