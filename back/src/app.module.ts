@@ -1,3 +1,4 @@
+import { FileModule } from './file/file.module';
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EnvConfigOptions } from './configs/env.config';
@@ -19,18 +20,25 @@ import { ChatEventsModule } from './chat-events/chat-events.module';
 import { RoomModule } from './room/room.module';
 import { MessageModule } from './message/message.module';
 
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
+
 @Module({
   imports: [
+    FileModule,
     ConfigModule.forRoot(EnvConfigOptions),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: getTypeormOptions
+      useFactory: getTypeormOptions,
     }),
     MailerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: getMailerConfig
+      useFactory: getMailerConfig,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'static')
     }),
     AuthModule,
     UserModule,
@@ -44,7 +52,7 @@ import { MessageModule } from './message/message.module';
     ChatModule,
     ChatEventsModule,
     RoomModule,
-    MessageModule
-  ]
+    MessageModule,
+  ],
 })
 export class AppModule {}
