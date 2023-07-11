@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../entities/user.entity';
 import { FindOptionsSelect, Repository } from 'typeorm';
@@ -74,10 +74,20 @@ export class UserService {
     return {...profileUser, typeRelationship}
   }
 
+  async profileByNickname(nickname: string, userId?: number) {
+    const user = await this.userRepository.findOne({
+      where: {nickname}
+    })
+    if(!user) throw new NotFoundException()
+    return this.profileById(user.id)
+  }
+
   async create(dto: RegistrationDto) {
     const user = this.userRepository.create({...dto})
-    return await this.userRepository.save(user)
+    const saveUser = await this.userRepository.save(user)
+    return this.update(saveUser.id, {nickname: `${saveUser.id}`})
   }
+
 
   async getAll() {
     const users = await this.userRepository.find({
