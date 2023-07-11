@@ -31,7 +31,8 @@ export class UserService {
     createDate: true,
     birthday: true,
     city: true,
-    gender: true
+    gender: true,
+    checkMark: true
 }
   
   async byEmail(email: string) {

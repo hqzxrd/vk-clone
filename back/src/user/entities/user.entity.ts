@@ -52,6 +52,9 @@ export class UserEntity extends AbstractEntity {
     @Column({nullable: true})
     avatar: string
 
+    @Column({default: false})
+    checkMark: boolean
+
     @Column({default: '', type: 'simple-array'})
     socketIds: string[]
 
