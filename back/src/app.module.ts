@@ -37,9 +37,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
       inject: [ConfigService],
       useFactory: getMailerConfig,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'static')
-    }),
     AuthModule,
     UserModule,
     MailModule,

@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import fastifyCookie from '@fastify/cookie';
 import { contentParser } from 'fastify-multer'
 import { AuthAdapter } from './adapter/auth.adapter';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -18,6 +19,9 @@ async function bootstrap() {
 
   await app.register(fastifyCookie)
   await app.register(contentParser)
+  app.useStaticAssets({
+    root: join(__dirname, '..', 'static')
+  })
   app.setGlobalPrefix('api')
   app.enableCors({
     credentials: true,
