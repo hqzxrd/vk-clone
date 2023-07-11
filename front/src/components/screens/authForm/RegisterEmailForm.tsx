@@ -17,7 +17,7 @@ import styles from './AuthForm.module.scss'
 
 interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> {}
 
-const RegisterForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
+const RegisterEmailForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
 	const { isAuth } = useAuth()
@@ -57,4 +57,4 @@ const RegisterForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	)
 }
 
-export default RegisterForm
+export default RegisterEmailForm

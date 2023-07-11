@@ -1,15 +1,65 @@
 import RegisterCodeForm from './RegisterCodeForm'
-import EmailRegisterForm from './RegisterEmailForm'
+import RegisterEmailForm from './RegisterEmailForm'
 import RegisterInfoForm from './RegisterInfoForm'
-import PasswordRegisterForm from './RegisterPasswordForm'
+import RegisterPasswordForm from './RegisterPasswordForm'
 import { IRegisterFields } from './auth.interface'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import {
+	FormState,
+	UseFormHandleSubmit,
+	UseFormRegister,
+	UseFormWatch,
+	useForm,
+} from 'react-hook-form'
+
+interface IPages {
+	[page: string]: (
+		reg: UseFormRegister<IRegisterFields>,
+		handleSubmit: UseFormHandleSubmit<IRegisterFields>,
+		formState: FormState<IRegisterFields>,
+		watch: UseFormWatch<IRegisterFields>
+	) => JSX.Element
+}
+
+const pages: IPages = {
+	email: (reg, handleSubmit, formState) => (
+		<RegisterEmailForm
+			reg={reg}
+			handleSubmit={handleSubmit}
+			formState={formState}
+		/>
+	),
+
+	code: (reg, handleSubmit, formState) => (
+		<RegisterCodeForm
+			reg={reg}
+			handleSubmit={handleSubmit}
+			formState={formState}
+		/>
+	),
+
+	password: (reg, handleSubmit, formState, watch) => (
+		<RegisterPasswordForm
+			reg={reg}
+			handleSubmit={handleSubmit}
+			formState={formState}
+			watch={watch}
+		/>
+	),
+
+	info: (reg, handleSubmit, formState) => (
+		<RegisterInfoForm
+			reg={reg}
+			handleSubmit={handleSubmit}
+			formState={formState}
+		/>
+	),
+}
 
 const CreateUserWrapper = () => {
 	const { asPath, replace } = useRouter()
-	const [state, setState] = useState<string>()
+	const [state, setState] = useState<string>(``)
 
 	useEffect(() => {
 		const hash = asPath.split(`#`)[1]
@@ -35,48 +85,11 @@ const CreateUserWrapper = () => {
 		mode: `onChange`,
 	})
 
-	if (state === `email`) {
-		return (
-			<EmailRegisterForm
-				reg={reg}
-				handleSubmit={handleSubmit}
-				formState={formState}
-			/>
-		)
+	if (!state) {
+		return
 	}
 
-	if (state === `code`) {
-		return (
-			<RegisterCodeForm
-				reg={reg}
-				handleSubmit={handleSubmit}
-				formState={formState}
-			/>
-		)
-	}
-
-	if (state === `password`) {
-		return (
-			<PasswordRegisterForm
-				reg={reg}
-				handleSubmit={handleSubmit}
-				formState={formState}
-				watch={watch}
-			/>
-		)
-	}
-
-	if (state === `info`) {
-		return (
-			<RegisterInfoForm
-				reg={reg}
-				handleSubmit={handleSubmit}
-				formState={formState}
-			/>
-		)
-	}
-
-	return <div>Ошибка</div>
+	return pages[state](reg, handleSubmit, formState, watch)
 }
 
 export default CreateUserWrapper

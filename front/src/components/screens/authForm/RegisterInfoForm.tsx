@@ -24,7 +24,7 @@ import styles from './AuthForm.module.scss'
 
 interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> {}
 
-const UserInfoForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
+const RegisterInfoForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	const [gender, setGender] = useState<TypeGender>(`male`)
 	const dispatch = useAppDispatch()
 	const { replace } = useRouter()
@@ -95,4 +95,4 @@ const UserInfoForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	)
 }
 
-export default UserInfoForm
+export default RegisterInfoForm

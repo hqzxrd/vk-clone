@@ -12,7 +12,7 @@ import Input from '@/components/ui/Form/Input'
 
 import styles from './AuthForm.module.scss'
 
-const PasswordRegisterForm: FC<IPropsHookForm<IRegisterFields>> = ({
+const RegisterPasswordForm: FC<IPropsHookForm<IRegisterFields>> = ({
 	reg,
 	handleSubmit,
 	formState,
@@ -63,4 +63,4 @@ const PasswordRegisterForm: FC<IPropsHookForm<IRegisterFields>> = ({
 	)
 }
 
-export default PasswordRegisterForm
+export default RegisterPasswordForm
