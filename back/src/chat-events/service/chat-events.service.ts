@@ -47,7 +47,8 @@ export class ChatEventsService {
    async handleUpdateMessage(client: SocketUser, {id, text}: SendUpdateMessageDto) {
       const userId = client.user.id
       const message = await this.messageService.update(id, text, userId)
-      const [toUser] = message.chat.users.filter(user => user.id !== userId)
+      const users = [message.chat.userA, message.chat.userB]
+      const [toUser] = users.filter(user => user.id !== userId)
       await this.sendPrivateMessage(RECEIVE_UPDATE_MESSAGE_EVENT, toUser.id, message)
       return message
    }
@@ -55,15 +56,25 @@ export class ChatEventsService {
    async handleDeleteMessage(client: SocketUser, messageId: number) {
       const userId = client.user.id
       const message = await this.messageService.delete(messageId, userId)
-      const [toUser] = message.chat.users.filter(user => user.id !== userId)
+      const users = [message.chat.userA, message.chat.userB]
+      const [toUser] = users.filter(user => user.id !== userId)
       await this.sendPrivateMessage(RECEIVE_DELETE_MESSAGE_EVENT, toUser.id, message)
    }
 
-   async handleGetMessages(userId: number, { id, page, count }: GetMessagesDto) {
-      const isCheckUser = await this.chatService.checkUser(id, userId)
+   async handleGetMessages(userId: number, { chatId, page, count }: GetMessagesDto) {
+      const isCheckUser = await this.chatService.checkUser(chatId, userId)
       if(!isCheckUser) throw new ForbiddenException()
-      const messages = await this.messageService.getMessagesByChatId(id, page, count)
+      const messages = await this.messageService.getMessagesByChatId(chatId, page, count)
       return messages
+   }
+
+   async handleFindChatByUserId(userId: number, toUserId: number) {
+      const chat = await this.chatService.createOrFind([userId, toUserId])
+      return chat
+   }
+
+   async handleGetAllChat(userId: number, page: number, count: number) {
+      return await this.chatService.getChats(userId, page, count)
    }
 
    private async sendPrivateMessage(event: string, toUserId: number, message: MessageEntity) {
