@@ -7,6 +7,7 @@ import { DropboxModule } from 'src/dropbox/dropbox.module';
 import { UserModule } from 'src/user/user.module';
 import { LikeModule } from 'src/like/like.module';
 import { NotificationModule } from 'src/notification/notification.module';
+import { FileModule } from 'src/file/file.module';
 
 @Module({
   controllers: [PostController],
@@ -15,7 +16,8 @@ import { NotificationModule } from 'src/notification/notification.module';
     DropboxModule,
     UserModule,
     LikeModule,
-    NotificationModule
+    NotificationModule,
+    FileModule
   ],
   providers: [PostService],
   exports: [PostService]
