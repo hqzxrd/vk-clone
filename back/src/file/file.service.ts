@@ -28,7 +28,7 @@ export class FileService {
 
     async deleteFile(filename: string) {
         const [dir, file] = filename.split('/')
-        const pathFile = join(__dirname, '..', '../uploads', `/${dir}`, file)
+        const pathFile = join(__dirname, '..', '../static', `/${dir}`, file)
         await unlink(pathFile)
     }
 }
