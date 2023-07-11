@@ -50,11 +50,13 @@ export class PostService {
     // })
 
     const urls: string[] = []
-    photos.forEach(async photo => {
+
+    for(const photo of photos) {
       const url = await this.fileService.saveFile(photo)
       urls.push(url)
-    })
+    }
 
+    console.log(urls)
     const post = this.postRepository.create({...dto, author: {id}, photos: urls})
     return await this.postRepository.save(post)
   }
