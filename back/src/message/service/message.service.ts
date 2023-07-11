@@ -32,12 +32,19 @@ export class MessageService {
       where: {
         chat: {id: chatId}
       },
-      relations: ['chat', 'chat.users', 'author'],
+      relations: ['chat', 'chat.userA', 'chat.userB', 'author'],
       select: {
-        author: this.userService.returnBaseKeyUser,
+        author: {
+          id: true,
+          name: true,
+          surname: true,
+          nickname: true,
+          avatar: true
+        },
         chat: {
           id: true,
-          users: {id: true}
+          userA: {id: true},
+          userB: {id: true}
         }
       },
       take: count,
@@ -50,12 +57,13 @@ export class MessageService {
   async findOne(id: number) {
     const message = await this.messageRepository.findOne({
       where: {id},
-      relations: ['chat', 'chat.users', 'author'],
+      relations: ['chat', 'chat.userA', 'chat.userB', 'author'],
       select: {
         author: this.userService.returnBaseKeyUser,
         chat: {
           id: true,
-          users: {id: true}
+          userA: {id: true},
+          userB: {id: true}
         }
       }
     }) 
@@ -75,6 +83,25 @@ export class MessageService {
     if(!message) throw new NotFoundException()
     if(message.author.id !== userId) throw new ForbiddenException()
     await this.messageRepository.remove(message)
+    return message
+  }
+
+  async getLastMessageByChatId(chatId: number) {
+    const message = await this.messageRepository.findOne({
+      where: {chat: {id: chatId}},
+      order: {
+        createDate: 'DESC'
+      },
+      relations: {author: true},
+      select: {
+        author: {
+          id: true,
+          name: true,
+          surname: true,
+          avatar: true
+        }
+      }
+    })
     return message
   }
 }

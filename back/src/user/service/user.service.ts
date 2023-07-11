@@ -10,13 +10,15 @@ import { USER_NOT_FOUND } from '../constants/user.error.constants';
 import { FriendRequestType } from 'src/friend/friend-request.type.enum';
 import { FriendRequestService } from 'src/friend/service/friend-request.service';
 import { Relationship } from '../relationship.enum';
+import { FileService } from 'src/file/file.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     private readonly dropboxService: DropboxService,
-    private readonly friendRequestService: FriendRequestService
+    private readonly friendRequestService: FriendRequestService,
+    private readonly fileService: FileService
   ){}
 
   readonly returnBaseKeyUser: FindOptionsSelect<UserEntity> = {
@@ -90,9 +92,14 @@ export class UserService {
     if(!user) throw new UnauthorizedException()
 
     if(file) {
-      if(user.avatar) this.dropboxService.remove(user.avatar)
-      let url: string
-      await Promise.all(url = (await this.dropboxService.uploadFile(file)).url)
+      // ! dropbox
+      // if(user.avatar) this.dropboxService.remove(user.avatar)
+      // let url: string
+      // await Promise.all(url = (await this.dropboxService.uploadFile(file)).url)
+      // dto.avatar = url
+
+      if(user.avatar) await this.fileService.deleteFile(user.avatar)
+      const url = await this.fileService.saveFile(file)
       dto.avatar = url
     }
     
@@ -106,7 +113,8 @@ export class UserService {
     const user = await this.byId(id)
     if(!user) throw new UnauthorizedException()
     if(user.avatar) {
-      this.dropboxService.remove(user.avatar)
+      //* this.dropboxService.remove(user.avatar)
+      await this.fileService.deleteFile(user.avatar)
     }
     user.avatar = null
     await this.userRepository.save(user)

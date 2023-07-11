@@ -13,6 +13,7 @@ import { LikeType } from 'src/like/like.enum';
 import { NotificationService } from 'src/notification/service/notification.service';
 import { SendNotificationPostDto } from '../dto/send-notification.post.dto';
 import { NotificationType } from 'src/notification/enums/notification.type.enum';
+import { FileService } from 'src/file/file.service';
 
 @Injectable()
 export class PostService {
@@ -22,29 +23,36 @@ export class PostService {
     private readonly dropboxService: DropboxService,
     private readonly likeService: LikeService,
     private readonly userService: UserService,
-    private readonly notificationService: NotificationService
+    private readonly notificationService: NotificationService,
+    private readonly fileService: FileService
   ) {}
 
   
   async create(id: number, dto: CreatePostDto, photos: MulterFile[]) {
 
-    photos.forEach(photo => {
-       // * for every item to be unique
-      const index = photos.indexOf(photo)
-      photo.originalname = index + photo.originalname
-    })
+    // photos.forEach(photo => {
+    //    // * for every item to be unique
+    //   const index = photos.indexOf(photo)
+    //   photo.originalname = index + photo.originalname
+    // })
 
-    const urlsObject: Array<{url: string, originalname: string}> = []
-    await Promise.all(photos.map(async (photo) => {
-      const data = await this.dropboxService.uploadFile(photo)
-      urlsObject.push(data)
-    }))
+    // const urlsObject: Array<{url: string, originalname: string}> = []
+    // await Promise.all(photos.map(async (photo) => {
+    //   const data = await this.dropboxService.uploadFile(photo)
+    //   urlsObject.push(data)
+    // }))
+
+    // const urls: string[] = []
+    // photos.forEach(photo => {
+    //   urlsObject.forEach(urlObject => {
+    //     if(photo.originalname === urlObject.originalname) urls.push(urlObject.url)
+    //   })
+    // })
 
     const urls: string[] = []
-    photos.forEach(photo => {
-      urlsObject.forEach(urlObject => {
-        if(photo.originalname === urlObject.originalname) urls.push(urlObject.url)
-      })
+    photos.forEach(async photo => {
+      const url = await this.fileService.saveFile(photo)
+      urls.push(url)
     })
 
     const post = this.postRepository.create({...dto, author: {id}, photos: urls})
@@ -107,25 +115,30 @@ export class PostService {
 
     const urlsForDelete = arrayComparison(oldPhotos, newPhotos)
     if(urlsForDelete.length) {
-      urlsForDelete.forEach((path) => this.dropboxService.remove(path))
+      urlsForDelete.forEach((path) => this.fileService.deleteFile(path))
     }
     
     if(files.length) {
-      files.forEach(photo => {
-        // * for every item to be unique
-          const index = files.indexOf(photo)
-          photo.originalname = index + photo.originalname
-      })
-      const urlsObject: Array<{url: string, originalname: string}> = []
-      await Promise.all(files.map(async (file) => {
-        const data =  await this.dropboxService.uploadFile(file)
-        urlsObject.push(data)
-      }))
+      // files.forEach(photo => {
+      //   // * for every item to be unique
+      //     const index = files.indexOf(photo)
+      //     photo.originalname = index + photo.originalname
+      // })
+      // const urlsObject: Array<{url: string, originalname: string}> = []
+      // await Promise.all(files.map(async (file) => {
+      //   const data =  await this.dropboxService.uploadFile(file)
+      //   urlsObject.push(data)
+      // }))
 
-      files.forEach(file => {
-        urlsObject.forEach(urlObject => {
-          if(file.originalname === urlObject.originalname) newPhotos.push(urlObject.url)
-        })
+      // files.forEach(file => {
+      //   urlsObject.forEach(urlObject => {
+      //     if(file.originalname === urlObject.originalname) newPhotos.push(urlObject.url)
+      //   })
+      // })
+
+      files.forEach(async file => {
+        const url = await this.fileService.saveFile(file)
+        newPhotos.push(url)
       })
     }
 

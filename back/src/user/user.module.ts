@@ -5,12 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { DropboxModule } from 'src/dropbox/dropbox.module';
 import { FriendModule } from 'src/friend/friend.module';
+import { FileModule } from 'src/file/file.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
     DropboxModule,
-    forwardRef(() => FriendModule)
+    forwardRef(() => FriendModule),
+    FileModule
   ],
   controllers: [UserController],
   providers: [UserService],

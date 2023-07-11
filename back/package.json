@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@fastify/cookie": "^8.3.0",
+    "@fastify/static": "^6.10.2",
     "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/common": "^10.0.4",
     "@nestjs/config": "^2.3.1",
@@ -30,6 +31,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-fastify": "^9.4.0",
     "@nestjs/platform-socket.io": "^10.0.4",
+    "@nestjs/serve-static": "^4.0.0",
     "@nestjs/swagger": "^6.3.0",
     "@nestjs/typeorm": "^9.0.1",
     "@nestjs/websockets": "^10.0.4",
