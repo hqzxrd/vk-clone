@@ -75,9 +75,12 @@ export class UserService {
     return {...profileUser, typeRelationship}
   }
 
-  async profileByNickname(nickname: string, userId?: number) {
+  async profileByNicknameOrId(key: string, userId?: number) {
     const user = await this.userRepository.findOne({
-      where: {nickname}
+      where: [
+        {nickname: key},
+        {id: +key}
+      ]
     })
     if(!user) throw new NotFoundException()
     return this.profileById(user.id)

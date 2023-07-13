@@ -13,23 +13,14 @@ export class UserController {
     private readonly userService: UserService,
   ) {}
 
-  // @AccessJwtGuard()
-  // @Get(':id')
-  // profileById(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @User('id') userId: number
-  // ) {
-  //   return this.userService.profileById(id, userId)
-  // }
 
   @AccessJwtGuard()
-  @Get(':nickname')
-  profileByNickname(
-    @Param('nickname') nickname: string,
+  @Get(':key')
+  profileByNicknameOrId(
+    @Param('key') key: string,
     @User('id') userId: number
   ) {
-    console.log(nickname)
-    return this.userService.profileByNickname(nickname, userId)
+    return this.userService.profileByNicknameOrId(key, userId)
   }
 
   @Get()
