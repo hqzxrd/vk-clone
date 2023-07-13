@@ -29,7 +29,7 @@ export class PostController {
     return this.postService.create(id, createPostDto, photos);
   }
 
-  @UsePipes(new ValidationPipe({transform: true}))
+  @UsePipes(new ValidationPipe())
   @Get()
   findAll(
     @Query() {count, page, user} : ProductQueryDto,

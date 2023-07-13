@@ -61,7 +61,7 @@ export class PostService {
     return await this.postRepository.save(post)
   }
 
-  async findAll(page: number, count: number, queryUserId?: number, userId?: number) {
+  async findAll(page: number, count: number, queryUserKey?: string, userId?: number) {
     const selectUser = Object.keys(this.userService.returnBaseKeyUser).map(key => `author.${key}`);
 
     const postsAndCount = await this.postRepository
@@ -73,7 +73,8 @@ export class PostService {
       .take(count)
       .skip(page * count - count)
       .orderBy('post.createDate', 'DESC')
-      .where(queryUserId ? 'author.id = :id': '' , { id: queryUserId })
+      .where(queryUserId ? 'author.id = :id': '' , { id: +queryUserKey })
+      .orWhere(queryUserId ? 'author.nickname = :nickname': '', { nickname: queryUserKey })
       .getManyAndCount()
 
       const posts = await Promise.all(postsAndCount[0].map(async post => {
