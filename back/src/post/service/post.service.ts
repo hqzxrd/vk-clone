@@ -73,8 +73,8 @@ export class PostService {
       .take(count)
       .skip(page * count - count)
       .orderBy('post.createDate', 'DESC')
-      .where(queryUserId ? 'author.id = :id': '' , { id: +queryUserKey })
-      .orWhere(queryUserId ? 'author.nickname = :nickname': '', { nickname: queryUserKey })
+      .where(queryUserKey ? 'author.id = :id': '' , { id: +queryUserKey })
+      .orWhere(queryUserKey ? 'author.nickname = :nickname': '', { nickname: queryUserKey })
       .getManyAndCount()
 
       const posts = await Promise.all(postsAndCount[0].map(async post => {
