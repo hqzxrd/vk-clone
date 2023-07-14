@@ -29,26 +29,6 @@ export class PostService {
 
   
   async create(id: number, dto: CreatePostDto, photos: MulterFile[]) {
-
-    // photos.forEach(photo => {
-    //    // * for every item to be unique
-    //   const index = photos.indexOf(photo)
-    //   photo.originalname = index + photo.originalname
-    // })
-
-    // const urlsObject: Array<{url: string, originalname: string}> = []
-    // await Promise.all(photos.map(async (photo) => {
-    //   const data = await this.dropboxService.uploadFile(photo)
-    //   urlsObject.push(data)
-    // }))
-
-    // const urls: string[] = []
-    // photos.forEach(photo => {
-    //   urlsObject.forEach(urlObject => {
-    //     if(photo.originalname === urlObject.originalname) urls.push(urlObject.url)
-    //   })
-    // })
-
     const urls: string[] = []
 
     for(const photo of photos) {
@@ -122,27 +102,10 @@ export class PostService {
     }
     
     if(files.length) {
-      // files.forEach(photo => {
-      //   // * for every item to be unique
-      //     const index = files.indexOf(photo)
-      //     photo.originalname = index + photo.originalname
-      // })
-      // const urlsObject: Array<{url: string, originalname: string}> = []
-      // await Promise.all(files.map(async (file) => {
-      //   const data =  await this.dropboxService.uploadFile(file)
-      //   urlsObject.push(data)
-      // }))
-
-      // files.forEach(file => {
-      //   urlsObject.forEach(urlObject => {
-      //     if(file.originalname === urlObject.originalname) newPhotos.push(urlObject.url)
-      //   })
-      // })
-
-      files.forEach(async file => {
+      for(const file of files) {
         const url = await this.fileService.saveFile(file)
         newPhotos.push(url)
-      })
+      }
     }
 
     return await this.postRepository.save({...post, ...updatePostDto, photos: newPhotos})
