@@ -76,14 +76,15 @@ export class UserService {
   }
 
   async profileByNicknameOrId(key: string, userId?: number) {
+    const userKey = this.getUserKey(key)
     const user = await this.userRepository.findOne({
       where: [
-        {nickname: key},
-        {id: +key}
+        {nickname: userKey},
+        {id: userKey}
       ]
     })
     if(!user) throw new NotFoundException()
-    return this.profileById(user.id)
+    return this.profileById(user.id, userId)
   }
 
   async create(dto: RegistrationDto) {
@@ -234,4 +235,6 @@ export class UserService {
     if(!user) throw new BadRequestException()
     return await this.userRepository.save({...user, password: hashPassword})
   }
+
+  getUserKey = (key: string) => isNaN(+key) ? key : +key
 }
