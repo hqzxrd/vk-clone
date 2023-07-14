@@ -78,7 +78,7 @@ export class UserService {
   async profileByNicknameOrId(key: string, userId?: number) {
     const userKey = this.getUserKey(key)
       const findOptions = {
-        [(typeof key === 'number') ? 'id' : 'nickname']: key
+        [(typeof userKey === 'number') ? 'id' : 'nickname']: userKey
       }
     const user = await this.userRepository.findOne({
       where: findOptions
