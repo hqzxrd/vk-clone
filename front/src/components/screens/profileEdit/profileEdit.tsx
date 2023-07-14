@@ -1,6 +1,7 @@
 import { IUpdateFields, IUpdateFieldsDto } from './profileEdit.interface'
 import { UserService } from '@/services/user/user.service'
 import { TypeGender } from '@/types/auth.types'
+import { IUser } from '@/types/user.types'
 import { useRouter } from 'next/router'
 import { FC, MouseEvent, useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -22,6 +23,8 @@ import { NAME_REGEX } from '@/shared/regex'
 
 import { store } from '@/store/store'
 import { deleteAvatar } from '@/store/user/user.action'
+
+import { userLink } from '@/utils/user-link'
 
 import styles from './profileEdit.module.scss'
 
@@ -62,7 +65,9 @@ const ProfileEdit: FC = () => {
 
 		const res = await UserService.updateProfile(userDto, file)
 
-		if (res) res.status === 200 ? push(`/users/${user.id}`) : null
+		if (res && res.status === 200) {
+			push(`/users/${user.id}`)
+		}
 	}
 
 	const handleClickDeleteAvatar = async () => {
@@ -90,7 +95,7 @@ const ProfileEdit: FC = () => {
 	}
 
 	if (!profile) {
-		return <></>
+		return <>йцуйцу</>
 	}
 
 	return (
@@ -172,7 +177,10 @@ const ProfileEdit: FC = () => {
 						<Input
 							placeholder="Статус"
 							{...reg(`status`, {
-								value: profile.status && profile.status,
+								value:
+									profile.status && profile.status !== `null`
+										? profile.status
+										: ``,
 							})}
 							maxLength={64}
 							error={formState.errors.status}
@@ -185,7 +193,10 @@ const ProfileEdit: FC = () => {
 						<label>Город</label>
 						<Input
 							placeholder="Город"
-							{...reg(`city`, { value: profile.city })}
+							{...reg(`city`, {
+								value:
+									profile.city && profile.city !== `null` ? profile.city : ``,
+							})}
 							maxLength={20}
 							error={formState.errors.city}
 						/>

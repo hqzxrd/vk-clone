@@ -20,7 +20,6 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
 	const inputFiles = useRef<HTMLInputElement>(null)
 	const [text, setText] = useState<string>(``)
 	const { file, photos, handleChange, removePhoto, clear } = useSeveralPhotos()
-
 	const { query } = useRouter()
 	const queryClient = useQueryClient()
 

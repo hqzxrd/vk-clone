@@ -44,10 +44,12 @@ const UpdatePost: FC<props> = ({
 	const UpdatePost = async () => {
 		const res = await PostService.updatePost(post.id, text, file, oldPhotos)
 
-		res.status === 200 && queryClient.invalidateQueries(`userPosts${query.id}`)
-		clear()
-		setText(``)
-		setIsUpdate(false)
+		if (res.status === 200) {
+			clear()
+			setText(``)
+			setIsUpdate(false)
+			queryClient.invalidateQueries(`userPosts${query.id}`)
+		}
 	}
 
 	useEffect(() => {

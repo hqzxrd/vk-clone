@@ -14,7 +14,7 @@ const SearchIcon: FC<SVGProps<SVGSVGElement>> = ({ ...rest }) => {
 				<path
 					d="M15 15L21 21"
 					stroke="#696969"
-					stroke-width="2"
+					strokeWidth="2"
 					strokeLinecap="round"
 					strokeLinejoin="round"
 				></path>

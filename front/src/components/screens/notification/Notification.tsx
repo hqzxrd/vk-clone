@@ -6,6 +6,7 @@ import { text } from 'stream/consumers'
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 
 import { date } from '@/utils/date'
+import { userLink } from '@/utils/user-link'
 
 import styles from './Notification.module.scss'
 
@@ -68,7 +69,7 @@ const notification: {
 
 const Notification: FC<props> = ({ notif }) => {
 	return (
-		<Link className={styles.link} href={`/users/${notif.fromUser.id}`}>
+		<Link className={styles.link} href={`/users/${userLink(notif.fromUser)}`}>
 			<AvatarMini user={notif.fromUser} width={30} height={30} isLink={false} />
 			{notification[notif.type](notif)}
 		</Link>

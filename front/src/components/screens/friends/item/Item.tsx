@@ -6,6 +6,8 @@ import { QueryClient, useQueryClient } from 'react-query'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 
+import { userLink } from '@/utils/user-link'
+
 import styles from './Item.module.scss'
 
 interface IButtons {
@@ -65,7 +67,7 @@ const Item: FC<{ user: IUser; state: number }> = ({ user, state }) => {
 		<div className={styles.peoples_item}>
 			<AvatarMini user={user} width={90} height={90} isLink={true} />
 			<div className={styles.info}>
-				<Link href={`/users/${user.id}`} className={styles.name}>
+				<Link href={`/users/${userLink(user)}`} className={styles.name}>
 					{`${user.name} ${user.surname}`}
 				</Link>
 				<div className={styles.status}>{user.status}</div>

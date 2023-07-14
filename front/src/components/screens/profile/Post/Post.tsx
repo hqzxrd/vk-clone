@@ -5,6 +5,7 @@ import { IPost } from '@/types/post.types'
 import cn from 'classnames'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { FC, useEffect, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
@@ -19,6 +20,8 @@ import { useAuth } from '@/hooks/useAuth'
 import { useComments } from '@/hooks/useComments'
 import { useDate } from '@/hooks/useDate'
 
+import { userLink } from '@/utils/user-link'
+
 import styles from './Post.module.scss'
 
 interface props {
@@ -31,6 +34,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
 	const [isLike, setIsLike] = useState<boolean>(post.isLike)
 	const [countLiked, setCountLiked] = useState<number>(post.countLikes)
 	const [commentsIsHide, setCommentsIsHide] = useState<boolean>(true)
+	const { query } = useRouter()
 	const { user } = useAuth()
 
 	const { comments } = useComments(post.id, `?post=${post.id}`, commentsIsHide)
@@ -47,7 +51,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
 	const deletePost = async () => {
 		const res = await PostService.detelePost(post.id)
 		if (res.status === 204) {
-			queryClient.invalidateQueries(`userPosts${user.id}`)
+			queryClient.invalidateQueries(`userPosts${query.id}`)
 			getNewsline && getNewsline()
 		}
 	}
@@ -74,7 +78,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
 					<AvatarMini user={post.author} width={60} height={60} isLink={true} />
 				</div>
 				<div className={styles.whosePost}>
-					<Link href={`/users/${post.author.id}`}>
+					<Link href={`/users/${userLink(post.author)}`}>
 						{post.author.name} {post.author.surname}
 					</Link>
 					<div className={styles.date}>

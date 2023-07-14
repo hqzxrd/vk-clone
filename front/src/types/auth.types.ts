@@ -16,6 +16,7 @@ export interface IUserDto {
 	name: string
 	surname: string
 	avatar: string | null
+	nickname: string
 }
 
 export type TypeGender = `male` | `female`

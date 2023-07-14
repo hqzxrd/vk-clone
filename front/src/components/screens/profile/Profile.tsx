@@ -23,7 +23,9 @@ const Profile = () => {
 	return (
 		<div className={styles.wrapper}>
 			<Info />
-			{user.id === +query.id! && <CreatePost />}
+			{isNaN(+query.id!)
+				? user.nickname === query.id && <CreatePost />
+				: user.id === +query.id! && <CreatePost />}
 
 			{posts &&
 				posts[0].map((post: IPost) => {

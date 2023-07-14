@@ -7,6 +7,8 @@ import { FilesUrl } from '@/config/api.config'
 
 import { useAvatarGenerate } from '@/hooks/useAvatarGenerate'
 
+import { userLink } from '@/utils/user-link'
+
 import styles from './AvatarMini.module.scss'
 
 const AvatarMini: FC<IAvatarMiniProps> = ({
@@ -36,7 +38,7 @@ const AvatarMini: FC<IAvatarMiniProps> = ({
 		return (
 			<div>
 				{user.avatar ? (
-					<Link href={`/users/${user.id}`}>
+					<Link href={`/users/${userLink(user)}`}>
 						<Image
 							src={`${FilesUrl(user?.avatar)}`}
 							width={width}
@@ -47,7 +49,7 @@ const AvatarMini: FC<IAvatarMiniProps> = ({
 					</Link>
 				) : (
 					<Link
-						href={`/users/${user.id}`}
+						href={`/users/${userLink(user)}`}
 						style={{
 							backgroundColor: `${color}`,
 							width: width,

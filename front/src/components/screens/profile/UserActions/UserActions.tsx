@@ -14,6 +14,8 @@ import { useAuth } from '@/hooks/useAuth'
 import { useAvatarGenerate } from '@/hooks/useAvatarGenerate'
 import { useProfile } from '@/hooks/useProfile'
 
+import { userLink } from '@/utils/user-link'
+
 import styles from './UserActions.module.scss'
 
 const UserActions = () => {
@@ -76,7 +78,7 @@ const UserActions = () => {
 					{stateRequestFriend === 'friend' && (
 						<div onClick={() => removeFriend()}>Удалить из друзей</div>
 					)}
-					<Link href={`/users/${profile.id}/dialog`}>
+					<Link href={`/users/${userLink(profile)}/dialog`}>
 						<MessageIcon />
 					</Link>
 				</>

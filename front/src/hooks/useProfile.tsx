@@ -7,16 +7,20 @@ import { useDispatch } from 'react-redux'
 
 import { updateUserState } from '@/store/user/user.slice'
 
+import { returnStringOrNubmer } from '@/utils/user-link'
+
 export const useProfile = (userid?: number) => {
 	const { user } = useAuth()
 	const dispatch = useDispatch()
 	const { query } = useRouter()
 	const id = query.id as string
+
 	const { isLoading, data: profile } = useQuery(
 		`${id ? id : userid}`,
-		() => UserService.getById(userid ? userid : +id),
+		() => UserService.getById(userid ? userid : returnStringOrNubmer(id)),
 		{
 			select: ({ data }) => data,
+			enabled: userid ? true : query.id !== undefined,
 		}
 	)
 

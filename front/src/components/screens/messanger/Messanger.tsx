@@ -1,13 +1,30 @@
 import ChatItem from './ChatItem/ChatItem'
+import { socket } from '@/api/interceptors'
+import { IChatItem } from '@/types/messages.types'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
-import Input from '@/components/ui/Form/Input'
 import CrossIcon from '@/components/ui/Icons/CrossIcon'
 import SearchIcon from '@/components/ui/Icons/Messanger/SearchIcon'
-import Textarea from '@/components/ui/Textarea/Textarea'
 
 import styles from './Messanger.module.scss'
 
 const Messanger = () => {
+	const [chats, setChats] = useState<IChatItem[]>([])
+	const { query } = useRouter()
+	console.log(chats)
+
+	useEffect(() => {
+		socket.emit(
+			'get all chat event',
+			{ id: +query.id! },
+			(mes: [IChatItem[], number]) => {
+				console.log(mes)
+				setChats(mes[0])
+			}
+		)
+	}, [])
+
 	return (
 		<div className={styles.messangerWrapper}>
 			<div className={styles.messanger}>
@@ -17,21 +34,9 @@ const Messanger = () => {
 					<CrossIcon />
 				</div>
 				<div className={styles.allChats}>
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
-					<ChatItem />
+					{chats.map((chat) => {
+						return <ChatItem chat={chat} key={chat.id} />
+					})}
 				</div>
 			</div>
 		</div>

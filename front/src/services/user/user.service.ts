@@ -8,7 +8,7 @@ import { UserUrl } from '@/config/api.config'
 import { toastError } from '@/utils/toastError'
 
 export const UserService = {
-	async getById(id: number) {
+	async getById(id: number | string) {
 		try {
 			return await authAxios.get<IUser>(UserUrl(`/${id}`))
 		} catch (error) {

@@ -12,6 +12,8 @@ import LikeIcon from '@/components/ui/Icons/Post/LikeIcon'
 
 import { useAuth } from '@/hooks/useAuth'
 
+import { userLink } from '@/utils/user-link'
+
 import styles from './Comment.module.scss'
 
 interface props {
@@ -67,7 +69,10 @@ const Comment: FC<props> = ({ post, comment }) => {
 				/>
 
 				<div className={styles.content}>
-					<Link href={`/users/${comment.author.id}`} className={styles.name}>
+					<Link
+						href={`/users/${userLink(comment.author)}`}
+						className={styles.name}
+					>
 						{comment.author.name} {comment.author.surname}
 					</Link>
 					{isUpdate ? (

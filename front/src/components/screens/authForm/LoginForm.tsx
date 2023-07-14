@@ -14,6 +14,8 @@ import { EMAIL_REGEX } from '@/shared/regex'
 import { useAppDispatch } from '@/store/store'
 import { login } from '@/store/user/user.action'
 
+import { userLink } from '@/utils/user-link'
+
 import styles from './AuthForm.module.scss'
 
 const LoginForm: FC = () => {
@@ -34,8 +36,7 @@ const LoginForm: FC = () => {
 
 			if (status === `fulfilled`) {
 				const payload = action.payload as { user: IUser }
-				const id = payload.user.id
-				replace(`/users/${id}`)
+				replace(`/users/${userLink(payload.user)}`)
 			}
 		})
 	}

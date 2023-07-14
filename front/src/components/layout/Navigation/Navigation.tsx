@@ -10,15 +10,18 @@ import ProfileIcon from '@/components/ui/Icons/LeftSideMenu/ProfileIcon'
 
 import { useAuth } from '@/hooks/useAuth'
 
+import { userLink } from '@/utils/user-link'
+
 import style from './Navigation.module.scss'
 
 const Navigation: FC = () => {
 	const { user } = useAuth()
+	console.log(user)
 
 	return (
 		<div className={style.nav_wrapper}>
 			<nav>
-				<Link href={`/users/${user.id}`}>
+				<Link href={`/users/${userLink(user)}`}>
 					<div>
 						<div className={style.icon}>
 							<ProfileIcon />
