@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger, BadRequestException, NotFoundException} from '@nestjs/common';
 import {Server, Socket} from 'socket.io'
 import { SocketUser } from 'src/adapter/auth.adapter';
 import { ChatService } from 'src/chat/service/chat.service';
@@ -62,14 +62,29 @@ export class ChatEventsService {
    }
 
    async handleGetMessages(userOneId: number, { userId, page, count }: GetMessagesDto) {
-      const chat = await this.chatService.createOrFind([userId, userOneId])
+      const chat = await this.chatService.getByUsersIds([userId, userOneId])
+      if(!chat) throw new NotFoundException()
       const messages = await this.messageService.getMessagesByChatId(chat.id, page, count)
       return messages
    }
 
    async handleFindChatByUserId(userId: number, toUserId: number) {
       const chat = await this.chatService.getByUsersIds([userId, toUserId])
-      if(!chat) return null
+      if(!chat) {
+         const user = await this.userService.byId(toUserId)
+         if(!user) throw new BadRequestException()
+         return {
+            users: [
+               {
+                  id: user.id,
+                  nickname: user.nickname,
+                  name: user.name,
+                  surname: user.surname,
+                  avatar: user.avatar,
+               }
+            ]
+         }
+      }
       return {
          id: chat.id,
          createDate: chat.createDate,
