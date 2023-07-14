@@ -68,7 +68,7 @@ export class ChatEventsService {
    }
 
    async handleFindChatByUserId(userId: number, toUserId: number) {
-      const chat = await this.chatService.createOrFind([userId, toUserId])
+      const chat = await this.chatService.getByUsersIds([userId, toUserId])
       return {
          id: chat.id,
          createDate: chat.createDate,
