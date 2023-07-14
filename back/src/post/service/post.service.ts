@@ -44,6 +44,11 @@ export class PostService {
   async findAll(page: number, count: number, queryUserKey?: string, userId?: number) {
     const selectUser = Object.keys(this.userService.returnBaseKeyUser).map(key => `author.${key}`);
 
+    let userKey
+    if(queryUserKey) {
+      userKey = this.userService.getUserKey(queryUserKey)
+    }
+
     const postsAndCount = await this.postRepository
       .createQueryBuilder('post')
       .leftJoin('post.author', 'author')
@@ -53,8 +58,10 @@ export class PostService {
       .take(count)
       .skip(page * count - count)
       .orderBy('post.createDate', 'DESC')
-      .where(queryUserKey ? 'author.id = :id': '' , { id: +queryUserKey })
-      .orWhere(queryUserKey ? 'author.nickname = :nickname': '', { nickname: queryUserKey })
+      .where(
+        userKey ? `author.${(typeof userKey === 'number') ? 'id' : 'nickname'} = :key`: '' , 
+        { key:  userKey}
+        )
       .getManyAndCount()
 
       const posts = await Promise.all(postsAndCount[0].map(async post => {
