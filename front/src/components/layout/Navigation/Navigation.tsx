@@ -16,7 +16,6 @@ import style from './Navigation.module.scss'
 
 const Navigation: FC = () => {
 	const { user } = useAuth()
-	console.log(user)
 
 	return (
 		<div className={style.nav_wrapper}>

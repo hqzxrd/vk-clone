@@ -1,0 +1,24 @@
+.message {
+	width: fit-content;
+	max-width: 50%;
+	word-wrap: break-word;
+	padding: 5px 10px;
+	color: var(--primary-button-color);
+	border-radius: var(--primary-border-radius);
+
+	.date {
+		display: flex;
+		align-items: flex-end;
+		color: rgb(255, 255, 255, 0.533);
+		font-size: 12px;
+	}
+}
+
+.userSend {
+	align-self: flex-end;
+	background-color: var(--primary-button);
+}
+
+.userGet {
+	background-color: var(--secondary-color);
+}

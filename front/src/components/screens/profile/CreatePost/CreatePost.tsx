@@ -32,8 +32,6 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
 
 	const createPost = async () => {
 		if (!text && !file[0]) {
-			console.log(text)
-
 			return
 		}
 		clear()

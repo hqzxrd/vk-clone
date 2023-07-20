@@ -1,7 +1,12 @@
 import { IUser } from './user.types'
+import { number } from 'prop-types'
 
 export interface IUserChatsInfo
 	extends Pick<IUser, `id` | `name` | `surname` | `avatar` | `nickname`> {}
+
+export interface IMassegaChatId {
+	id: number
+}
 
 export interface IMessage {
 	author: IUserChatsInfo
@@ -9,6 +14,7 @@ export interface IMessage {
 	updateDate: string
 	id: number
 	text: string
+	chat: IMassegaChatId
 }
 
 export interface IChatItem {

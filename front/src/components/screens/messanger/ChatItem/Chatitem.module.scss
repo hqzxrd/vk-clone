@@ -38,6 +38,10 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 			}
+
+			.epmty {
+				color: var(--secondary-color);
+			}
 		}
 	}
 }

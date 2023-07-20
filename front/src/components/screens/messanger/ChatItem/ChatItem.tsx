@@ -18,7 +18,7 @@ const ChatItem: FC<props> = ({ chat }) => {
 	const { push } = useRouter()
 	const { user } = useAuth()
 
-	const { time, day, month, year } = date(chat.message.createDate)
+	// const { time, day, month, year } = date(chat.message.createDate)
 
 	const [withUser] = chat.users.filter((u) => u.id !== user.id)
 
@@ -36,17 +36,23 @@ const ChatItem: FC<props> = ({ chat }) => {
 						{withUser.name} {withUser.surname}
 					</div>
 					<div className={styles.lastTime}>
-						{time} {day}.{month}.{year}
+						{/* {time} {day}.{month}.{year} */}
 					</div>
 				</div>
 				<div className={styles.lastMessage}>
-					<AvatarMini
-						user={chat.message.author}
-						width={20}
-						height={20}
-						isLink={false}
-					/>
-					<div>{chat.message.text}</div>
+					{chat.message ? (
+						<>
+							<AvatarMini
+								user={chat.message.author}
+								width={20}
+								height={20}
+								isLink={false}
+							/>
+							<div>{chat.message.text}</div>
+						</>
+					) : (
+						<div className={styles.epmty}>Сообщений нет</div>
+					)}
 				</div>
 			</div>
 		</div>

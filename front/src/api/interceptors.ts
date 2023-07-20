@@ -10,6 +10,7 @@ import { toastError } from '@/utils/toastError'
 const token = Cookies.get(`AccessToken`)
 export const socket = io(WS_URL, {
 	auth: { token: token },
+	autoConnect: false,
 })
 
 export const baseAxios = axios.create({

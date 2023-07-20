@@ -10,7 +10,7 @@ const nextConfig = {
 		SERVER_URL: process.env.SERVER_URL,
 	},
 	images: {
-		domains: ['localhost', process.env.CLIENT_URL],
+		domains: ['localhost', `79.126.5.70`],
 		remotePatterns: [
 			{
 				protocol: 'http',

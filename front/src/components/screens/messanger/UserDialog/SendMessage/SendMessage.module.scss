@@ -1,0 +1,35 @@
+.sendMessage {
+	display: flex;
+	align-items: center;
+	padding: 10px 0px;
+	color: antiquewhite;
+	display: flex;
+	width: 100%;
+	border: 1px solid var(--primary-border);
+	border-top: 0;
+	border-radius: 0px 0px var(--primary-border-radius)
+		var(--primary-border-radius);
+	background-color: var(--extra-background);
+
+	.camIcon {
+		position: relative;
+		bottom: 1px;
+		padding: 0px 10px;
+		display: flex;
+		align-self: flex-end;
+		svg {
+			cursor: pointer;
+		}
+	}
+
+	.sendIcon {
+		position: relative;
+		bottom: 4px;
+		padding: 0px 10px;
+		display: flex;
+		align-self: flex-end;
+		svg {
+			cursor: pointer;
+		}
+	}
+}
