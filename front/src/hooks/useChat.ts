@@ -19,8 +19,6 @@ export const useChat = () => {
 	const { query } = useRouter()
 
 	const sendMessage = (text: string, Cb: () => void) => {
-		console.log(text, Cb)
-
 		socket.emit(
 			'private chat event',
 			{
@@ -29,7 +27,6 @@ export const useChat = () => {
 			},
 			(message: IMessage) => {
 				setMessages((messages) => [message, ...messages])
-				console.log(message, messages)
 
 				Cb()
 			}
@@ -73,7 +70,6 @@ export const useChat = () => {
 			'get messages chat event',
 			{ userId: +query.id! },
 			(mes: [IMessage[], number]) => {
-				console.log(mes)
 				setMessages(mes[0])
 			}
 		)

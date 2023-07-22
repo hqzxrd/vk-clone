@@ -1,22 +1,8 @@
 import Message from './Message/Message'
-import Messages from './Messages/Messages'
 import SendMessage from './SendMessage/SendMessage'
-import { socket } from '@/api/interceptors'
-import { IChatByUserId, IMessage } from '@/types/messages.types'
-import { useRouter } from 'next/router'
-import {
-	KeyboardEvent,
-	RefObject,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-} from 'react'
+import { useRef } from 'react'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
-import CamIcon from '@/components/ui/Icons/Post/CamIcon'
-import SendIcon from '@/components/ui/Icons/Send'
-import Textarea from '@/components/ui/Textarea/Textarea'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useChat } from '@/hooks/useChat'
@@ -26,6 +12,7 @@ import styles from './UserDialog.module.scss'
 const UserDialog = () => {
 	const { chatInfo, messages, sendMessage } = useChat()
 	const { user } = useAuth()
+	const messagesBlockRef = useRef<HTMLDivElement>(null)
 
 	const withUser = chatInfo
 		? chatInfo.users.filter((u) => u.id !== user.id)
@@ -52,9 +39,17 @@ const UserDialog = () => {
 						/>
 					</div>
 				</div>
-				<Messages messages={messages} />
+				<div className={styles.messages} ref={messagesBlockRef}>
+					{messages.map((mes) => {
+						return (
+							<div key={mes.id}>
+								<Message message={mes} />
+							</div>
+						)
+					})}
+				</div>
+				<SendMessage messagesBlock={messagesBlockRef} send={sendMessage} />
 			</div>
-			<SendMessage send={sendMessage} />
 		</div>
 	)
 }

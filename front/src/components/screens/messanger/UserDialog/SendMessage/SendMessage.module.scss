@@ -1,4 +1,7 @@
 .sendMessage {
+	position: absolute;
+	left: 0px;
+	bottom: -53px;
 	display: flex;
 	align-items: center;
 	padding: 10px 0px;
@@ -6,7 +9,7 @@
 	display: flex;
 	width: 100%;
 	border: 1px solid var(--primary-border);
-	border-top: 0;
+	border-top: 1px solid var(--primary-border);
 	border-radius: 0px 0px var(--primary-border-radius)
 		var(--primary-border-radius);
 	background-color: var(--extra-background);
@@ -17,6 +20,7 @@
 		padding: 0px 10px;
 		display: flex;
 		align-self: flex-end;
+
 		svg {
 			cursor: pointer;
 		}
