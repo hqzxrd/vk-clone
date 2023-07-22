@@ -21,8 +21,7 @@ interface props {
 const SendMessage: FC<props> = ({ send, messagesBlock }) => {
 	const [text, setText] = useState<string>(``)
 	const sendBlockRef = useRef<HTMLDivElement>(null)
-	const height = useRef<number>(713)
-
+	const messagesBaseHeight = useRef<number>(0)
 	const pressEnter = (e: KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.key === `Enter` && e.shiftKey == false) {
 			e.preventDefault()
@@ -31,14 +30,26 @@ const SendMessage: FC<props> = ({ send, messagesBlock }) => {
 	}
 
 	useEffect(() => {
-		console.log(sendBlockRef, messagesBlock)
 		if (!sendBlockRef.current || !messagesBlock.current) return
 
 		const msh = messagesBlock.current.clientHeight
 		const sbh = sendBlockRef.current.clientHeight
-		console.log(msh, sbh)
+		const sendBaseHeight = 52
+		const offset = sbh - sendBaseHeight
 
-		messagesBlock.current.style.top = `-${sbh - 52}px`
+		messagesBlock.current.style.marginBottom = `${offset + 15}px`
+
+		if (messagesBaseHeight.current === 0) {
+			messagesBaseHeight.current = msh
+		}
+
+		if (messagesBaseHeight.current === 0) {
+			return
+		}
+
+		messagesBlock.current.style.height = `${
+			messagesBaseHeight.current - offset
+		}px`
 	}, [text])
 
 	return (
