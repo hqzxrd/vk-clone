@@ -22,6 +22,7 @@ const SendMessage: FC<props> = ({ send, messagesBlock }) => {
 	const [text, setText] = useState<string>(``)
 	const sendBlockRef = useRef<HTMLDivElement>(null)
 	const messagesBaseHeight = useRef<number>(0)
+
 	const pressEnter = (e: KeyboardEvent<HTMLTextAreaElement>) => {
 		if (e.key === `Enter` && e.shiftKey == false) {
 			e.preventDefault()

@@ -1,14 +1,15 @@
+import { AuthService } from '@/services/auth/auth.service'
 import { IChatByUserId, IChatItem, IMessage } from '@/types/messages.types'
 import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { io } from 'socket.io-client'
+import { Socket, io } from 'socket.io-client'
 
 import { WS_URL } from '@/config/api.config'
 
-const token = Cookies.get(`AccessToken`)
+// let token = Cookies.get(`AccessToken`)
 export const socket = io(WS_URL, {
-	auth: { token: token },
+	auth: { token: `` },
 	autoConnect: false,
 })
 
@@ -40,7 +41,12 @@ export const useChat = () => {
 			console.log(`connected`)
 		})
 
-		socket.on('connect_error', () => {
+		socket.on('connect_error', async (err) => {
+			if (err.message === `Unauthorized`) {
+				const res = await AuthService.getNewsTokens()
+
+				if (res.data.accessToken) socket.auth.token = res.data.accessToken
+			}
 			setTimeout(() => {
 				socket.connect()
 			}, 1000)
@@ -85,6 +91,9 @@ export const useChat = () => {
 		})
 
 		return () => {
+			socket.off('connect')
+			socket.off('connect_error')
+			socket.off('disconnect')
 			socket.off(`receive message event`)
 			socket.disconnect()
 		}
