@@ -28,10 +28,19 @@ export const useChat = () => {
 			},
 			(message: IMessage) => {
 				setMessages((messages) => [message, ...messages])
-
 				Cb()
 			}
 		)
+	}
+
+	const updateMessage = (text: string, Cb: () => void) => {}
+
+	const deleteMessage = (id: number) => {
+		socket.emit('delete message event', {
+			id,
+		})
+
+		setMessages((prev) => prev.filter((message) => message.id !== id))
 	}
 
 	useEffect(() => {
@@ -90,6 +99,18 @@ export const useChat = () => {
 			)
 		})
 
+		socket.on('receive delete message event', (mes: IMessage) => {
+			setMessages((prev) => prev.filter((message) => message.text !== mes.text)) //FIXXXXX
+
+			socket.emit(
+				'get all chat event',
+				{ id: +query.id! },
+				(mes: [IChatItem[], number]) => {
+					setChats(mes[0])
+				}
+			)
+		})
+
 		return () => {
 			socket.off('connect')
 			socket.off('connect_error')
@@ -106,5 +127,12 @@ export const useChat = () => {
 		})
 	}, [chatInfo])
 
-	return { chats, chatInfo, messages, sendMessage }
+	return {
+		chats,
+		chatInfo,
+		messages,
+		sendMessage,
+		updateMessage,
+		deleteMessage,
+	}
 }
