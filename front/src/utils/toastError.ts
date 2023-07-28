@@ -1,16 +1,15 @@
-import { toastr } from 'react-redux-toastr'
+import Error from '@/components/ui/CustomToast/ErrorToast'
 
-export const toastError = (error: any, title?: string) => {
+export const toastError = (error: any) => {
 	const message =
 		error.response && error.response.data
 			? typeof error.response.data.message === 'object'
 				? error.response.data.message[0]
 				: error.response.data.message
 			: error.message
-	if (message === `Unauthorized`) {
-		toastr.error(`Авторизация закончилась`, `Перезайдите в систему`)
-		throw message
-	}
-	toastr.error(title || `${error.response.status}` || `Ошибка`, message)
+
+	if (message === `Unauthorized`) return
+
+	Error(message)
 	throw message
 }

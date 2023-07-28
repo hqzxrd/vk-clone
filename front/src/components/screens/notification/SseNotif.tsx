@@ -1,8 +1,8 @@
+import userToast from '../../ui/CustomToast/UserToast'
 import { ICountNotifSSE, INotificationSSE } from './Notification.interface'
 import Cookies from 'js-cookie'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { toastr } from 'react-redux-toastr'
 
 import { notificationUrl } from '@/config/api.config'
 
@@ -13,6 +13,7 @@ const SseNotif = () => {
 
 	const hanleMessage = (e: MessageEvent<any>) => {
 		const message: INotificationSSE = JSON.parse(e.data)
+		console.log(message)
 
 		dispatch(
 			setNotifCount({
@@ -23,31 +24,20 @@ const SseNotif = () => {
 
 		if (message)
 			if (message.type === 'friend_request') {
-				toastr.info(
-					`${message.fromUser.name} ${message.fromUser.surname}`,
-					`Подал заявку в друзья`
-				)
+				userToast(message, `Подал заявку в друзья`)
 			}
 
 		if (message.type === 'access_request') {
-			toastr.info(
-				`${message.fromUser.name} ${message.fromUser.surname}`,
-				`Принял заявку в друзья`
-			)
+			userToast(message, `Принял заявку в друзья`)
 		}
 
 		if (message.type === 'comment') {
-			toastr.info(
-				`${message.fromUser.name} ${message.fromUser.surname}`,
-				`Прокомментировал вашу запись`
-			)
+			userToast(message, `Прокомментировал вашу запись`)
 		}
+		console.log(message)
 
-		if (message.type === 'like') {
-			toastr.info(
-				`${message.fromUser.name} ${message.fromUser.surname}`,
-				`Что-то лайкнул`
-			)
+		if (message.type === 'like_post') {
+			userToast(message, `Лайкнул вашу запись`)
 		}
 	}
 	const token = Cookies.get(`AccessToken`)

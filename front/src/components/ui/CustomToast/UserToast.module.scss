@@ -1,0 +1,13 @@
+.toast {
+	user-select: none;
+	cursor: pointer;
+	display: flex;
+	gap: 15px;
+	border-radius: var(--primary-border-radius);
+
+	.main {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+}

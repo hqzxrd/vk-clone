@@ -1,12 +1,12 @@
 import { IUpdateFields, IUpdateFieldsDto } from './profileEdit.interface'
+import { notify } from '@/providers/Toast'
 import { UserService } from '@/services/user/user.service'
 import { TypeGender } from '@/types/auth.types'
-import { IUser } from '@/types/user.types'
 import { useRouter } from 'next/router'
-import { FC, MouseEvent, useEffect, useRef, useState } from 'react'
+import { FC, MouseEvent, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { toast } from 'react-hot-toast'
 import { useQueryClient } from 'react-query'
-import { toastr } from 'react-redux-toastr'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 import BirthDateFields from '@/components/ui/BirthDateFields/BirthDateFields'
@@ -14,7 +14,6 @@ import Button from '@/components/ui/Form/Button'
 import Input from '@/components/ui/Form/Input'
 import GenderSelector from '@/components/ui/GenderSelector/GenderSelector'
 
-import { useActions } from '@/hooks/useActions'
 import { useAuth } from '@/hooks/useAuth'
 import usePhotos from '@/hooks/usePhoto'
 import { useProfile } from '@/hooks/useProfile'
@@ -23,8 +22,6 @@ import { NAME_REGEX } from '@/shared/regex'
 
 import { store } from '@/store/store'
 import { deleteAvatar } from '@/store/user/user.action'
-
-import { userLink } from '@/utils/user-link'
 
 import styles from './profileEdit.module.scss'
 
@@ -87,10 +84,10 @@ const ProfileEdit: FC = () => {
 		navigator.clipboard
 			.writeText(text)
 			.then(() => {
-				toastr.info('Информация', 'Скопировано в буфер обмена')
+				toast(`Скопировано`)
 			})
 			.catch(() => {
-				toastr.info('Информация', 'Ошибка копирования в буфер обмена')
+				toast(`Ошибка копирования`)
 			})
 	}
 

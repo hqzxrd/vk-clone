@@ -7,7 +7,9 @@ import {
 	IRegisterFieldsDto,
 } from '@/types/auth.types'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { toastr } from 'react-redux-toastr'
+import { toast } from 'react-hot-toast'
+
+import Success from '@/components/ui/CustomToast/SuccessToast'
 
 import { toastError } from '@/utils/toastError'
 
@@ -45,7 +47,7 @@ export const register = createAsyncThunk<
 >(`auth/registration`, async (user, thunkApi) => {
 	try {
 		const res = await AuthService.register(user)
-		toastr.success(`Регистрация`, `Успешно`)
+		Success('Регистрация')
 
 		return res.data
 	} catch (error) {
@@ -59,7 +61,7 @@ export const login = createAsyncThunk<ILoginRegisterResponse, ILoginFields>(
 	async ({ email, password }, thunkApi) => {
 		try {
 			const res = await AuthService.login(email, password)
-			toastr.success(`Вход`, `Успешно`)
+			Success('Вход в систему')
 
 			return res.data
 		} catch (error) {

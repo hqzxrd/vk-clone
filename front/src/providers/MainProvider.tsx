@@ -1,5 +1,5 @@
 import AuthProvider from './AuthProvider/AuthProvider'
-import ReduxToast from './ReduxToast'
+import Toast from './Toast'
 import { TypeComponentAuth } from '@/types/auth.types'
 import { FC } from 'react'
 import { QueryClient, QueryClientProvider } from 'react-query'
@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
 const MainProvider: FC<TypeComponentAuth> = ({ children, Component }) => {
 	return (
 		<Provider store={store}>
-			<ReduxToast />
+			<Toast />
 			<SseNotif />
 			<QueryClientProvider client={queryClient}>
 				<AuthProvider Component={Component}>

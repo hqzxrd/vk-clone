@@ -7,8 +7,8 @@ export interface ICountNotifSSE {
 }
 
 export interface INotificationSSE {
-	type: 'friend_request' | 'access_request' | 'comment' | 'like'
-	fromUser: Pick<IUser, `id` | `name` | `surname` | `nickname`>
+	type: 'friend_request' | 'access_request' | 'comment' | 'like_post'
+	fromUser: Pick<IUser, `id` | `name` | `surname` | `nickname` | `avatar`>
 	id: number
 	createDate: string
 	updateDate: string

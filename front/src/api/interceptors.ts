@@ -1,17 +1,11 @@
 import { AuthService } from '@/services/auth/auth.service'
 import axios, { InternalAxiosRequestConfig } from 'axios'
 import Cookies from 'js-cookie'
-import io from 'socket.io-client'
+import { toast } from 'react-hot-toast'
 
 import { API_URL, WS_URL } from '@/config/api.config'
 
 import { toastError } from '@/utils/toastError'
-
-const token = Cookies.get(`AccessToken`)
-export const socket = io(WS_URL, {
-	auth: { token: token },
-	autoConnect: false,
-})
 
 export const baseAxios = axios.create({
 	baseURL: API_URL,
@@ -53,7 +47,7 @@ authAxios.interceptors.response.use(
 
 		if (status === 401) {
 			try {
-				const retryOrigReq = new Promise((resolve) => {
+				const retryOrigReq = new Promise((resolve, reject) => {
 					retrySubscribers.push(() => {
 						resolve(authAxios.request(originalRequest))
 					})
@@ -71,7 +65,7 @@ authAxios.interceptors.response.use(
 				return await retryOrigReq
 			} catch (err) {
 				AuthService.logout()
-				toastError(err, `Авторизация закончилась`)
+				toastError(err)
 			}
 		}
 	}

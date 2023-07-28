@@ -6,6 +6,7 @@ import {
 	IUserDto,
 } from '@/types/auth.types'
 import Cookies from 'js-cookie'
+import { toast } from 'react-hot-toast'
 
 import { AuthUrl } from '@/config/api.config'
 
