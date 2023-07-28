@@ -20,9 +20,7 @@ const tabs = [
 
 const Friends = () => {
 	const [activeTab, setActiveTab] = useState<number>(0)
-	const [list, setList] = useState<IUser[]>([])
 	const { user } = useAuth()
-	const queryClient = useQueryClient()
 	const { data: friends } = useQuery(
 		`get_friends`,
 		() => UserService.getFriends(user.id),
@@ -63,6 +61,7 @@ const Friends = () => {
 										: styles.tabItem
 								}
 								onClick={() => setActiveTab(i)}
+								key={i}
 							>
 								{tab}
 							</div>

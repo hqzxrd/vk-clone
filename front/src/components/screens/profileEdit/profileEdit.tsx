@@ -62,7 +62,7 @@ const ProfileEdit: FC = () => {
 
 		const res = await UserService.updateProfile(userDto, file)
 
-		if (res && res.status === 200) {
+		if (res && res?.status === 200) {
 			push(`/users/${user.id}`)
 		}
 	}

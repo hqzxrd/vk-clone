@@ -1,4 +1,4 @@
-import { authAxios, filesAxios } from '@/api/interceptors'
+import { authAxios } from '@/api/interceptors'
 import { IComment } from '@/types/post.types'
 
 import {
@@ -13,7 +13,7 @@ import { toastError } from '@/utils/toastError'
 export const PostService = {
 	async getNewsline(query: string) {
 		try {
-			return await filesAxios.get(PostUrl(`/newsline${query}`))
+			return await authAxios.get(PostUrl(`/newsline${query}`))
 		} catch (error) {
 			toastError(error)
 		}
@@ -21,7 +21,7 @@ export const PostService = {
 
 	async getAll(query: string) {
 		try {
-			return await filesAxios.get(PostUrl(query))
+			return await authAxios.get(PostUrl(query))
 		} catch (error) {
 			toastError(error)
 		}
@@ -39,7 +39,11 @@ export const PostService = {
 
 			formData.append(`text`, text)
 
-			return await filesAxios.post(PostUrl(``), formData)
+			return await authAxios.post(PostUrl(``), formData, {
+				headers: {
+					['Content-Type']: 'multipart/form-data',
+				},
+			})
 		} catch (error) {
 			toastError(error)
 		}
@@ -68,7 +72,11 @@ export const PostService = {
 
 			formData.append(`text`, text)
 
-			return await filesAxios.patch(PostUrl(`/${id}`), formData)
+			return await authAxios.patch(PostUrl(`/${id}`), formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			})
 		} catch (error) {
 			toastError(error)
 		}

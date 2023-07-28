@@ -21,7 +21,7 @@ const UpdateComment: FC<props> = ({ post, comment, setIsUpdate }) => {
 	const updateComment = async () => {
 		const res = await PostService.updateComment(comment.id, text)
 
-		if (res.status === 200) {
+		if (res?.status === 200) {
 			queryClient.invalidateQueries(`postComments/${post.id}`)
 			setText(``)
 			setIsUpdate(false)

@@ -3,6 +3,8 @@ import axios, { InternalAxiosRequestConfig } from 'axios'
 import Cookies from 'js-cookie'
 import { toast } from 'react-hot-toast'
 
+import Error from '@/components/ui/CustomToast/ErrorToast'
+
 import { API_URL, WS_URL } from '@/config/api.config'
 
 import { toastError } from '@/utils/toastError'
@@ -17,19 +19,7 @@ export const baseAxios = axios.create({
 
 export const authAxios = axios.create({
 	baseURL: API_URL,
-	headers: {
-		'Content-Type': `application/json`,
-	},
 })
-
-export const filesAxios = axios.create({
-	baseURL: API_URL,
-	headers: {
-		'Content-Type': 'multipart/form-data',
-	},
-})
-
-filesAxios.interceptors.request.use((config) => checkAuth(config))
 
 authAxios.interceptors.request.use((config) => checkAuth(config))
 
@@ -44,12 +34,14 @@ authAxios.interceptors.response.use(
 			response: { status },
 		} = error
 		const originalRequest = config
+		console.log(originalRequest)
 
 		if (status === 401) {
 			try {
-				const retryOrigReq = new Promise((resolve, reject) => {
+				const retryOrigReq = new Promise((resolve) => {
 					retrySubscribers.push(() => {
 						resolve(authAxios.request(originalRequest))
+						console.log(retrySubscribers)
 					})
 				})
 
@@ -65,7 +57,7 @@ authAxios.interceptors.response.use(
 				return await retryOrigReq
 			} catch (err) {
 				AuthService.logout()
-				toastError(err)
+				Error(`Сессия истекла`)
 			}
 		}
 	}

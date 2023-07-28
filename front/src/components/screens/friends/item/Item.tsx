@@ -20,7 +20,7 @@ const buttons: IButtons = {
 			className={styles.addOrDelete}
 			onClick={async () => {
 				const res = await FriendService.removeFriend(user.id)
-				if (res.status === 204) qClient.invalidateQueries(`get_friends`)
+				if (res?.status === 204) qClient.invalidateQueries(`get_friends`)
 			}}
 		>
 			Удалить из друзей
@@ -31,7 +31,7 @@ const buttons: IButtons = {
 			className={styles.addOrDelete}
 			onClick={async () => {
 				const res = await FriendService.cancelRequest(user.id)
-				if (res.status === 204) qClient.invalidateQueries(`get_outgoing`)
+				if (res?.status === 204) qClient.invalidateQueries(`get_outgoing`)
 			}}
 		>
 			Отменить
@@ -43,7 +43,7 @@ const buttons: IButtons = {
 				className={styles.addOrDelete}
 				onClick={async () => {
 					const res = await FriendService.resOnFriendRequest(user.id, true)
-					if (res.status === 204) qClient.invalidateQueries(`get_incoming`)
+					if (res?.status === 204) qClient.invalidateQueries(`get_incoming`)
 				}}
 			>
 				Принять
@@ -52,7 +52,7 @@ const buttons: IButtons = {
 				className={styles.addOrDelete}
 				onClick={async () => {
 					const res = await FriendService.resOnFriendRequest(user.id, false)
-					if (res.status === 204) qClient.invalidateQueries(`get_incoming`)
+					if (res?.status === 204) qClient.invalidateQueries(`get_incoming`)
 				}}
 			>
 				Отказать

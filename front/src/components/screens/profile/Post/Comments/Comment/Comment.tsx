@@ -31,14 +31,14 @@ const Comment: FC<props> = ({ post, comment }) => {
 	const deleteComment = async () => {
 		const res = await PostService.deleteComment(comment.id)
 
-		if (res.status === 204)
+		if (res?.status === 204)
 			queryClient.invalidateQueries(`postComments/${post.id}`)
 	}
 
 	const likeComment = async () => {
 		const res = await PostService.likeComment(comment.id)
 
-		if (res.status === 200) {
+		if (res?.status === 200) {
 			setLikes(res.data.countLikes)
 			setIsLike(res.data.isLike)
 			queryClient.invalidateQueries(`postComments/${post.id}`)

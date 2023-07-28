@@ -1,4 +1,4 @@
-import { authAxios, baseAxios, filesAxios } from '@/api/interceptors'
+import { authAxios, baseAxios } from '@/api/interceptors'
 import { IUser } from '@/types/user.types'
 
 import { IUpdateFieldsDto } from '@/components/screens/profileEdit/profileEdit.interface'
@@ -36,7 +36,7 @@ export const UserService = {
 				Object.entries(data).forEach(([key, value]) => {
 					formData.append(key, value)
 				})
-				return await filesAxios.patch(UserUrl(``), formData)
+				return await authAxios.patch(UserUrl(``), formData)
 			}
 		} catch (error) {
 			toastError(error)

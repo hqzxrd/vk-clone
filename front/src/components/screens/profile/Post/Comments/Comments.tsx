@@ -35,7 +35,7 @@ const Comments: FC<props> = ({ post }) => {
 
 		const res = await PostService.createComment(post.id, text)
 
-		if (res.status === 201) {
+		if (res?.status === 201) {
 			queryClient.invalidateQueries(`postComments/${post.id}`)
 			setText(``)
 		}

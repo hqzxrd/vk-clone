@@ -44,7 +44,7 @@ const UpdatePost: FC<props> = ({
 	const UpdatePost = async () => {
 		const res = await PostService.updatePost(post.id, text, file, oldPhotos)
 
-		if (res.status === 200) {
+		if (res?.status === 200) {
 			clear()
 			setText(``)
 			setIsUpdate(false)

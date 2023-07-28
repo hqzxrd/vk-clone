@@ -20,7 +20,7 @@ export const confirmation = createAsyncThunk<
 	try {
 		const res = await AuthService.confirmation(email)
 
-		return { status: res.status, email }
+		return { status: res?.status, email }
 	} catch (error) {
 		toastError(error)
 		return thunkApi.rejectWithValue(error)
@@ -33,7 +33,7 @@ export const code = createAsyncThunk<number, ICodeEmailDto>(
 		try {
 			const res = await AuthService.code(code, email)
 
-			return res.status
+			return res?.status
 		} catch (error) {
 			toastError(error)
 			return thunkApi.rejectWithValue(error)

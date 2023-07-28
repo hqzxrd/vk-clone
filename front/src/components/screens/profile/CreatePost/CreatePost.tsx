@@ -37,7 +37,7 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
 		clear()
 		setText(``)
 		const res = await PostService.createPost(text, file)
-		if (res.status === 201) {
+		if (res?.status === 201) {
 			queryClient.invalidateQueries(`userPosts${query.id}`)
 			getNewsline && getNewsline()
 		}

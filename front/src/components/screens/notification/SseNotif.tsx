@@ -13,7 +13,6 @@ const SseNotif = () => {
 
 	const hanleMessage = (e: MessageEvent<any>) => {
 		const message: INotificationSSE = JSON.parse(e.data)
-		console.log(message)
 
 		dispatch(
 			setNotifCount({
@@ -34,7 +33,6 @@ const SseNotif = () => {
 		if (message.type === 'comment') {
 			userToast(message, `Прокомментировал вашу запись`)
 		}
-		console.log(message)
 
 		if (message.type === 'like_post') {
 			userToast(message, `Лайкнул вашу запись`)
