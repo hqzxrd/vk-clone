@@ -15,6 +15,7 @@ interface props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 	setText: Dispatch<SetStateAction<string>>
 	resize: boolean
 	placeholder?: string
+	focus?: boolean
 }
 
 const Textarea: FC<props> = ({
@@ -22,6 +23,7 @@ const Textarea: FC<props> = ({
 	setText,
 	resize,
 	placeholder,
+	focus,
 	...rest
 }) => {
 	const textarea = useRef<HTMLTextAreaElement>(null)
@@ -36,14 +38,22 @@ const Textarea: FC<props> = ({
 	}
 
 	useEffect(() => {
-		if (textarea.current && resize) {
+		if (!textarea.current) return
+
+		focus && textarea.current.focus()
+
+		if (resize) {
 			textarea.current.style.height = `0`
 			textarea.current.style.height = `${textarea.current.scrollHeight + 3}px`
 		}
 	}, [])
 
 	useEffect(() => {
-		if (!textarea.current?.value && resize) {
+		if (!textarea.current) return
+
+		focus && textarea.current.focus()
+
+		if (resize) {
 			textarea.current.style.height = `0`
 			textarea.current.style.height = `${textarea.current.scrollHeight + 3}px`
 		}

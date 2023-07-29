@@ -6,7 +6,7 @@ import { IMessage } from '@/types/messages.types'
 import cn from 'classnames'
 import { useRef, useState } from 'react'
 
-import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
+import PencilIcon from '@/components/ui/Icons/PencilIcon'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useChat } from '@/hooks/useChat'
@@ -14,10 +14,17 @@ import { useChat } from '@/hooks/useChat'
 import styles from './UserDialog.module.scss'
 
 const UserDialog = () => {
-	const { chatInfo, messages, sendMessage, updateMessage, deleteMessage } =
-		useChat()
-	const [activeMessage, setActiveMessage] = useState<number>(0)
 	const { user } = useAuth()
+	const {
+		chatInfo,
+		messages,
+		sendMessage,
+		updateMessage,
+		deleteMessage,
+		getMessageById,
+	} = useChat()
+	const [activeMessage, setActiveMessage] = useState<number>(0)
+	const [activeUpdate, setActiveUpdate] = useState<number>(0)
 	const messagesBlockRef = useRef<HTMLDivElement>(null)
 
 	const withUser = chatInfo
@@ -25,7 +32,7 @@ const UserDialog = () => {
 		: null
 
 	const changeMessageClickStatus = (message: IMessage) => {
-		if (user.id !== message.author.id) {
+		if (user.id !== message.author.id || activeUpdate !== 0) {
 			return
 		}
 
@@ -35,6 +42,7 @@ const UserDialog = () => {
 			setActiveMessage(0)
 		}
 	}
+	console.log(activeMessage, activeUpdate)
 
 	if (!withUser || !messages) {
 		return <></>
@@ -47,30 +55,34 @@ const UserDialog = () => {
 					<Header withUser={withUser[0]} />
 				) : (
 					<HeaderOptions
-						active={activeMessage}
-						setActive={setActiveMessage}
+						activeMessage={activeMessage}
+						setActiveMessage={setActiveMessage}
+						activeUpdate={activeUpdate}
+						setActiveUpdate={setActiveUpdate}
 						deleteMessage={deleteMessage}
 					/>
 				)}
-
 				<div className={styles.messages} ref={messagesBlockRef}>
 					{messages.map((mes) => {
 						return (
-							<div
-								className={
-									mes.id === activeMessage
-										? cn(styles.messageWrapper, styles.active)
-										: styles.messageWrapper
-								}
+							<Message
 								onClick={() => changeMessageClickStatus(mes)}
+								activeMessage={activeMessage}
+								message={mes}
 								key={mes.id}
-							>
-								<Message message={mes} />
-							</div>
+							/>
 						)
 					})}
 				</div>
-				<SendMessage messagesBlock={messagesBlockRef} send={sendMessage} />
+				<SendMessage
+					activeUpdate={activeUpdate}
+					setActiveUpdate={setActiveUpdate}
+					setActiveMessage={setActiveMessage}
+					messagesBlock={messagesBlockRef}
+					send={sendMessage}
+					update={updateMessage}
+					message={getMessageById(activeUpdate)}
+				/>
 			</div>
 		</div>
 	)

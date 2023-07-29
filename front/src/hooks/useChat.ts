@@ -1,13 +1,11 @@
 import { AuthService } from '@/services/auth/auth.service'
 import { IChatByUserId, IChatItem, IMessage } from '@/types/messages.types'
-import Cookies from 'js-cookie'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Socket, io } from 'socket.io-client'
+import { io } from 'socket.io-client'
 
 import { WS_URL } from '@/config/api.config'
 
-// let token = Cookies.get(`AccessToken`)
 export const socket = io(WS_URL, {
 	auth: { token: `` },
 	autoConnect: false,
@@ -19,7 +17,7 @@ export const useChat = () => {
 	const [messages, setMessages] = useState<IMessage[]>([])
 	const { query } = useRouter()
 
-	const sendMessage = (text: string, Cb: () => void) => {
+	const sendMessage = (text: string) => {
 		socket.emit(
 			'private chat event',
 			{
@@ -28,12 +26,32 @@ export const useChat = () => {
 			},
 			(message: IMessage) => {
 				setMessages((messages) => [message, ...messages])
-				Cb()
 			}
 		)
 	}
 
-	const updateMessage = (text: string, Cb: () => void) => {}
+	const getMessageById = (id: number): IMessage => {
+		return messages.filter((message) => message.id === id)[0]
+	}
+
+	const updateMessage = (id: number, text: string) => {
+		socket.emit(
+			'update message event',
+			{
+				id,
+				text,
+			},
+			(message: IMessage) => {
+				socket.emit(
+					'get messages chat event',
+					{ userId: +query.id! },
+					(mes: [IMessage[], number]) => {
+						setMessages(mes[0])
+					}
+				)
+			}
+		)
+	}
 
 	const deleteMessage = (id: number) => {
 		socket.emit('delete message event', {
@@ -134,5 +152,6 @@ export const useChat = () => {
 		sendMessage,
 		updateMessage,
 		deleteMessage,
+		getMessageById,
 	}
 }

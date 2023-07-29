@@ -1,6 +1,8 @@
 import { IMessage } from '@/types/messages.types'
 import cn from 'classnames'
-import { FC } from 'react'
+import { FC, HTMLAttributes } from 'react'
+
+import PencilIcon from '@/components/ui/Icons/PencilIcon'
 
 import { useAuth } from '@/hooks/useAuth'
 
@@ -8,11 +10,12 @@ import { date } from '@/utils/date'
 
 import styles from './Message.module.scss'
 
-interface props {
+interface props extends HTMLAttributes<HTMLDivElement> {
 	message: IMessage
+	activeMessage: number
 }
 
-const Message: FC<props> = ({ message }) => {
+const Message: FC<props> = ({ message, activeMessage, ...rest }) => {
 	const { user } = useAuth()
 	const { time } = date(message.createDate)
 
@@ -20,14 +23,23 @@ const Message: FC<props> = ({ message }) => {
 
 	return (
 		<div
+			{...rest}
 			className={
-				isUserSend
-					? cn(styles.message, styles.userSend)
-					: cn(styles.message, styles.userGet)
+				message.id === activeMessage
+					? cn(styles.messageWrapper, styles.active)
+					: styles.messageWrapper
 			}
 		>
-			{message.text}
-			<div className={styles.date}>{time}</div>
+			<div
+				className={
+					isUserSend
+						? cn(styles.message, styles.userSend)
+						: cn(styles.message, styles.userGet)
+				}
+			>
+				{message.text}
+				<div className={styles.date}>{time}</div>
+			</div>
 		</div>
 	)
 }

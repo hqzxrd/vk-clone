@@ -4,7 +4,7 @@
 	bottom: -38px;
 	z-index: 2;
 	display: flex;
-	align-items: center;
+	flex-direction: column;
 	padding: 10px 0px;
 	color: antiquewhite;
 	display: flex;
@@ -15,26 +15,45 @@
 		var(--primary-border-radius);
 	background-color: var(--extra-background);
 
-	.camIcon {
-		position: relative;
-		bottom: 1px;
-		padding: 0px 10px;
+	.updateMessage {
 		display: flex;
-		align-self: flex-end;
-
-		svg {
+		justify-content: space-between;
+		align-items: center;
+		padding: 0px 44px 10px 50px;
+		font-size: 14px;
+		font-weight: bold;
+		.cross {
 			cursor: pointer;
+			user-select: none;
+			width: 25px;
+			height: 25px;
 		}
 	}
 
-	.sendIcon {
-		position: relative;
-		bottom: 4px;
-		padding: 0px 10px;
+	.main {
 		display: flex;
-		align-self: flex-end;
-		svg {
-			cursor: pointer;
+		align-items: center;
+		.camIcon {
+			position: relative;
+			bottom: 1px;
+			padding: 0px 10px;
+			display: flex;
+			align-self: flex-end;
+
+			svg {
+				cursor: pointer;
+			}
+		}
+
+		.sendIcon {
+			position: relative;
+			bottom: 4px;
+			padding: 0px 10px;
+			display: flex;
+			align-self: flex-end;
+			svg {
+				cursor: pointer;
+			}
 		}
 	}
 }

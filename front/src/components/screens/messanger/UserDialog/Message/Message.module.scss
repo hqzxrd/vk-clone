@@ -1,17 +1,33 @@
-.message {
-	width: fit-content;
-	max-width: 60%;
-	word-wrap: break-word;
-	padding: 5px 10px;
-	color: var(--primary-button-color);
-	border-radius: var(--primary-border-radius);
-
-	.date {
-		display: flex;
-		align-items: flex-end;
-		color: rgb(255, 255, 255, 0.533);
-		font-size: 12px;
+.messageWrapper {
+	display: flex;
+	flex-direction: column;
+	padding: 10px 10px;
+	&:hover {
+		cursor: pointer;
 	}
+
+	.message {
+		display: inline;
+		gap: 10px;
+		width: fit-content;
+		max-width: 60%;
+		word-wrap: break-word;
+		padding: 5px 10px;
+		color: var(--primary-button-color);
+		border-radius: var(--primary-border-radius);
+
+		.date {
+			display: block;
+			align-items: flex-end;
+			text-align: end;
+			color: rgb(255, 255, 255, 0.533);
+			font-size: 12px;
+		}
+	}
+}
+
+.active {
+	background-color: var(--primary-hover);
 }
 
 .userSend {

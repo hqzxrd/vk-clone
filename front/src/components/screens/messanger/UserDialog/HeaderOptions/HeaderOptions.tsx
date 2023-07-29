@@ -7,21 +7,44 @@ import PencilIcon from '@/components/ui/Icons/PencilIcon'
 import styles from './HeaderOptions.module.scss'
 
 interface props {
-	active: number
-	setActive: Dispatch<SetStateAction<number>>
+	activeMessage: number
+	setActiveMessage: Dispatch<SetStateAction<number>>
+	activeUpdate: number
+	setActiveUpdate: Dispatch<SetStateAction<number>>
 	deleteMessage: (id: number) => void
 }
 
-const HeaderOptions: FC<props> = ({ active, setActive, deleteMessage }) => {
+const HeaderOptions: FC<props> = ({
+	activeMessage,
+	setActiveMessage,
+	setActiveUpdate,
+	deleteMessage,
+}) => {
 	return (
 		<div className={styles.header}>
-			<div onClick={() => deleteMessage(active)}>
+			<div
+				onClick={() => {
+					deleteMessage(activeMessage)
+					setActiveMessage(0)
+					setActiveUpdate(0)
+				}}
+			>
 				<DeleteIcon />
 			</div>
-			<div>
+			<div
+				onClick={() => {
+					setActiveUpdate(activeMessage)
+				}}
+			>
 				<PencilIcon />
 			</div>
-			<div className={styles.cancel} onClick={() => setActive(0)}>
+			<div
+				className={styles.cancel}
+				onClick={() => {
+					setActiveMessage(0)
+					setActiveUpdate(0)
+				}}
+			>
 				<CrossIcon />
 			</div>
 		</div>

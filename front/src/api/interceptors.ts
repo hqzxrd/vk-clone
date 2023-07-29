@@ -34,14 +34,12 @@ authAxios.interceptors.response.use(
 			response: { status },
 		} = error
 		const originalRequest = config
-		console.log(originalRequest)
 
 		if (status === 401) {
 			try {
 				const retryOrigReq = new Promise((resolve) => {
 					retrySubscribers.push(() => {
 						resolve(authAxios.request(originalRequest))
-						console.log(retrySubscribers)
 					})
 				})
 
