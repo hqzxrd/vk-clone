@@ -14,6 +14,7 @@ import { NotificationService } from 'src/notification/service/notification.servi
 import { SendNotificationPostDto } from '../dto/send-notification.post.dto';
 import { NotificationType } from 'src/notification/enums/notification.type.enum';
 import { FileService } from 'src/file/file.service';
+import { getUserKey } from 'src/utils/get-user-key';
 
 @Injectable()
 export class PostService {
@@ -46,7 +47,7 @@ export class PostService {
 
     let userKey
     if(queryUserKey) {
-      userKey = this.userService.getUserKey(queryUserKey)
+      userKey = getUserKey(queryUserKey)
     }
 
     const postsAndCount = await this.postRepository
