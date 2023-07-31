@@ -33,14 +33,16 @@ export class ChatEventsService {
    }
 
    async handlePrivateChat(client: SocketUser, dto: SendPrivateChatDto) {
-      const chat = await this.chatService.createOrFind([client.user.id, dto.toUserId])
+      const user = await this.userService.byUserKey(dto.toUserKey)
+      if(!user) throw new BadRequestException()
+      const chat = await this.chatService.createOrFind([client.user.id, user.id])
       const message = await this.messageService.create({
          type: MessageType.CHAT, 
          columnId: chat.id, 
          text: dto.text, 
          userId: client.user.id
       }) 
-      await this.sendPrivateMessage(RECEIVE_MESSAGE_EVENT, dto.toUserId, message)
+      await this.sendPrivateMessage(RECEIVE_MESSAGE_EVENT, user.id, message)
       return message
    }
 
@@ -61,18 +63,20 @@ export class ChatEventsService {
       await this.sendPrivateMessage(RECEIVE_DELETE_MESSAGE_EVENT, toUser.id, message)
    }
 
-   async handleGetMessages(userOneId: number, { userId, page, count }: GetMessagesDto) {
-      const chat = await this.chatService.getByUsersIds([userId, userOneId])
+   async handleGetMessages(userOneId: number, { userKey, page, count }: GetMessagesDto) {
+      const user = await this.userService.byUserKey(userKey)
+      if(!user) throw new BadRequestException()
+      const chat = await this.chatService.getByUsersIds([userOneId, user.id])
       if(!chat) throw new NotFoundException()
       const messages = await this.messageService.getMessagesByChatId(chat.id, page, count)
       return messages
    }
 
-   async handleFindChatByUserId(userId: number, toUserId: number) {
-      const chat = await this.chatService.getByUsersIds([userId, toUserId])
+   async handleFindChatByUserKey(userId: number, toUserKey: number | string) {
+      const user = await this.userService.byUserKey(toUserKey)
+      if(!user) throw new BadRequestException()
+      const chat = await this.chatService.getByUsersIds([userId, user.id])
       if(!chat) {
-         const user = await this.userService.byId(toUserId)
-         if(!user) throw new BadRequestException()
          return {
             users: [
                {
