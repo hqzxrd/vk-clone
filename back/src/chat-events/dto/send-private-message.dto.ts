@@ -1,9 +1,11 @@
-import { IsInt, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsString } from "class-validator";
 
 export class SendPrivateChatDto  {
     @IsString()
     text: string
 
-    @IsInt()
-    toUserId: number
+    @Type(() => String)
+    @IsString()
+    toUserKey: string | number
 }
