@@ -9,5 +9,5 @@ export const RECEIVE_UPDATE_MESSAGE_EVENT = 'receive update message event'
 export const RECEIVE_DELETE_MESSAGE_EVENT = 'receive delete message event'
 
 // * chat
-export const FIND_CHAT_BY_USER_ID_EVENT = 'find chat by user id event'
+export const FIND_CHAT_BY_USER_KEY_EVENT = 'find chat by user key event'
 export const GET_ALL_CHAT_EVENT = 'get all chat event'
