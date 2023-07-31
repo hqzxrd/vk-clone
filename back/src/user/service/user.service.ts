@@ -11,6 +11,7 @@ import { FriendRequestType } from 'src/friend/friend-request.type.enum';
 import { FriendRequestService } from 'src/friend/service/friend-request.service';
 import { Relationship } from '../relationship.enum';
 import { FileService } from 'src/file/file.service';
+import { getUserKey } from 'src/utils/get-user-key';
 
 @Injectable()
 export class UserService {
@@ -76,7 +77,7 @@ export class UserService {
   }
 
   async profileByNicknameOrId(key: string, userId?: number) {
-    const userKey = this.getUserKey(key)
+      const userKey = getUserKey(key)
       const findOptions = {
         [(typeof userKey === 'number') ? 'id' : 'nickname']: userKey
       }
@@ -236,5 +237,5 @@ export class UserService {
     return await this.userRepository.save({...user, password: hashPassword})
   }
 
-  getUserKey = (key: string) => isNaN(+key) ? key : +key
+  
 }
