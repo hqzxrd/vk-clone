@@ -48,6 +48,20 @@ export class UserService {
     return user
   }
 
+  async byUserKey(key: string | number) {
+    let userKey = key 
+    if(typeof key === 'string') {
+      userKey = getUserKey(key)
+    }
+    const findOptions = {
+      [(typeof userKey === 'number') ? 'id' : 'nickname']: userKey
+    }
+    const user = await this.userRepository.findOne({
+        where: findOptions
+    })
+    return user
+  }
+
   async profileById(id: number, userId?: number) {
     const selectUser = Object.keys(this.returnBaseKeyUser).map(key => `user.${key}`);
     const profileUser = await this.userRepository.createQueryBuilder('user')
