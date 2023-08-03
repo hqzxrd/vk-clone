@@ -1,0 +1,1 @@
+export const getUserKey = (key: string) => isNaN(+key) ? key : +key
