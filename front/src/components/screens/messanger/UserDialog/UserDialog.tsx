@@ -3,10 +3,8 @@ import HeaderOptions from './HeaderOptions/HeaderOptions'
 import Message from './Message/Message'
 import SendMessage from './SendMessage/SendMessage'
 import { IMessage } from '@/types/messages.types'
-import cn from 'classnames'
-import { useRef, useState } from 'react'
 
-import PencilIcon from '@/components/ui/Icons/PencilIcon'
+import { useRef, useState } from 'react'
 
 import { useAuth } from '@/hooks/useAuth'
 import { useChat } from '@/hooks/useChat'

@@ -1,6 +1,6 @@
 import { ILoginFields } from '@/types/auth.types'
 import { IUser } from '@/types/user.types'
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
 import Button from '@/components/ui/Form/Button'

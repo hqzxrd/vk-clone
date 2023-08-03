@@ -5,6 +5,7 @@ import { io } from 'socket.io-client'
 
 import { WS_URL } from '@/config/api.config'
 import { useParams } from 'react-router-dom'
+import { returnStringOrNubmer } from '@/utils/user-link'
 
 export const socket = io(WS_URL, {
 	auth: { token: `` },
@@ -16,12 +17,12 @@ export const useChat = () => {
 	const [chatInfo, setChatInfo] = useState<IChatByUserId>()
 	const [messages, setMessages] = useState<IMessage[]>([])
 	const { userId } = useParams()
-
+	
 	const sendMessage = (text: string) => {
 		socket.emit(
 			'private chat event',
 			{
-				toUserId: +userId!,
+				toUserKey: userId!,
 				text: text,
 			},
 			(message: IMessage) => {
@@ -41,10 +42,10 @@ export const useChat = () => {
 				id,
 				text,
 			},
-			(message: IMessage) => {
+			() => {
 				socket.emit(
 					'get messages chat event',
-					{ userId: +userId! },
+					{ userKey: userId! },
 					(mes: [IMessage[], number]) => {
 						setMessages(mes[0])
 					}
@@ -85,33 +86,34 @@ export const useChat = () => {
 
 		socket.emit(
 			'get all chat event',
-			{ id: +userId! },
+			{ id: returnStringOrNubmer(userId!) },
 			(mes: [IChatItem[], number]) => {
 				setChats(mes[0])
 			}
 		)
-
+			userId!
 		socket.emit(
-			'find chat by user id event',
-			{ userId: +userId! },
+			'find chat by user key event',
+			{ userKey: returnStringOrNubmer(userId!) },
 			(res: IChatByUserId) => {
-				console.log(+userId, res);
+				console.log(returnStringOrNubmer(userId!), res);
+				
 				setChatInfo(res)
 			}
 		)
 
 		socket.emit(
 			'get messages chat event',
-			{ userId: +userId! },
+			{ userKey: userId! },
 			(mes: [IMessage[], number]) => {
 				setMessages(mes[0])
 			}
 		)
 
-		socket.on('receive message event', (mes: IMessage) => {
+		socket.on('receive message event', () => {
 			socket.emit(
 				'get all chat event',
-				{ id: +userId! },
+				{ id: userId! },
 				(mes: [IChatItem[], number]) => {
 					setChats(mes[0])
 				}
@@ -123,7 +125,7 @@ export const useChat = () => {
 
 			socket.emit(
 				'get all chat event',
-				{ id: +userId! },
+				{ id: userId! },
 				(mes: [IChatItem[], number]) => {
 					setChats(mes[0])
 				}
