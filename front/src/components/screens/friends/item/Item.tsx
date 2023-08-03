@@ -1,6 +1,5 @@
 import { FriendService } from '@/services/friends/friends.service'
 import { IUser } from '@/types/user.types'
-import Link from 'next/link'
 import { FC } from 'react'
 import { QueryClient, useQueryClient } from 'react-query'
 
@@ -9,6 +8,7 @@ import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
 import { userLink } from '@/utils/user-link'
 
 import styles from './Item.module.scss'
+import { NavLink } from 'react-router-dom'
 
 interface IButtons {
 	[index: number]: (user: IUser, qClient: QueryClient) => JSX.Element
@@ -67,9 +67,9 @@ const Item: FC<{ user: IUser; state: number }> = ({ user, state }) => {
 		<div className={styles.peoples_item}>
 			<AvatarMini user={user} width={90} height={90} isLink={true} />
 			<div className={styles.info}>
-				<Link href={`/users/${userLink(user)}`} className={styles.name}>
+				<NavLink to={`/${userLink(user)}`} className={styles.name}>
 					{`${user.name} ${user.surname}`}
-				</Link>
+				</NavLink>
 				<div className={styles.status}>{user.status}</div>
 				<div className={styles.actions}>
 					{buttons[state](user, queryClient)}

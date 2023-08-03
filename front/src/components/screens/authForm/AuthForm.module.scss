@@ -7,6 +7,7 @@
 	min-width: 320px;
 	padding: 20px;
 	margin: 0 auto;
+
 	form {
 		width: 80%;
 		display: flex;
@@ -42,6 +43,7 @@
 		font-size: 24px;
 		background-color: var(--primary-background);
 		border-radius: 5px;
+
 		&:focus {
 			border: 1px solid var(--primary-hover);
 			margin: -1px;

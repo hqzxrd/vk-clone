@@ -22,6 +22,7 @@ export const initialUser: IUserDto = {
 	email: ``,
 	name: ``,
 	surname: ``,
+	nickname: ``,
 	avatar: ``,
 }
 

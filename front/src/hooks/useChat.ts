@@ -1,10 +1,10 @@
 import { AuthService } from '@/services/auth/auth.service'
 import { IChatByUserId, IChatItem, IMessage } from '@/types/messages.types'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { io } from 'socket.io-client'
 
 import { WS_URL } from '@/config/api.config'
+import { useParams } from 'react-router-dom'
 
 export const socket = io(WS_URL, {
 	auth: { token: `` },
@@ -15,13 +15,13 @@ export const useChat = () => {
 	const [chats, setChats] = useState<IChatItem[]>([])
 	const [chatInfo, setChatInfo] = useState<IChatByUserId>()
 	const [messages, setMessages] = useState<IMessage[]>([])
-	const { query } = useRouter()
+	const { userId } = useParams()
 
 	const sendMessage = (text: string) => {
 		socket.emit(
 			'private chat event',
 			{
-				toUserId: +query.id!,
+				toUserId: +userId!,
 				text: text,
 			},
 			(message: IMessage) => {
@@ -44,7 +44,7 @@ export const useChat = () => {
 			(message: IMessage) => {
 				socket.emit(
 					'get messages chat event',
-					{ userId: +query.id! },
+					{ userId: +userId! },
 					(mes: [IMessage[], number]) => {
 						setMessages(mes[0])
 					}
@@ -85,7 +85,7 @@ export const useChat = () => {
 
 		socket.emit(
 			'get all chat event',
-			{ id: +query.id! },
+			{ id: +userId! },
 			(mes: [IChatItem[], number]) => {
 				setChats(mes[0])
 			}
@@ -93,15 +93,16 @@ export const useChat = () => {
 
 		socket.emit(
 			'find chat by user id event',
-			{ userId: +query.id! },
+			{ userId: +userId! },
 			(res: IChatByUserId) => {
+				console.log(+userId, res);
 				setChatInfo(res)
 			}
 		)
 
 		socket.emit(
 			'get messages chat event',
-			{ userId: +query.id! },
+			{ userId: +userId! },
 			(mes: [IMessage[], number]) => {
 				setMessages(mes[0])
 			}
@@ -110,7 +111,7 @@ export const useChat = () => {
 		socket.on('receive message event', (mes: IMessage) => {
 			socket.emit(
 				'get all chat event',
-				{ id: +query.id! },
+				{ id: +userId! },
 				(mes: [IChatItem[], number]) => {
 					setChats(mes[0])
 				}
@@ -122,7 +123,7 @@ export const useChat = () => {
 
 			socket.emit(
 				'get all chat event',
-				{ id: +query.id! },
+				{ id: +userId! },
 				(mes: [IChatItem[], number]) => {
 					setChats(mes[0])
 				}

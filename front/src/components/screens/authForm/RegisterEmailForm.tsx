@@ -1,5 +1,4 @@
 import { IEmail, IPropsHookForm, IRegisterFields } from './auth.interface'
-import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
@@ -14,22 +13,24 @@ import { useAppDispatch } from '@/store/store'
 import { confirmation } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
+import { useNavigate } from 'react-router-dom'
 
-interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> {}
+interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> { }
 
 const RegisterEmailForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	const dispatch = useAppDispatch()
-	const { replace } = useRouter()
+	const nav = useNavigate()
 	const { isAuth } = useAuth()
 
-	useEffect(() => {
-		isAuth && replace(`/profile`)
-	}, [])
+	// useEffect(() => {
+	// 	isAuth && replace(`/profile`)
+	// }, [])
 
 	const onSubmit: SubmitHandler<IEmail> = (data) => {
 		dispatch(confirmation(data)).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) replace(`/auth/register#code`)
+
+			if (status === `fulfilled`) nav(`/register#code`, { replace: true })
 		})
 	}
 

@@ -1,5 +1,4 @@
 import { IChatItem } from '@/types/messages.types'
-import { useRouter } from 'next/router'
 import { FC } from 'react'
 
 import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
@@ -9,13 +8,14 @@ import { useAuth } from '@/hooks/useAuth'
 import { date } from '@/utils/date'
 
 import styles from './Chatitem.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 interface props {
 	chat: IChatItem
 }
 
 const ChatItem: FC<props> = ({ chat }) => {
-	const { push } = useRouter()
+	const nav = useNavigate()
 	const { user } = useAuth()
 
 	// const { time, day, month, year } = date(chat.message.createDate)
@@ -25,7 +25,7 @@ const ChatItem: FC<props> = ({ chat }) => {
 	return (
 		<div
 			className={styles.chatItem}
-			onClick={() => push(`/users/${withUser.id}/dialog`)}
+			onClick={() => nav(`/chat/${withUser.id}`, { replace: true })}
 		>
 			<div>
 				<AvatarMini user={withUser} width={50} height={50} isLink={false} />

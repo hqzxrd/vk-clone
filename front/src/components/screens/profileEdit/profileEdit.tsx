@@ -1,8 +1,6 @@
 import { IUpdateFields, IUpdateFieldsDto } from './profileEdit.interface'
-import { notify } from '@/providers/Toast'
 import { UserService } from '@/services/user/user.service'
 import { TypeGender } from '@/types/auth.types'
-import { useRouter } from 'next/router'
 import { FC, MouseEvent, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
@@ -24,11 +22,12 @@ import { store } from '@/store/store'
 import { deleteAvatar } from '@/store/user/user.action'
 
 import styles from './profileEdit.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 const ProfileEdit: FC = () => {
 	const [nickname, setNickname] = useState<string>()
 	const inputFiles = useRef<HTMLInputElement>(null)
-	const { push } = useRouter()
+	const nav = useNavigate()
 	const { user } = useAuth()
 	const { profile } = useProfile(user.id)
 	const [gender, setGender] = useState<TypeGender>(profile?.gender || `male`)
@@ -63,7 +62,7 @@ const ProfileEdit: FC = () => {
 		const res = await UserService.updateProfile(userDto, file)
 
 		if (res && res?.status === 200) {
-			push(`/users/${user.id}`)
+			nav(`/${user.id}`, { replace: true })
 		}
 	}
 
@@ -211,7 +210,7 @@ const ProfileEdit: FC = () => {
 							error={formState.errors.nickname}
 						/>
 						<div className={styles.link} onClick={(e) => copy(e)}>
-							{process.env.CLIENT_URL}/users/
+							{import.meta.env.VITE_CLIENT_URL}/
 							{nickname ? nickname : profile.nickname}
 						</div>
 					</div>

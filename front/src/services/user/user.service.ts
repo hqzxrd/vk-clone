@@ -13,7 +13,6 @@ export const UserService = {
 			return await authAxios.get<IUser>(UserUrl(`/${id}`))
 		} catch (error) {
 			toastError(error)
-			throw new Error(`qwe`)
 		}
 	},
 

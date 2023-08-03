@@ -1,7 +1,6 @@
 import Preview from '../../CreatePost/preview/Preview'
 import { PostService } from '@/services/post/post.service'
 import { IPost } from '@/types/post.types'
-import { useRouter } from 'next/router'
 import { FC, useEffect, useRef, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
@@ -12,6 +11,7 @@ import Textarea from '@/components/ui/Textarea/Textarea'
 import useSeveralPhotos from '@/hooks/useSeveralPhotos'
 
 import styles from './UpdatePost.module.scss'
+import { useParams } from 'react-router-dom'
 
 interface props {
 	post: IPost
@@ -38,7 +38,7 @@ const UpdatePost: FC<props> = ({
 	} = useSeveralPhotos()
 
 	const [text, setText] = useState<string>(propsText ? propsText : ``)
-	const { query } = useRouter()
+	const { userId } = useParams()
 	const queryClient = useQueryClient()
 
 	const UpdatePost = async () => {
@@ -48,7 +48,7 @@ const UpdatePost: FC<props> = ({
 			clear()
 			setText(``)
 			setIsUpdate(false)
-			queryClient.invalidateQueries(`userPosts${query.id}`)
+			queryClient.invalidateQueries(`userPosts${userId}`)
 		}
 	}
 

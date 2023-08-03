@@ -3,7 +3,6 @@ import {
 	IPropsHookForm,
 	IRegisterFields,
 } from './auth.interface'
-import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
@@ -11,6 +10,7 @@ import Button from '@/components/ui/Form/Button'
 import Input from '@/components/ui/Form/Input'
 
 import styles from './AuthForm.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 const RegisterPasswordForm: FC<IPropsHookForm<IRegisterFields>> = ({
 	reg,
@@ -18,10 +18,11 @@ const RegisterPasswordForm: FC<IPropsHookForm<IRegisterFields>> = ({
 	formState,
 	watch,
 }) => {
-	const { replace } = useRouter()
+	const nav = useNavigate()
+	// const { replace } = useRouter()
 
 	const onSubmit: SubmitHandler<IPasswordConfirm> = () => {
-		replace(`/auth/register#info`)
+		nav(`/register#info`, { replace: true })
 	}
 
 	return (

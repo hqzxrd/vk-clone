@@ -1,6 +1,5 @@
 import Preview from './preview/Preview'
 import { PostService } from '@/services/post/post.service'
-import { useRouter } from 'next/router'
 import { FC, KeyboardEvent, useRef, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
@@ -11,6 +10,7 @@ import Textarea from '@/components/ui/Textarea/Textarea'
 import useSeveralPhotos from '@/hooks/useSeveralPhotos'
 
 import styles from './CreatePost.module.scss'
+import { useParams } from 'react-router-dom'
 
 interface props {
 	getNewsline?: () => Promise<void>
@@ -20,7 +20,7 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
 	const inputFiles = useRef<HTMLInputElement>(null)
 	const [text, setText] = useState<string>(``)
 	const { file, photos, handleChange, removePhoto, clear } = useSeveralPhotos()
-	const { query } = useRouter()
+	const { userId } = useParams()
 	const queryClient = useQueryClient()
 
 	const pressEnter = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -38,7 +38,7 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
 		setText(``)
 		const res = await PostService.createPost(text, file)
 		if (res?.status === 201) {
-			queryClient.invalidateQueries(`userPosts${query.id}`)
+			queryClient.invalidateQueries(`userPosts${userId}`)
 			getNewsline && getNewsline()
 		}
 	}

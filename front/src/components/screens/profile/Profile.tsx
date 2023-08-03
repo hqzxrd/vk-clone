@@ -2,35 +2,37 @@ import CreatePost from './CreatePost/CreatePost'
 import Info from './Info/Info'
 import Post from './Post/Post'
 import { IPost } from '@/types/post.types'
-import { useRouter } from 'next/router'
 
 import { useAuth } from '@/hooks/useAuth'
 import { usePosts } from '@/hooks/usePosts'
 import { useProfile } from '@/hooks/useProfile'
 
 import styles from './Profile.module.scss'
+import { useParams } from 'react-router-dom'
+import UserNotFound from '../errors/UserNotFound/UserNotFound'
 
 const Profile = () => {
 	const { user } = useAuth()
-	const { profile } = useProfile()
-	const { query } = useRouter()
-	const { posts } = usePosts(`?user=${query.id}`)
+	const { isLoading, profile } = useProfile()
+	const { userId } = useParams()
+	const { posts } = usePosts(`?user=${userId}`)
+
+	if (isLoading) return null
 
 	if (!profile || !posts) {
-		return
+		return <UserNotFound />
 	}
 
 	return (
 		<div className={styles.wrapper}>
 			<Info />
-			{isNaN(+query.id!)
-				? user.nickname === query.id && <CreatePost />
-				: user.id === +query.id! && <CreatePost />}
+			{isNaN(+userId!)
+				? user.nickname === userId && <CreatePost />
+				: user.id === +userId! && <CreatePost />}
 
-			{posts &&
-				posts[0].map((post: IPost) => {
-					return <Post post={post} key={post.id} />
-				})}
+			{posts[0].map((post: IPost) => {
+				return <Post post={post} key={post.id} />
+			})}
 
 			{!posts[1] && user.id === profile.id ? (
 				<div className={styles.noPosts}>У вас нет еще ни одной записи</div>

@@ -6,7 +6,6 @@ import {
 import { TypeGender } from '@/types/auth.types'
 import { IRegisterFieldsDto } from '@/types/auth.types'
 import { IUser } from '@/types/user.types'
-import { useRouter } from 'next/router'
 import { FC, useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
@@ -21,13 +20,14 @@ import { useAppDispatch } from '@/store/store'
 import { register } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
+import { useNavigate } from 'react-router-dom'
 
-interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> {}
+interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> { }
 
 const RegisterInfoForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	const [gender, setGender] = useState<TypeGender>(`male`)
 	const dispatch = useAppDispatch()
-	const { replace } = useRouter()
+	const nav = useNavigate()
 
 	const onSubmit: SubmitHandler<IUserInfoFields> = async (
 		data: IUserInfoFields
@@ -51,7 +51,7 @@ const RegisterInfoForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 			if (status === `fulfilled`) {
 				const payload = action.payload as { user: IUser }
 				const id = payload.user.id
-				replace(`/users/${id}`)
+				nav(`/${id}`, { replace: true })
 			}
 		})
 	}

@@ -1,6 +1,6 @@
-export const SERVER_URL = process.env.SERVER_URL
-export const API_URL = process.env.SERVER_URL + `/api`
-export const WS_URL = process.env.SERVER_URL ? process.env.SERVER_URL : ``
+export const SERVER_URL = import.meta.env.VITE_SERVER_URL
+export const API_URL = import.meta.env.VITE_SERVER_URL + `/api`
+export const WS_URL = import.meta.env.VITE_SERVER_URL ? import.meta.env.VITE_SERVER_URL : ``
 
 export const AuthUrl = (str: string) => `/auth${str}`
 

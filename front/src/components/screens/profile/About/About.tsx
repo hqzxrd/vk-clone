@@ -1,18 +1,19 @@
 import AboutCount from '../AboutCount/AboutCount'
 import UserActions from '../UserActions/UserActions'
 import { IUser } from '@/types/user.types'
-import { useRouter } from 'next/router'
+
 
 import { useDate } from '@/hooks/useDate'
 import { usePosts } from '@/hooks/usePosts'
 import { useProfile } from '@/hooks/useProfile'
 
 import styles from './About.module.scss'
+import { useParams } from 'react-router-dom'
 
 const About = () => {
-	const { query } = useRouter()
+	const { userId } = useParams()
 	const { isLoading, profile } = useProfile()
-	const { posts } = usePosts(`?user=${query.id}`)
+	const { posts } = usePosts(`?user=${userId}`)
 
 	const { day, month, year } = useDate(profile ? profile.birthday : ``)
 

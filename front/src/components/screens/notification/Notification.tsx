@@ -1,5 +1,4 @@
 import { INotificationDto } from './Notification.interface'
-import Link from 'next/link'
 import { FC } from 'react'
 import { text } from 'stream/consumers'
 
@@ -9,6 +8,7 @@ import { date } from '@/utils/date'
 import { userLink } from '@/utils/user-link'
 
 import styles from './Notification.module.scss'
+import { NavLink } from 'react-router-dom'
 
 interface props {
 	notif: INotificationDto
@@ -47,9 +47,8 @@ const notification: {
 			<div className={styles.info}>
 				<span>{`${notif.fromUser.name} ${notif.fromUser.surname} `}</span>
 				лайкнул вашу запись
-				<span>{` ${
-					notif.post?.text && notif.post.text.slice(0, 10)
-				}... `}</span>
+				<span>{` ${notif.post?.text && notif.post.text.slice(0, 10)
+					}... `}</span>
 				от {day}.{month}.{year} в {time}
 			</div>
 		)
@@ -69,10 +68,10 @@ const notification: {
 
 const Notification: FC<props> = ({ notif }) => {
 	return (
-		<Link className={styles.link} href={`/users/${userLink(notif.fromUser)}`}>
+		<NavLink className={styles.link} to={`/users/${userLink(notif.fromUser)}`}>
 			<AvatarMini user={notif.fromUser} width={30} height={30} isLink={false} />
 			{notification[notif.type](notif)}
-		</Link>
+		</NavLink>
 	)
 }
 

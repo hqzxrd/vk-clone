@@ -2,7 +2,6 @@ import UpdateComment from '../UpdateComment/UpdateComment'
 import { PostService } from '@/services/post/post.service'
 import { IComment, IPost } from '@/types/post.types'
 import cn from 'classnames'
-import Link from 'next/link'
 import { FC, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
@@ -15,6 +14,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { userLink } from '@/utils/user-link'
 
 import styles from './Comment.module.scss'
+import { NavLink } from 'react-router-dom'
 
 interface props {
 	comment: IComment
@@ -69,12 +69,12 @@ const Comment: FC<props> = ({ post, comment }) => {
 				/>
 
 				<div className={styles.content}>
-					<Link
-						href={`/users/${userLink(comment.author)}`}
+					<NavLink
+						to={`/${userLink(comment.author)}`}
 						className={styles.name}
 					>
 						{comment.author.name} {comment.author.surname}
-					</Link>
+					</NavLink>
 					{isUpdate ? (
 						<UpdateComment
 							post={post}

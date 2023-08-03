@@ -1,6 +1,5 @@
 import Header from './Header/Header'
 import Navigation from './Navigation/Navigation'
-import { useRouter } from 'next/router'
 import { FC } from 'react'
 
 import { useTypedSelector } from '@/hooks/useTypedSelector'
@@ -8,21 +7,20 @@ import { useTypedSelector } from '@/hooks/useTypedSelector'
 import IChildren from '@/utils/children.inteface'
 
 import styles from './Layout.module.scss'
+import { useLocation } from 'react-router-dom'
 
-function isHideNavbar() {
-	const router = useRouter()
-
-	const path = router.pathname
-	return path === '/auth/register' ||
-		path === '/auth/login' ||
-		path === '/auth/code' ||
+function isHideNavbar(path: string) {
+	return path === '/register' ||
+		path === '/login' ||
 		path === '/404' ||
 		path === '/500' ? null : (
 		<Navigation />
 	)
+
 }
 
 const Layout: FC<IChildren> = ({ children }) => {
+	const { pathname } = useLocation();
 	const { theme } = useTypedSelector((state) => state.theme)
 
 	return (
@@ -33,7 +31,7 @@ const Layout: FC<IChildren> = ({ children }) => {
 
 			<div className={styles.main_wrapper}>
 				<div className={styles.main}>
-					<div className={styles.left}>{isHideNavbar()}</div>
+					<div className={styles.left}>{isHideNavbar(pathname)}</div>
 					<div className={styles.center}>{children}</div>
 				</div>
 			</div>

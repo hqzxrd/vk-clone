@@ -1,9 +1,10 @@
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import RegisterCodeForm from './RegisterCodeForm'
 import RegisterEmailForm from './RegisterEmailForm'
 import RegisterInfoForm from './RegisterInfoForm'
 import RegisterPasswordForm from './RegisterPasswordForm'
 import { IRegisterFields } from './auth.interface'
-import { useRouter } from 'next/router'
+
 import { useEffect, useState } from 'react'
 import {
 	FormState,
@@ -12,6 +13,7 @@ import {
 	UseFormWatch,
 	useForm,
 } from 'react-hook-form'
+import { useAuth } from '@/hooks/useAuth'
 
 interface IPages {
 	[page: string]: (
@@ -23,7 +25,7 @@ interface IPages {
 }
 
 const pages: IPages = {
-	email: (reg, handleSubmit, formState) => (
+	'#email': (reg, handleSubmit, formState) => (
 		<RegisterEmailForm
 			reg={reg}
 			handleSubmit={handleSubmit}
@@ -31,7 +33,7 @@ const pages: IPages = {
 		/>
 	),
 
-	code: (reg, handleSubmit, formState) => (
+	'#code': (reg, handleSubmit, formState) => (
 		<RegisterCodeForm
 			reg={reg}
 			handleSubmit={handleSubmit}
@@ -39,7 +41,7 @@ const pages: IPages = {
 		/>
 	),
 
-	password: (reg, handleSubmit, formState, watch) => (
+	'#password': (reg, handleSubmit, formState, watch) => (
 		<RegisterPasswordForm
 			reg={reg}
 			handleSubmit={handleSubmit}
@@ -48,7 +50,7 @@ const pages: IPages = {
 		/>
 	),
 
-	info: (reg, handleSubmit, formState) => (
+	'#info': (reg, handleSubmit, formState) => (
 		<RegisterInfoForm
 			reg={reg}
 			handleSubmit={handleSubmit}
@@ -58,22 +60,25 @@ const pages: IPages = {
 }
 
 const CreateUserWrapper = () => {
-	const { asPath, replace } = useRouter()
+	const nav = useNavigate()
+	const { hash } = useLocation()
 	const [state, setState] = useState<string>(``)
+	const { isAuth } = useAuth()
 
 	useEffect(() => {
-		const hash = asPath.split(`#`)[1]
+		console.log(hash);
+
 		if (
-			hash === `email` ||
-			hash === `code` ||
-			hash === `password` ||
-			hash === `info`
+			hash === `#email` ||
+			hash === `#code` ||
+			hash === `#password` ||
+			hash === `#info`
 		)
 			setState(hash)
-	}, [asPath])
+	}, [hash])
 
 	useEffect(() => {
-		replace(`register#email`)
+		nav(`/register#email`, { replace: true })
 	}, [])
 
 	const {
@@ -86,8 +91,10 @@ const CreateUserWrapper = () => {
 	})
 
 	if (!state) {
-		return
+		return < Navigate to='/register#email' />
 	}
+
+	if (isAuth) return <Navigate to='/newsline' />
 
 	return pages[state](reg, handleSubmit, formState, watch)
 }

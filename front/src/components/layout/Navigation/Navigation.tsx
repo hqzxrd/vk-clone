@@ -1,5 +1,4 @@
-import Link from 'next/link'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 import NotificationBadge from '@/components/screens/friends/NotificationBadge'
 import FriendsIcon from '@/components/ui/Icons/LeftSideMenu/FriendsIcon'
@@ -13,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth'
 import { userLink } from '@/utils/user-link'
 
 import style from './Navigation.module.scss'
+import { NavLink } from 'react-router-dom'
 
 const Navigation: FC = () => {
 	const { user } = useAuth()
@@ -20,23 +20,23 @@ const Navigation: FC = () => {
 	return (
 		<div className={style.nav_wrapper}>
 			<nav>
-				<Link href={`/users/${userLink(user)}`}>
+				<NavLink to={`/${userLink(user)}`}>
 					<div>
 						<div className={style.icon}>
 							<ProfileIcon />
 						</div>
 						<div>Моя страница</div>
 					</div>
-				</Link>
-				<Link href={`/newsline`}>
+				</NavLink>
+				<NavLink to={`/newsline`}>
 					<div>
 						<div className={style.icon}>
 							<NewsIcon />
 						</div>
 						<div>Лента</div>
 					</div>
-				</Link>
-				<Link href="/messanger">
+				</NavLink>
+				<NavLink to="/messanger">
 					<div>
 						<div className={style.icon}>
 							<MessangerIcon />
@@ -44,8 +44,8 @@ const Navigation: FC = () => {
 
 						<div>Мессенджер</div>
 					</div>
-				</Link>
-				<Link href="/friends">
+				</NavLink>
+				<NavLink to="/friends">
 					<div>
 						<div className={style.icon}>
 							<FriendsIcon />
@@ -55,8 +55,8 @@ const Navigation: FC = () => {
 
 						<NotificationBadge />
 					</div>
-				</Link>
-				<Link href="/peoples">
+				</NavLink>
+				<NavLink to="/peoples">
 					<div>
 						<div className={style.icon}>
 							<PeoplesIcon />
@@ -64,7 +64,7 @@ const Navigation: FC = () => {
 
 						<div>Люди</div>
 					</div>
-				</Link>
+				</NavLink>
 			</nav>
 		</div>
 	)

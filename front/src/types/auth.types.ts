@@ -1,14 +1,6 @@
-import { NextPage } from 'next'
-
-import IChildren from '@/utils/children.inteface'
-
-export type TypeRole = {
-	isOnlyUser?: boolean
-}
-
-export type NextPageAuth<P = {}> = NextPage<P> & TypeRole
-
-export type TypeComponentAuth = { Component: TypeRole } & IChildren
+// export type TypeRole = {
+// 	isOnlyUser?: boolean
+// }
 
 export interface IUserDto {
 	id: number
@@ -38,7 +30,7 @@ export interface IUserInfoFields {
 	gender: TypeGender
 }
 
-export interface IRegisterFieldsDto extends IUserInfoFields, ILoginFields {}
+export interface IRegisterFieldsDto extends IUserInfoFields, ILoginFields { }
 
 export interface ICodeEmailDto {
 	code: number

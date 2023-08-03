@@ -1,6 +1,5 @@
 import SegmentVerifInput from './SegmentVerifInput'
 import { ICode, IPropsHookForm, IRegisterFields } from './auth.interface'
-import { useRouter } from 'next/router'
 import { FC, useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 
@@ -13,19 +12,20 @@ import { useAppDispatch } from '@/store/store'
 import { code } from '@/store/user/user.action'
 
 import styles from './AuthForm.module.scss'
+import { useNavigate } from 'react-router-dom'
 
-interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> {}
+interface IProps extends Omit<IPropsHookForm<IRegisterFields>, `watch`> { }
 
 const RegisterCodeForm: FC<IProps> = ({ reg, handleSubmit, formState }) => {
 	const [verifCode, setVerifCode] = useState('')
 	const dispatch = useAppDispatch()
-	const { replace } = useRouter()
+	const nav = useNavigate()
 	const { user } = useAuth()
 
 	const onSubmit: SubmitHandler<ICode> = (data: ICode) => {
 		dispatch(code({ code: +verifCode, email: user.email! })).then((action) => {
 			const status = action.meta.requestStatus
-			if (status === `fulfilled`) replace(`/auth/register#password`)
+			if (status === `fulfilled`) nav(`/register#password`, { replace: true })
 		})
 	}
 

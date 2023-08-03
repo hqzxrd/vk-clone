@@ -42,9 +42,9 @@ const UserDialog = () => {
 			setActiveMessage(0)
 		}
 	}
-	console.log(activeMessage, activeUpdate)
 
-	if (!withUser || !messages) {
+
+	if (!withUser || !withUser[0] || !messages) {
 		return <></>
 	}
 

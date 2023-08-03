@@ -1,6 +1,5 @@
 import { ILoginFields } from '@/types/auth.types'
 import { IUser } from '@/types/user.types'
-import { useRouter } from 'next/router'
 import { FC, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -17,18 +16,15 @@ import { login } from '@/store/user/user.action'
 import { userLink } from '@/utils/user-link'
 
 import styles from './AuthForm.module.scss'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 const LoginForm: FC = () => {
 	const { register, handleSubmit, formState } = useForm<ILoginFields>({
 		mode: `onChange`,
 	})
 	const dispatch = useAppDispatch()
-	const { replace } = useRouter()
+	const nav = useNavigate()
 	const { isAuth } = useAuth()
-
-	useEffect(() => {
-		isAuth && replace(`/users/profile`)
-	}, [])
 
 	const onSubmit: SubmitHandler<ILoginFields> = async (data: any) => {
 		dispatch(login(data)).then((action) => {
@@ -36,10 +32,13 @@ const LoginForm: FC = () => {
 
 			if (status === `fulfilled`) {
 				const payload = action.payload as { user: IUser }
-				replace(`/users/${userLink(payload.user)}`)
+				nav(`/${userLink(payload.user)}`, { replace: true })
+
 			}
 		})
 	}
+
+	if (isAuth) return <Navigate to='/newsline' />
 
 	return (
 		<section className={styles.auth}>

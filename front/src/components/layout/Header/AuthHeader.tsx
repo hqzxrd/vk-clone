@@ -1,7 +1,6 @@
 import { NotificationService } from '@/services/notification/notification.service'
 import cn from 'classnames'
-import Link from 'next/link'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import Notification from '@/components/screens/notification/Notification'
@@ -20,6 +19,7 @@ import { useTypedSelector } from '@/hooks/useTypedSelector'
 import { setNotifCount } from '@/store/user/user.slice'
 
 import styles from './Header.module.scss'
+import { NavLink } from 'react-router-dom'
 
 const AuthHeader: FC = () => {
 	const { user, isAuth } = useAuth()
@@ -100,16 +100,16 @@ const AuthHeader: FC = () => {
 						<ThemeIcon /> Тема:{' '}
 						<span>{theme === `dark` ? 'Тёмная' : 'Светлая'}</span>
 					</button>
-					<Link
+					<NavLink
 						className={styles.leave}
-						href={`/auth/login`}
+						to={`/login`}
 						onClick={() => logout()}
 					>
 						<div>
 							<LeaveIcon />
 						</div>
 						<div>Выйти</div>
-					</Link>
+					</NavLink>
 				</DropDownWrap>
 			</div>
 		</>

@@ -1,6 +1,4 @@
 import { IAvatarMiniProps } from './AvatarMini.interface'
-import Image from 'next/image'
-import Link from 'next/link'
 import { FC } from 'react'
 
 import { FilesUrl } from '@/config/api.config'
@@ -10,6 +8,7 @@ import { useAvatarGenerate } from '@/hooks/useAvatarGenerate'
 import { userLink } from '@/utils/user-link'
 
 import styles from './AvatarMini.module.scss'
+import { NavLink } from 'react-router-dom'
 
 const AvatarMini: FC<IAvatarMiniProps> = ({
 	user,
@@ -23,7 +22,7 @@ const AvatarMini: FC<IAvatarMiniProps> = ({
 	if (image) {
 		return (
 			<div>
-				<Image
+				<img
 					src={image}
 					width={width}
 					height={height}
@@ -38,18 +37,18 @@ const AvatarMini: FC<IAvatarMiniProps> = ({
 		return (
 			<div>
 				{user.avatar ? (
-					<Link href={`/users/${userLink(user)}`}>
-						<Image
+					<NavLink to={`/${userLink(user)}`}>
+						<img
 							src={`${FilesUrl(user?.avatar)}`}
 							width={width}
 							height={height}
 							alt="avatar"
 							className={styles.avatar}
 						/>
-					</Link>
+					</NavLink>
 				) : (
-					<Link
-						href={`/users/${userLink(user)}`}
+					<NavLink
+						to={`/${userLink(user)}`}
 						style={{
 							backgroundColor: `${color}`,
 							width: width,
@@ -59,7 +58,7 @@ const AvatarMini: FC<IAvatarMiniProps> = ({
 						className={styles.avatar}
 					>
 						<div>{user.name[0]}</div>
-					</Link>
+					</NavLink>
 				)}
 			</div>
 		)
@@ -68,7 +67,7 @@ const AvatarMini: FC<IAvatarMiniProps> = ({
 			<div>
 				{user.avatar ? (
 					<div>
-						<Image
+						<img
 							src={`${FilesUrl(user?.avatar)}`}
 							width={width}
 							height={height}

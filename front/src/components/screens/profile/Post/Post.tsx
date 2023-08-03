@@ -3,9 +3,6 @@ import UpdatePost from './UpdatePost/UpdatePost'
 import { PostService } from '@/services/post/post.service'
 import { IPost } from '@/types/post.types'
 import cn from 'classnames'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
 import React, { FC, useEffect, useState } from 'react'
 import { useQueryClient } from 'react-query'
 
@@ -23,6 +20,7 @@ import { useDate } from '@/hooks/useDate'
 import { userLink } from '@/utils/user-link'
 
 import styles from './Post.module.scss'
+import { NavLink, useParams } from 'react-router-dom'
 
 interface props {
 	post: IPost
@@ -34,7 +32,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
 	const [isLike, setIsLike] = useState<boolean>(post.isLike)
 	const [countLiked, setCountLiked] = useState<number>(post.countLikes)
 	const [commentsIsHide, setCommentsIsHide] = useState<boolean>(true)
-	const { query } = useRouter()
+	const { userId } = useParams()
 	const { user } = useAuth()
 
 	const { comments } = useComments(post.id, `?post=${post.id}`, commentsIsHide)
@@ -51,7 +49,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
 	const deletePost = async () => {
 		const res = await PostService.detelePost(post.id)
 		if (res?.status === 204) {
-			queryClient.invalidateQueries(`userPosts${query.id}`)
+			queryClient.invalidateQueries(`userPosts${userId}`)
 			getNewsline && getNewsline()
 		}
 	}
@@ -78,9 +76,9 @@ const Post: FC<props> = ({ post, getNewsline }) => {
 					<AvatarMini user={post.author} width={60} height={60} isLink={true} />
 				</div>
 				<div className={styles.whosePost}>
-					<Link href={`/users/${userLink(post.author)}`}>
+					<NavLink to={`/${userLink(post.author)}`}>
 						{post.author.name} {post.author.surname}
-					</Link>
+					</NavLink>
 					<div className={styles.date}>
 						{day}.{month}.{year} в {time}
 						{post.createDate !== post.updateDate ? ` (ред.)` : ``}
@@ -101,7 +99,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
 						{post.photos?.map((pic) => {
 							return (
 								<div className={styles.postPicWrapper} key={pic}>
-									<Image src={FilesUrl(`${pic}`)} fill={true} alt="pic" />
+									<img src={FilesUrl(`${pic}`)} alt="pic" />
 								</div>
 							)
 						})}

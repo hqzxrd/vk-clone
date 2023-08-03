@@ -1,7 +1,7 @@
 import Error from '@/components/ui/CustomToast/ErrorToast'
 
 export const toastError = (error: any) => {
-	const message =
+	const message: string =
 		error.response && error.response.data
 			? typeof error.response.data.message === 'object'
 				? error.response.data.message[0]
@@ -11,5 +11,5 @@ export const toastError = (error: any) => {
 	if (message === `Unauthorized`) return
 
 	Error(message)
-	throw message
+	throw Error(message)
 }
