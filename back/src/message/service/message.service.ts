@@ -59,6 +59,7 @@ export class MessageService {
       where: {id},
       relations: ['chat', 'chat.userA', 'chat.userB', 'author'],
       select: {
+        id: true,
         author: this.userService.returnBaseKeyUser,
         chat: {
           id: true,
@@ -80,9 +81,11 @@ export class MessageService {
 
   async delete(id: number, userId: number) {
     const message = await this.findOne(id)
+
     if(!message) throw new NotFoundException()
     if(message.author.id !== userId) throw new ForbiddenException()
     await this.messageRepository.remove(message)
+    message.id = id
     return message
   }
 

@@ -61,6 +61,7 @@ export class ChatEventsService {
       const users = [message.chat.userA, message.chat.userB]
       const [toUser] = users.filter(user => user.id !== userId)
       await this.sendPrivateMessage(RECEIVE_DELETE_MESSAGE_EVENT, toUser.id, message)
+      return message
    }
 
    async handleGetMessages(userOneId: number, { userKey, page, count }: GetMessagesDto) {
