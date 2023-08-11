@@ -1,0 +1,46 @@
+.addtInfo{
+	width: 560px;
+	background-color: var(--extra-background);
+	border-radius: var(--primary-border-radius);
+
+	.header{
+		padding: 20px;
+		border-bottom: 1px solid var(--primary-border);
+	}
+
+	.main{
+		padding: 10px;
+
+		>div{
+			padding: 10px;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			border-bottom: 1px solid var(--secondary-border);
+
+			&:last-child{
+				border: none;
+			}
+		}
+
+		svg{
+			color: var(--secondary-color);
+		}
+	}
+}
+
+.user_info_counter {
+	cursor: pointer;
+	user-select: none;
+	text-align: center;
+	padding: 8px;
+	border: 1px solid var(--primary-border);
+	border-radius: var(--primary-border-radius);
+	&:hover {
+		background-color: var(--primary-hover);
+	}
+	> div:first-child {
+		font-size: 100%;
+		font-weight: bolder;
+	}
+}
