@@ -14,7 +14,11 @@ const OpenModalWrap: FC<props> = ({ renderElement, children }) => {
 
   return (
     <>
-      <div className={styles.wrap} onClick={() => setIsOpen(true)}>
+      <div
+        style={{ cursor: `pointer` }}
+        className={styles.wrap}
+        onClick={() => setIsOpen(true)}
+      >
         {renderElement}
       </div>
       <ModalWrap isOpen={isOpen} setIsOpen={setIsOpen}>
