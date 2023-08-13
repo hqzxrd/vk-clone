@@ -1,136 +1,138 @@
 .post {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	gap: 15px;
-	background-color: var(--extra-background);
-	border: 1px solid var(--primary-border);
-	border-radius: var(--primary-border-radius);
-	padding: 20px;
-	max-width: 100%;
-	.postHeader {
-		display: flex;
-		gap: 15px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: var(--extra-background);
+  border: 1px solid var(--primary-border);
+  border-radius: var(--primary-border-radius);
+  padding: 20px;
+  max-width: 100%;
+  .postHeader {
+    display: flex;
+    gap: 15px;
 
-		.whosePost {
-			display: flex;
-			flex-direction: column;
-		}
+    .whosePost {
+      display: flex;
+      flex-direction: column;
+    }
 
-		.date {
-			color: var(--secondary-color);
-			font-size: 12px;
-		}
-	}
+    .date {
+      color: var(--secondary-color);
+      font-size: 12px;
+    }
+  }
 
-	.postMain {
-		max-width: 748px;
-		word-wrap: break-word;
-		white-space: pre-wrap;
-	}
+  .postMain {
+    max-width: 748px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
 
-	.postPic {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-		justify-items: center;
-		grid-auto-rows: max-content;
-		grid-auto-flow: dense;
-		grid-gap: 10px;
+  .postPic {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    justify-items: center;
+    grid-auto-rows: max-content;
+    grid-auto-flow: dense;
+    grid-gap: 10px;
 
-		.postPicWrapper {
-			position: relative;
-			width: 100%;
-			min-height: 200px;
-			max-width: 400px;
-			max-height: 550px;
-			> img {
-				position: relative !important;
-				border-radius: var(--primary-border-radius);
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-			}
-		}
-	}
+    .postPicWrapper {
+      // position: relative;
+      width: 100%;
+      min-height: 200px;
+      max-width: 400px;
+      max-height: 550px;
+      height: 100%;
 
-	.reactions {
-		display: flex;
-		gap: 10px;
-		.like {
-			user-select: none;
-			cursor: pointer;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 5px;
-			padding: 5px 10px;
-			background-color: var(--post-action);
-			color: #b2b2b2;
-			border-radius: 20px;
-			&:hover {
-				background-color: var(--secondary-hover);
-			}
-		}
-		.isLiked {
-			color: #e32636;
-			background-color: rgba($color: #9b2d30, $alpha: 0.1);
-		}
+      > img {
+        position: relative !important;
+        border-radius: var(--primary-border-radius);
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
 
-		.like_count {
-			text-align: center;
-			min-width: 25px;
-		}
-	}
-	.post_actions {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		user-select: none;
-		cursor: pointer;
-		position: absolute;
-		top: 10px;
-		right: 15px;
-		font-size: 24px;
-		font-weight: bold;
-		color: var(--secondary-color);
-		height: 25px;
+  .reactions {
+    display: flex;
+    gap: 10px;
+    .like {
+      user-select: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      background-color: var(--post-action);
+      color: #b2b2b2;
+      border-radius: 20px;
+      &:hover {
+        background-color: var(--secondary-hover);
+      }
+    }
+    .isLiked {
+      color: #e32636;
+      background-color: rgba($color: #9b2d30, $alpha: 0.1);
+    }
 
-		.update {
-			svg {
-				width: 20px;
-				height: auto;
-			}
-			&:hover {
-				animation: spin 0.3s infinite;
-			}
-		}
+    .like_count {
+      text-align: center;
+      min-width: 25px;
+    }
+  }
+  .post_actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--secondary-color);
+    height: 25px;
 
-		.delete {
-			&:hover {
-				animation: spin 0.3s infinite;
-			}
-		}
-	}
+    .update {
+      svg {
+        width: 20px;
+        height: auto;
+      }
+      &:hover {
+        animation: spin 0.3s infinite;
+      }
+    }
+
+    .delete {
+      &:hover {
+        animation: spin 0.3s infinite;
+      }
+    }
+  }
 }
 
 @keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
+  0% {
+    transform: rotate(0deg);
+  }
 
-	20% {
-		transform: rotate(-2deg);
-	}
+  20% {
+    transform: rotate(-2deg);
+  }
 
-	50% {
-		transform: rotate(0deg);
-	}
+  50% {
+    transform: rotate(0deg);
+  }
 
-	80% {
-		transform: rotate(2deg);
-	}
+  80% {
+    transform: rotate(2deg);
+  }
 
-	100% {
-		transform: rotate(0deg);
-	}
+  100% {
+    transform: rotate(0deg);
+  }
 }

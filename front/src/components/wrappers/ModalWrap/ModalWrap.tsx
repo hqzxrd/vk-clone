@@ -8,7 +8,8 @@ interface props extends IChildren {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const ModalWrap: FC<props> = ({isOpen, setIsOpen ,children}) => {
+const ModalWrap: FC<props> = ({isOpen, setIsOpen, children}) => {
+    
     const ref = useRef<HTMLDivElement>(null)
 
     const close = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => { 
