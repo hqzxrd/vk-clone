@@ -1,39 +1,43 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,600;1,400&display=swap");
 
 :root {
-    --primary-border-radius: 12px;
-    --main-width: 1000px;
-    --center-width: 830px;
+  --primary-border-radius: 12px;
+  --main-width: 1000px;
+  --center-width: 830px;
 }
 
 html,
 body,
 #root {
-    height: 100%;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-    font-family: "Rubik", sans-serif;
-    transition: 0.3s;
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  font-family: "Rubik", sans-serif;
+  transition: 0.3s;
 }
 
 input,
 button {
-    all: unset;
+  all: unset;
 }
 
 textarea {
-    outline: none;
-    font-family: "Rubik", sans-serif;
-    box-sizing: border-box;
+  outline: none;
+  font-family: "Rubik", sans-serif;
+  box-sizing: border-box;
 }
 
 a {
-    color: var(--primary-color);
-    text-decoration: none;
+  color: var(--primary-color);
+  text-decoration: none;
 }
 
 h5 {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.go2344853693 {
+  background: var(--primary-button) !important;
 }

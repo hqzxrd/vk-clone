@@ -6,6 +6,7 @@ import styles from "./About.module.scss"
 import { useParams } from "react-router-dom"
 import AdditionalInfo from "../AdditionalInfo/AdditionalInfo"
 import OpenModalWrap from "@/components/wrappers/OpenModalWrap/OpenModalWrap"
+import { CheckmarkIcon } from "react-hot-toast"
 
 const About = () => {
   const { userId } = useParams()
@@ -20,7 +21,9 @@ const About = () => {
     <div className={styles.about}>
       <div className={styles.about_header}>
         <div className={styles.name}>
-          {profile.name} {profile.surname}
+          <span>{profile.name} </span>
+          <span>{profile.surname} </span>
+          <span>{profile.checkMark && <CheckmarkIcon />}</span>
         </div>
         <div className={styles.status}>{profile?.status}</div>
         <OpenModalWrap
