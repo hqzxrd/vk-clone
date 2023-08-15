@@ -37,7 +37,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
   const { userId } = useParams()
   const { user } = useAuth()
 
-  const { comments } = useComments(post.id, `?post=${post.id}`, commentsIsHide)
+  const { comments } = useComments(post.id, commentsIsHide)
   const { day, month, year, time } = useDate(post.createDate)
   const queryClient = useQueryClient()
 

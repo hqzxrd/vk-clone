@@ -11,7 +11,6 @@ interface props {
 
 const Slider: FC<props> = ({ photos, currentSlide }) => {
   const [slide, setSlide] = useState<number>(currentSlide ? currentSlide : 0)
-  console.log(slide)
 
   const minus = () => {
     setSlide((prev) => (prev - 1 >= 0 ? prev - 1 : prev))
