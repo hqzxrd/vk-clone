@@ -29,12 +29,12 @@ export class UserController {
   }
 
   @UsePipes(new ValidationPipe({transform: true}))
-  @Get(':id/friends')
+  @Get(':key/friends')
   async getFriends(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('key') key: string,
     @Query() {count, page} : PaginationQueryDto
   ) {
-    return this.userService.getFriends(id, page, count)
+    return this.userService.getFriends(key, page, count)
   }
 
   @UsePipes(new ValidationPipe({transform: true}))

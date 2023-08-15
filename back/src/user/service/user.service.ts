@@ -149,13 +149,18 @@ export class UserService {
     await this.userRepository.save(user)
   }
 
-  async getFriends(userId: number, page: number, count: number) {
+  async getFriends(key: string, page: number, count: number) {
+      const userKey = getUserKey(key)
+      const findOptions = {
+        [(typeof userKey === 'number') ? 'id' : 'nickname']: userKey
+      }
+
     const data: any = await this.userRepository.createQueryBuilder('user')
           .select('user.id')
           .loadRelationCountAndMap('user.countFriends', 'user.friends')
-          .where("user.id = :id", { id: userId })
+          .where("user. = :id",  findOptions)
+          .where((typeof userKey === 'number') ? 'user.id = :id' : 'user.nickname = :nickname',  findOptions)
           .getOne()
-
     if(!data) throw new BadRequestException(USER_NOT_FOUND)
 
 
@@ -169,7 +174,7 @@ export class UserService {
             OR (F."usersId_2" = $1 AND F."usersId_1" = U.id )
             OFFSET $2 LIMIT $3
           ); `,
-      [userId, page * count - count, count],
+      [data.id, page * count - count, count],
     );
 
     return [friends, data.countFriends]
