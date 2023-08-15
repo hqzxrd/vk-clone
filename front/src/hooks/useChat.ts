@@ -96,8 +96,6 @@ export const useChat = () => {
       "find chat by user key event",
       { userKey: returnStringOrNubmer(userId!) },
       (res: IChatByUserId) => {
-        console.log(returnStringOrNubmer(userId!), res)
-
         setChatInfo(res)
       }
     )

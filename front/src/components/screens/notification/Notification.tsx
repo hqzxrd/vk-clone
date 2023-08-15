@@ -33,8 +33,6 @@ const notification: {
   ),
 
   comment: (notif: INotificationDto) => {
-    console.log(notif)
-
     const { day, month, year, time } = date(notif.comment!.post.createDate)
     return (
       <div className={styles.info}>

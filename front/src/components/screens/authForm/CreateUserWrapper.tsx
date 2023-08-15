@@ -1,102 +1,100 @@
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import RegisterCodeForm from './RegisterCodeForm'
-import RegisterEmailForm from './RegisterEmailForm'
-import RegisterInfoForm from './RegisterInfoForm'
-import RegisterPasswordForm from './RegisterPasswordForm'
-import { IRegisterFields } from './auth.interface'
+import { Navigate, useLocation, useNavigate } from "react-router-dom"
+import RegisterCodeForm from "./RegisterCodeForm"
+import RegisterEmailForm from "./RegisterEmailForm"
+import RegisterInfoForm from "./RegisterInfoForm"
+import RegisterPasswordForm from "./RegisterPasswordForm"
+import { IRegisterFields } from "./auth.interface"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
 import {
-	FormState,
-	UseFormHandleSubmit,
-	UseFormRegister,
-	UseFormWatch,
-	useForm,
-} from 'react-hook-form'
-import { useAuth } from '@/hooks/useAuth'
+  FormState,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormWatch,
+  useForm,
+} from "react-hook-form"
+import { useAuth } from "@/hooks/useAuth"
 
 interface IPages {
-	[page: string]: (
-		reg: UseFormRegister<IRegisterFields>,
-		handleSubmit: UseFormHandleSubmit<IRegisterFields>,
-		formState: FormState<IRegisterFields>,
-		watch: UseFormWatch<IRegisterFields>
-	) => JSX.Element
+  [page: string]: (
+    reg: UseFormRegister<IRegisterFields>,
+    handleSubmit: UseFormHandleSubmit<IRegisterFields>,
+    formState: FormState<IRegisterFields>,
+    watch: UseFormWatch<IRegisterFields>
+  ) => JSX.Element
 }
 
 const pages: IPages = {
-	'#email': (reg, handleSubmit, formState) => (
-		<RegisterEmailForm
-			reg={reg}
-			handleSubmit={handleSubmit}
-			formState={formState}
-		/>
-	),
+  "#email": (reg, handleSubmit, formState) => (
+    <RegisterEmailForm
+      reg={reg}
+      handleSubmit={handleSubmit}
+      formState={formState}
+    />
+  ),
 
-	'#code': (reg, handleSubmit, formState) => (
-		<RegisterCodeForm
-			reg={reg}
-			handleSubmit={handleSubmit}
-			formState={formState}
-		/>
-	),
+  "#code": (reg, handleSubmit, formState) => (
+    <RegisterCodeForm
+      reg={reg}
+      handleSubmit={handleSubmit}
+      formState={formState}
+    />
+  ),
 
-	'#password': (reg, handleSubmit, formState, watch) => (
-		<RegisterPasswordForm
-			reg={reg}
-			handleSubmit={handleSubmit}
-			formState={formState}
-			watch={watch}
-		/>
-	),
+  "#password": (reg, handleSubmit, formState, watch) => (
+    <RegisterPasswordForm
+      reg={reg}
+      handleSubmit={handleSubmit}
+      formState={formState}
+      watch={watch}
+    />
+  ),
 
-	'#info': (reg, handleSubmit, formState) => (
-		<RegisterInfoForm
-			reg={reg}
-			handleSubmit={handleSubmit}
-			formState={formState}
-		/>
-	),
+  "#info": (reg, handleSubmit, formState) => (
+    <RegisterInfoForm
+      reg={reg}
+      handleSubmit={handleSubmit}
+      formState={formState}
+    />
+  ),
 }
 
 const CreateUserWrapper = () => {
-	const nav = useNavigate()
-	const { hash } = useLocation()
-	const [state, setState] = useState<string>(``)
-	const { isAuth } = useAuth()
+  const nav = useNavigate()
+  const { hash } = useLocation()
+  const [state, setState] = useState<string>(``)
+  const { isAuth } = useAuth()
 
-	useEffect(() => {
-		console.log(hash);
+  useEffect(() => {
+    if (
+      hash === `#email` ||
+      hash === `#code` ||
+      hash === `#password` ||
+      hash === `#info`
+    )
+      setState(hash)
+  }, [hash])
 
-		if (
-			hash === `#email` ||
-			hash === `#code` ||
-			hash === `#password` ||
-			hash === `#info`
-		)
-			setState(hash)
-	}, [hash])
+  useEffect(() => {
+    nav(`/register#email`, { replace: true })
+  }, [])
 
-	useEffect(() => {
-		nav(`/register#email`, { replace: true })
-	}, [])
+  const {
+    register: reg,
+    handleSubmit,
+    formState,
+    watch,
+  } = useForm<IRegisterFields>({
+    mode: `onChange`,
+  })
 
-	const {
-		register: reg,
-		handleSubmit,
-		formState,
-		watch,
-	} = useForm<IRegisterFields>({
-		mode: `onChange`,
-	})
+  if (!state) {
+    return <Navigate to="/register#email" />
+  }
 
-	if (!state) {
-		return < Navigate to='/register#email' />
-	}
+  if (isAuth) return <Navigate to="/newsline" />
 
-	if (isAuth) return <Navigate to='/newsline' />
-
-	return pages[state](reg, handleSubmit, formState, watch)
+  return pages[state](reg, handleSubmit, formState, watch)
 }
 
 export default CreateUserWrapper
