@@ -9,18 +9,17 @@ import { useProfile } from '@/hooks/useProfile'
 
 import styles from './Profile.module.scss'
 import { useParams } from 'react-router-dom'
-import UserNotFound from '../errors/UserNotFound/UserNotFound'
+
 
 const Profile = () => {
 	const { user } = useAuth()
-	const { isLoading, profile } = useProfile()
+	const { profile } = useProfile()
 	const { userId } = useParams()
 	const { posts } = usePosts(`?user=${userId}`)
 
-	if (isLoading) return null
 
 	if (!profile || !posts) {
-		return <UserNotFound />
+		return null
 	}
 
 	return (

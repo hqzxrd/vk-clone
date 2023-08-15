@@ -1,23 +1,29 @@
-import AvatarMini from '@/components/ui/AvatarMini/AvatarMini'
+import AvatarMini from "@/components/ui/AvatarMini/AvatarMini"
 
-import { useProfile } from '@/hooks/useProfile'
+import { useProfile } from "@/hooks/useProfile"
 
-import styles from './Avatar.module.scss'
+import styles from "./Avatar.module.scss"
 
 const Avatar = () => {
-	const { profile } = useProfile()
+  const { profile } = useProfile()
 
-	if (!profile) {
-		return <></>
-	}
+  if (!profile) {
+    return <></>
+  }
 
-	return (
-		<div className={styles.avatar}>
-			<div className={styles.avatar_img}>
-				<AvatarMini user={profile} width={250} height={250} isLink={false} />
-			</div>
-		</div>
-	)
+  return (
+    <div className={styles.avatar}>
+      <div className={styles.avatar_img}>
+        <AvatarMini
+          user={profile}
+          width={250}
+          height={250}
+          isLink={false}
+          isOpen={true}
+        />
+      </div>
+    </div>
+  )
 }
 
 export default Avatar

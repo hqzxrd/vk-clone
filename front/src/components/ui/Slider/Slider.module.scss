@@ -1,0 +1,57 @@
+.slider {
+  display: flex;
+  justify-content: space-around;
+
+  .button {
+    color: gray;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    width: 10%;
+    height: 100%;
+    cursor: pointer;
+    &:hover {
+      transition: 0.2s ease;
+      color: whitesmoke;
+    }
+
+    > div {
+      > svg {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+  .left {
+    justify-self: flex-start;
+    left: 0;
+  }
+
+  .right {
+    display: flex;
+    justify-content: flex-end;
+    right: 0;
+    > div {
+      > svg {
+        transform: rotateY(180deg);
+      }
+    }
+  }
+
+  .pic {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 80vw;
+    width: fit-content;
+    height: fit-content;
+
+    > img {
+      max-width: 100%;
+      max-height: 95vh;
+      object-fit: contain;
+    }
+  }
+}
