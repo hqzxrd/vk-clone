@@ -58,7 +58,7 @@ export class CommentService {
     const authorCommentId = comment.author.id
     if(!(authorCommentId === userId || userId === postAuthorId)) throw new ForbiddenException()
 
-    this.commentRepository.remove(comment)
+    await this.commentRepository.remove(comment)
   }
 
   async findOne(id: number, userId?: number) {
