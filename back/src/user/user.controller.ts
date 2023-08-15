@@ -23,9 +23,14 @@ export class UserController {
     return this.userService.profileByNicknameOrId(key, userId)
   }
 
+  @UsePipes(new ValidationPipe({transform: true}))
+  @AccessJwtGuard()
   @Get()
-  getAll() {
-    return this.userService.getAll()
+  getAll(
+    @User('id') id: number,
+    @Query() {count, page} : PaginationQueryDto
+  ) {
+    return this.userService.getAll(id, page, count)
   }
 
   @UsePipes(new ValidationPipe({transform: true}))
