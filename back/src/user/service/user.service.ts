@@ -280,5 +280,11 @@ export class UserService {
     return await this.userRepository.save({...user, password: hashPassword})
   }
 
+  async setCode(id: number, code: number | null) {
+    const user = await this.byId(id)
+    if(!user) throw new BadRequestException(USER_NOT_FOUND)
+    user.code = code
+    await this.userRepository.save(user)
+  }
   
 }
