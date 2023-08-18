@@ -67,6 +67,7 @@ export class UserService {
     const profileUser = await this.userRepository.createQueryBuilder('user')
           .select(selectUser)
           .loadRelationCountAndMap('user.countFriends', 'user.friends')
+          .loadRelationCountAndMap('user.countPosts', 'user.posts')
           .loadRelationCountAndMap('user.countIncomingRequests', 'user.incomingRequests')
           .leftJoin('user.friends', 'friends')
           .addSelect('friends.id')
