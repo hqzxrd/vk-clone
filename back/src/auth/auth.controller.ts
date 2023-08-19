@@ -11,6 +11,8 @@ import { CookieSerializeOptions } from '@fastify/cookie';
 import { CodeVerifDto } from './dto/code-verif.dto';
 import { AccessJwtGuard } from './decorators/access-jwt.decorator';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { EmailDto } from './dto/email.dto';
+import { CodeVerifPasswordDto } from './dto/code-verif-password.dto';
 
 @UsePipes(new ValidationPipe())
 @Controller('auth')
@@ -87,11 +89,25 @@ export class AuthController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @AccessJwtGuard()
-  @Post('changePassword')
+  @Post('password/change')
   changePassword(
     @User('id') userId: number,
     @Body() changePasswordDto: ChangePasswordDto
   ) {
     return this.authService.changePassword(userId, changePasswordDto)
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('password/reset')
+  resetPassword(
+    @Body() {email}: EmailDto
+  ) {
+    return this.authService.resetPassword(email)
+  }
+  @Post('code/password')
+  codeVerificationForResetPassword(
+    @Body() codeVerifPasswordDto: CodeVerifPasswordDto
+  ) {
+    return this.authService.codeVerificationForResetPassword(codeVerifPasswordDto)
   }
 }

@@ -10,6 +10,8 @@ import { MailService } from 'src/mail/mail.service';
 import { generateCode } from 'src/utils/gencode';
 import { ConfirmationService } from './confirmation.service';
 import { ChangePasswordDto } from '../dto/change-password.dto';
+import { CodeVerifPasswordDto } from '../dto/code-verif-password.dto';
+import { INCORRECT_CODE } from 'src/user/constants/user.error.constants';
 
 @Injectable()
 export class AuthService {
@@ -104,5 +106,23 @@ export class AuthService {
     const salt = await genSalt(8)
     const hashPassword = await hash(newPassword, salt)
     await this.userService.setPassword(userId, hashPassword)
+  }
+
+  async codeVerificationForResetPassword({email, code, password}: CodeVerifPasswordDto) {
+    const user = await this.userService.byEmail(email)
+    if(!user) throw new BadRequestException(USER_NOT_FOUND)
+    if(code !== user.code) throw new BadRequestException(INCORRECT_CODE)
+    await this.userService.setCode(user.id, null)
+    const salt = await genSalt(8)
+    const hashPassword = await hash(password, salt)
+    await this.userService.setPassword(user.id, hashPassword)
+  }
+
+  async resetPassword(email: string) {
+    const user = await this.userService.byEmail(email)
+    if(!user) throw new BadRequestException(USER_NOT_FOUND)
+    const code = generateCode()
+    await this.userService.setCode(user.id, code)
+    await this.mailService.sendCode(email, code)
   }
 }

@@ -67,6 +67,7 @@ export class UserService {
     const profileUser = await this.userRepository.createQueryBuilder('user')
           .select(selectUser)
           .loadRelationCountAndMap('user.countFriends', 'user.friends')
+          .loadRelationCountAndMap('user.countPosts', 'user.posts')
           .loadRelationCountAndMap('user.countIncomingRequests', 'user.incomingRequests')
           .leftJoin('user.friends', 'friends')
           .addSelect('friends.id')
@@ -109,11 +110,34 @@ export class UserService {
   }
 
 
-  async getAll() {
-    const users = await this.userRepository.find({
-      select: this.returnBaseKeyUser
-    })
-    return users
+  async getAll(id: number, page: number, count: number) {
+    const selectUser = Object.keys(this.returnBaseKeyUser).map(key => `user.${key}`);
+    const profileUsers = await this.userRepository.createQueryBuilder('user')
+          .select(selectUser)
+          .loadRelationCountAndMap('user.countFriends', 'user.friends')
+          .loadRelationCountAndMap('user.countIncomingRequests', 'user.incomingRequests')
+          .leftJoin('user.friends', 'friends')
+          .addSelect('friends.id')
+          .where(id ? 'user.id != :id': '', {id})
+          .take(count)
+          .skip(page * count - count)
+          .getManyAndCount()
+        
+          let profiles = []
+          for(const profile of profileUsers[0]) {
+            let typeRelationship: Relationship = Relationship.NONE
+            const user = profile.friends.find(friend => friend.id === id)
+            if(user) typeRelationship = Relationship.FRIEND
+            else {
+              const typeRequest = await this.friendRequestService.getTypeRequest(id, profile.id)
+              typeRelationship = typeRequest
+            }
+            delete profile.friends
+            profiles.push({...profile, typeRelationship})
+          }
+
+          return [profiles, profileUsers[1]]
+    
   }
 
   async update(id: number, dto: UpdateUserDto, file?: MulterFile) {
@@ -149,13 +173,18 @@ export class UserService {
     await this.userRepository.save(user)
   }
 
-  async getFriends(userId: number, page: number, count: number) {
+  async getFriends(key: string, page: number, count: number) {
+      const userKey = getUserKey(key)
+      const findOptions = {
+        [(typeof userKey === 'number') ? 'id' : 'nickname']: userKey
+      }
+
     const data: any = await this.userRepository.createQueryBuilder('user')
           .select('user.id')
           .loadRelationCountAndMap('user.countFriends', 'user.friends')
-          .where("user.id = :id", { id: userId })
+          .where("user. = :id",  findOptions)
+          .where((typeof userKey === 'number') ? 'user.id = :id' : 'user.nickname = :nickname',  findOptions)
           .getOne()
-
     if(!data) throw new BadRequestException(USER_NOT_FOUND)
 
 
@@ -169,7 +198,7 @@ export class UserService {
             OR (F."usersId_2" = $1 AND F."usersId_1" = U.id )
             OFFSET $2 LIMIT $3
           ); `,
-      [userId, page * count - count, count],
+      [data.id, page * count - count, count],
     );
 
     return [friends, data.countFriends]
@@ -251,5 +280,11 @@ export class UserService {
     return await this.userRepository.save({...user, password: hashPassword})
   }
 
+  async setCode(id: number, code: number | null) {
+    const user = await this.byId(id)
+    if(!user) throw new BadRequestException(USER_NOT_FOUND)
+    user.code = code
+    await this.userRepository.save(user)
+  }
   
 }
