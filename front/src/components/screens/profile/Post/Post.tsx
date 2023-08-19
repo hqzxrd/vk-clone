@@ -51,7 +51,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
   const deletePost = async () => {
     const res = await PostService.detelePost(post.id)
     if (res?.status === 204) {
-      queryClient.invalidateQueries(`userPosts${userId}`)
+      queryClient.invalidateQueries([`userPosts`, userId])
       getNewsline && getNewsline()
     }
   }
