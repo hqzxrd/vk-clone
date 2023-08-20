@@ -1,10 +1,26 @@
 .header {
-	position: relative;
-	z-index: 3;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border-bottom: 1px solid var(--primary-border);
-	padding: 8.5px 10px;
-	background-color: var(--extra-background);
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--primary-border);
+  background-color: var(--extra-background);
+
+  > div {
+    padding: 0px 10px;
+  }
+
+  .linkBack {
+    width: 10%;
+    overflow: hidden;
+    padding: 12.5px 10px;
+    &:hover {
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.2) 50%,
+        transparent
+      );
+    }
+  }
 }
