@@ -1,29 +1,62 @@
 .peoples_item {
-	display: flex;
-	padding: 10px;
-	gap: 20px;
-	border-top: 1px solid var(--secondary-border);
+  display: flex;
+  padding: 10px;
+  gap: 20px;
+  border-top: 1px solid var(--secondary-border);
 
-	.info {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
+  .info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 
-		.status {
-			color: var(--secondary-color);
-		}
+    .name {
+      display: flex;
+      gap: 10px;
 
-		.actions {
-			display: flex;
-			gap: 10px;
-			.addOrDelete {
-				user-select: none;
-				cursor: pointer;
-			}
-		}
+      .checkMark {
+        display: flex;
+        align-items: center;
+        .checkMarkIcon {
+          background-color: var(--primary-button);
+          width: 16px;
+          height: 16px;
+          &::after {
+            bottom: 4px;
+            left: 4px;
+          }
+        }
+      }
 
-		> a {
-			width: fit-content;
-		}
-	}
+      .nickname {
+        font-size: 14px;
+        display: flex;
+        color: var(--secondary-color);
+        > svg {
+          width: 15px;
+        }
+      }
+    }
+
+    .status {
+      color: var(--secondary-color);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      color: var(--primary-button);
+      > div {
+        user-select: none;
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    > a {
+      width: fit-content;
+    }
+  }
 }
