@@ -6,7 +6,7 @@ import { DropboxService } from 'src/dropbox/dropbox.service';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { RegistrationDto } from 'src/auth/dto/registration.dto';
 import { MulterFile } from '@webundsoehne/nest-fastify-file-upload';
-import { USER_NOT_FOUND } from '../constants/user.error.constants';
+import { USER_NOT_FOUND, USER_WITH_NICKNAME_ALREADY_EXISTS } from '../constants/user.error.constants';
 import { FriendRequestType } from 'src/friend/friend-request.type.enum';
 import { FriendRequestService } from 'src/friend/service/friend-request.service';
 import { Relationship } from '../relationship.enum';
@@ -101,7 +101,7 @@ export class UserService {
   async create(dto: RegistrationDto) {
     const user = this.userRepository.create({...dto})
     const saveUser = await this.userRepository.save(user)
-    return this.update(saveUser.id, {nickname: `${saveUser.id}`})
+    return await this.update(saveUser.id, {nickname: `${saveUser.id}`})
   }
 
 
@@ -151,6 +151,13 @@ export class UserService {
       dto.avatar = url
     }
     
+    if(dto.nickname) {
+      
+      if(dto.nickname !== user.nickname) {
+         const userByNickname = await this.userRepository.findOneBy({nickname: dto.nickname})
+         if(userByNickname) throw new BadRequestException(USER_WITH_NICKNAME_ALREADY_EXISTS)
+      }
+    }
     const updatedUser = await this.userRepository.save({...user, ...dto})
     delete updatedUser.code
     delete updatedUser.updateDate
