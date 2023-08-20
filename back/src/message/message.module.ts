@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { MessageEntity } from './entities/message.entity';
 import { MessageStatusEntity } from './entities/message-status.entity';
 import { UserModule } from 'src/user/user.module';
+import { MessageStatusService } from './service/message-status.service';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { UserModule } from 'src/user/user.module';
     UserModule
   ],
   controllers: [MessageController],
-  providers: [MessageService],
-  exports: [MessageService]
+  providers: [MessageService, MessageStatusService],
+  exports: [MessageService, MessageStatusService]
 })
 export class MessageModule {}

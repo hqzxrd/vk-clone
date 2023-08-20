@@ -28,11 +28,12 @@ export class MessageService {
   }
 
   async getMessagesByChatId(chatId: number, page: number, count: number) {
+    
     const messages = await this.messageRepository.findAndCount({
       where: {
         chat: {id: chatId}
       },
-      relations: ['chat', 'chat.userA', 'chat.userB', 'author'],
+      relations: ['chat', 'chat.userA', 'chat.userB', 'author', 'statuses'],
       select: {
         author: {
           id: true,
@@ -41,11 +42,14 @@ export class MessageService {
           nickname: true,
           avatar: true
         },
+       statuses: {
+          isRead: true
+        },
         chat: {
           id: true,
           userA: {id: true},
           userB: {id: true}
-        }
+        },
       },
       take: count,
       skip: page * count - count,

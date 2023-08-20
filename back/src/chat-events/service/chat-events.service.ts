@@ -7,9 +7,10 @@ import { SendPrivateChatDto } from '../dto/send-private-message.dto';
 import { MessageService } from 'src/message/service/message.service';
 import { MessageType } from 'src/message/message.type.enum';
 import { MessageEntity } from 'src/message/entities/message.entity';
-import { RECEIVE_DELETE_MESSAGE_EVENT, RECEIVE_MESSAGE_EVENT, RECEIVE_UPDATE_MESSAGE_EVENT } from '../chat-events.constants';
+import { RECEIVE_DELETE_MESSAGE_EVENT, RECEIVE_MESSAGE_EVENT, RECEIVE_READ_MESSAGE_EVENT, RECEIVE_UPDATE_MESSAGE_EVENT } from '../chat-events.constants';
 import { SendUpdateMessageDto } from '../dto/send-update-message.dto';
 import { GetMessagesDto } from '../dto/get-messages.dto';
+import { MessageStatusService } from 'src/message/service/message-status.service';
 
 @Injectable()
 export class ChatEventsService {
@@ -17,6 +18,7 @@ export class ChatEventsService {
       private readonly userService: UserService,
       private readonly chatService: ChatService,
       private readonly messageService: MessageService,
+      private readonly messageStatusService: MessageStatusService,
       private readonly logger: Logger,
    ) {}
    
@@ -41,9 +43,11 @@ export class ChatEventsService {
          columnId: chat.id, 
          text: dto.text, 
          userId: client.user.id
-      }) 
-      await this.sendPrivateMessage(RECEIVE_MESSAGE_EVENT, user.id, message)
-      return message
+      })
+      const status = await this.messageStatusService.create(message.id, user.id)
+
+      await this.sendPrivateMessage(RECEIVE_MESSAGE_EVENT, user.id, {...message, status})
+      return {...message, status}
    }
 
    async handleUpdateMessage(client: SocketUser, {id, text}: SendUpdateMessageDto) {
@@ -62,6 +66,18 @@ export class ChatEventsService {
       const [toUser] = users.filter(user => user.id !== userId)
       await this.sendPrivateMessage(RECEIVE_DELETE_MESSAGE_EVENT, toUser.id, message)
       return message
+   }
+
+   async handleReadMessage(userId: number, messageId: number) {
+      const message = await this.messageService.findOne(messageId)
+      if(!message) throw new BadRequestException()
+      const status = await this.messageStatusService.setRead(messageId, userId)
+      if(!status) throw new BadRequestException()
+      await this.messageStatusService.setRedAllOld(userId, message.chat.id)
+      const users = [message.chat.userA, message.chat.userB]
+      const [toUser] = users.filter(user => user.id !== userId)
+      await this.sendPrivateMessage(RECEIVE_READ_MESSAGE_EVENT, toUser.id, status)
+      return status
    }
 
    async handleGetMessages(userOneId: number, { userKey, page, count }: GetMessagesDto) {
@@ -102,7 +118,7 @@ export class ChatEventsService {
       return await this.chatService.getChats(userId, page, count)
    }
 
-   private async sendPrivateMessage(event: string, toUserId: number, message: MessageEntity) {
+   private async sendPrivateMessage(event: string, toUserId: number, message: MessageEntity | unknown) {
       const socketIds = await this.userService.getSocketIds(toUserId)
       socketIds.forEach(socketId => {
          this.server.to(socketId).emit(event, message) 

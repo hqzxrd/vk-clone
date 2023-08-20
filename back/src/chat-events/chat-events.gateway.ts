@@ -1,6 +1,6 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket,  } from '@nestjs/websockets';
 import { ChatEventsService } from './service/chat-events.service';
-import { DELETE_MESSAGE_EVENT, GET_MESSAGES_CHAT_EVENT, PRIVATE_CHAT_EVENT, UPDATE_MESSAGE_EVENT, GET_ALL_CHAT_EVENT, FIND_CHAT_BY_USER_KEY_EVENT } from './chat-events.constants';
+import { DELETE_MESSAGE_EVENT, GET_MESSAGES_CHAT_EVENT, PRIVATE_CHAT_EVENT, UPDATE_MESSAGE_EVENT, GET_ALL_CHAT_EVENT, FIND_CHAT_BY_USER_KEY_EVENT, READ_MESSAGE_EVENT } from './chat-events.constants';
 import { Server } from 'socket.io'
 import { UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
 import { SocketUser } from 'src/adapter/auth.adapter';
@@ -55,6 +55,14 @@ export class ChatEventsGateway {
     @MessageBody('id') messageId: number
   ) {
     return this.chatEventsService.handleDeleteMessage(socket, messageId)
+  }
+
+  @SubscribeMessage(READ_MESSAGE_EVENT)
+  handleReadMessage(
+    @ConnectedSocket() socket: SocketUser,
+    @MessageBody('id') messageId: number
+  ) {
+    return this.chatEventsService.handleReadMessage(socket.user.id, messageId)
   }
 
   // * get messages by chat id
