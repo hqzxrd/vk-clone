@@ -46,7 +46,7 @@ export class ChatEventsService {
       })
       const status = await this.messageStatusService.create(message.id, user.id)
 
-      await this.sendPrivateMessage(RECEIVE_MESSAGE_EVENT, user.id, {...message, status})
+      await this.sendPrivateMessage(RECEIVE_MESSAGE_EVENT, user.id, {...message, statuses: [status]})
       return {...message, status}
    }
 
