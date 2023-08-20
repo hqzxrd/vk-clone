@@ -20,7 +20,7 @@ export class UserController {
     @Param('key') key: string,
     @User('id') userId: number
   ) {
-    return this.userService.profileByNicknameOrId(key, userId)
+    return this.userService.profileByUserKey(key, userId)
   }
 
   @UsePipes(new ValidationPipe({transform: true}))

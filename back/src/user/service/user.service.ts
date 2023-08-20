@@ -62,8 +62,13 @@ export class UserService {
     return user
   }
 
-  async profileById(id: number, userId?: number) {
-    const selectUser = Object.keys(this.returnBaseKeyUser).map(key => `user.${key}`);
+  async profileByUserKey(key: string, userId?: number) {
+      const userKey = getUserKey(key)
+      const findOptions = {
+        [(typeof userKey === 'number') ? 'id' : 'nickname']: userKey
+      }
+      const selectUser = Object.keys(this.returnBaseKeyUser).map(key => `user.${key}`);
+
     const profileUser = await this.userRepository.createQueryBuilder('user')
           .select(selectUser)
           .loadRelationCountAndMap('user.countFriends', 'user.friends')
@@ -71,17 +76,18 @@ export class UserService {
           .loadRelationCountAndMap('user.countIncomingRequests', 'user.incomingRequests')
           .leftJoin('user.friends', 'friends')
           .addSelect('friends.id')
-          .where('user.id = :id', { id })
+          .where((typeof userKey === 'number') ? 'user.id = :id' : 'user.nickname = :nickname',  findOptions)
           .getOne()
-  
+    
+      if(!profileUser) throw new NotFoundException()
     let typeRelationship: Relationship = Relationship.NONE
 
-    if(userId && userId !== id) {
+    if(userId && userId !== profileUser.id) {
       const user = profileUser.friends.find(friend => friend.id === userId)
       if(user) {
         typeRelationship = Relationship.FRIEND
       }else {
-        const typeRequest = await this.friendRequestService.getTypeRequest(id, userId)
+        const typeRequest = await this.friendRequestService.getTypeRequest(profileUser.id, userId)
         typeRelationship = typeRequest
       }
     }
@@ -89,18 +95,7 @@ export class UserService {
     delete profileUser.friends
 
     return {...profileUser, typeRelationship}
-  }
 
-  async profileByNicknameOrId(key: string, userId?: number) {
-      const userKey = getUserKey(key)
-      const findOptions = {
-        [(typeof userKey === 'number') ? 'id' : 'nickname']: userKey
-      }
-    const user = await this.userRepository.findOne({
-      where: findOptions
-    })
-    if(!user) throw new NotFoundException()
-    return this.profileById(user.id, userId)
   }
 
   async create(dto: RegistrationDto) {
