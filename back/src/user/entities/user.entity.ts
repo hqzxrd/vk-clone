@@ -43,7 +43,7 @@ export class UserEntity extends AbstractEntity {
     @Column({nullable: true})
     status: string
 
-    @Column({nullable: true})
+    @Column({nullable: true, unique: true})
     nickname: string
 
     @Column({nullable: true, unique: true})
