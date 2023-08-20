@@ -31,7 +31,14 @@ const App = () => {
           </AuthProvider>
         }
       />
-      <Route path="/" element={<Home />} />
+      <Route
+        path="/"
+        element={
+          <AuthProvider>
+            <News />
+          </AuthProvider>
+        }
+      />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/register" element={<CreateUserWrapper />} />
       <Route
@@ -51,14 +58,14 @@ const App = () => {
           </AuthProvider>
         }
       />
-      <Route
+      {/* <Route
         path="/newsline"
         element={
           <AuthProvider>
             <News />
           </AuthProvider>
         }
-      />
+      /> */}
       <Route
         path="/messanger"
         element={
