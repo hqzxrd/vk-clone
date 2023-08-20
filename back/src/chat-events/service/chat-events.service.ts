@@ -72,7 +72,6 @@ export class ChatEventsService {
       const message = await this.messageService.findOne(messageId)
       if(!message) throw new BadRequestException()
       const status = await this.messageStatusService.setRead(messageId, userId)
-      if(!status) throw new BadRequestException()
       await this.messageStatusService.setRedAllOld(userId, message.chat.id)
       const users = [message.chat.userA, message.chat.userB]
       const [toUser] = users.filter(user => user.id !== userId)
