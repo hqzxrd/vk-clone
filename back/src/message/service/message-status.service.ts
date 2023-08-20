@@ -26,14 +26,16 @@ export class MessageStatusService {
     }
     
     async setRedAllOld(userId: number, chatId: number) {
-        await this.messageStatusRepository.update(
+        const statuses = await this.messageStatusRepository.findBy(
             { 
                 author: {id: userId}, 
                 message: {chat: {id: chatId}}, 
                 isRead: false
-            }, 
-            {isRead: true}
+            }
         )
-       
+        for(const status of statuses) {
+            status.isRead = true
+        }
+        await this.messageStatusRepository.save(statuses)
     }
 }
