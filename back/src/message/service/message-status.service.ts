@@ -22,17 +22,31 @@ export class MessageStatusService {
                 message: {id: messageId}
             }
         })
+        if(status.isRead) return status
         return await this.messageStatusRepository.save({...status, isRead: true})
     }
     
     async setRedAllOld(userId: number, chatId: number) {
-        const statuses = await this.messageStatusRepository.findBy(
-            { 
+        const statuses = await this.messageStatusRepository.find({
+            where: { 
                 author: {id: userId}, 
                 message: {chat: {id: chatId}}, 
                 isRead: false
+            },
+            relations: {
+                author: true, message: true
+            },
+            select: {
+                id: true,
+                isRead: true,
+                author: {
+                    id: true
+                },
+                message: {
+                    id: true
+                }
             }
-        )
+        })
         for(const status of statuses) {
             status.isRead = true
         }
