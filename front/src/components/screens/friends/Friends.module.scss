@@ -1,47 +1,48 @@
 .friends_wrapper {
-	display: flex;
-	justify-content: center;
-	.friends {
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-		min-width: 500px;
-		background-color: var(--extra-background);
-		border: 1px solid var(--primary-border);
-		border-radius: var(--primary-border-radius);
-		padding: 20px;
-		.tabs {
-			display: flex;
-			gap: 10px;
-			.tabItem {
-				user-select: none;
-				cursor: pointer;
-				padding: 2px 15px;
-				border: 1px solid var(--primary-border);
-				border-radius: var(--primary-border-radius);
-				.tab {
-					display: flex;
-					gap: 5px;
-					align-items: center;
-				}
-			}
+  display: flex;
+  justify-content: center;
+  .friends {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 500px;
+    background-color: var(--extra-background);
+    border: 1px solid var(--primary-border);
+    border-radius: var(--primary-border-radius);
+    padding: 20px;
+    .tabs {
+      display: flex;
+      gap: 10px;
+      .tabItem {
+        user-select: none;
+        cursor: pointer;
+        padding: 2px 15px;
+        border: 1px solid var(--primary-border);
+        border-radius: var(--primary-border-radius);
+        .tab {
+          display: flex;
+          gap: 5px;
+          align-items: center;
+        }
+      }
 
-			.tabItem_active {
-				background-color: var(--main-color-hover);
-			}
-		}
-	}
+      .tabItem_active {
+        color: white;
+        background-color: var(--primary-button);
+      }
+    }
+  }
 }
 
 .notifCount {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 10px;
-	width: 14px;
-	height: 14px;
-	padding-right: 1px;
-	color: white;
-	background-color: var(--notif-count);
-	border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  width: 14px;
+  height: 14px;
+  padding-right: 1px;
+  color: white;
+  background-color: var(--notif-count);
+  border-radius: 50%;
 }

@@ -9,9 +9,9 @@ import OpenModalWrap from "@/components/wrappers/OpenModalWrap/OpenModalWrap"
 import { CheckmarkIcon } from "react-hot-toast"
 
 const About = () => {
-  const { userId } = useParams()
   const { profile } = useProfile()
-  const { posts } = usePosts(`?user=${userId}`)
+
+  console.log(profile)
 
   if (!profile) {
     return <></>
@@ -46,13 +46,13 @@ const About = () => {
         <div className={styles.userStats}>
           <AboutCount
             name="Друзей"
-            value={profile ? profile?.countFriends : 0}
+            value={profile ? profile.countFriends : 0}
           />
           <AboutCount
             name="Подписчиков"
-            value={profile ? profile?.countIncomingRequests : 0}
+            value={profile ? profile.countIncomingRequests : 0}
           />
-          <AboutCount name="Постов" value={posts ? posts[1] : 0} />
+          <AboutCount name="Постов" value={profile.countPosts} />
         </div>
       </div>
     </div>
