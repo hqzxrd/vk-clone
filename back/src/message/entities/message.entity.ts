@@ -20,6 +20,9 @@ export class MessageEntity extends AbstractEntity {
     @Column()
     text: string
 
+    @Column({default: false})
+    isChanged: boolean 
+
     @Column({
         enum: MessageType,
         type: 'enum'

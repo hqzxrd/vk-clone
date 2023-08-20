@@ -76,7 +76,7 @@ export class MessageService {
     if(!message) throw new NotFoundException()
     if(message.author.id !== userId) throw new ForbiddenException()
     
-    return await this.messageRepository.save({...message, text})
+    return await this.messageRepository.save({...message, text, isChanged: true})
   }
 
   async delete(id: number, userId: number) {
