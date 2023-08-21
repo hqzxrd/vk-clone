@@ -17,6 +17,8 @@ export const useChat = () => {
   const [chatInfo, setChatInfo] = useState<IChatByUserId>()
   const [messages, setMessages] = useState<IMessage[]>([])
   const { userId } = useParams()
+  const count = 50
+  console.log(messages)
 
   const sendMessage = (text: string) => {
     socket.emit(
@@ -45,7 +47,7 @@ export const useChat = () => {
       () => {
         socket.emit(
           "get messages chat event",
-          { userKey: userId! },
+          { userKey: userId!, count },
           (mes: [IMessage[], number]) => {
             setMessages(mes[0])
           }
@@ -58,8 +60,11 @@ export const useChat = () => {
     socket.emit("delete message event", {
       id,
     })
-
     setMessages((prev) => prev.filter((message) => message.id !== id))
+  }
+
+  const readMessage = (id: number) => {
+    socket.emit("read message event", { id })
   }
 
   useEffect(() => {
@@ -102,7 +107,7 @@ export const useChat = () => {
 
     socket.emit(
       "get messages chat event",
-      { userKey: userId! },
+      { userKey: userId!, count },
       (mes: [IMessage[], number]) => {
         setMessages(mes[0])
       }
@@ -118,10 +123,17 @@ export const useChat = () => {
       )
     })
 
-    socket.on("receive delete message event", (mes: IMessage) => {
-      console.log(messages, mes)
+    socket.on("receive read message event", (data) => {
+      setMessages((prev) => {
+        return prev.map((item) => {
+          const statuses = [{ isRead: true }]
+          return item.statuses[0].isRead ? item : { ...item, statuses }
+        })
+      })
+    })
 
-      setMessages((prev) => prev.filter((message) => message.id !== mes.id)) //FIXXXXX
+    socket.on("receive delete message event", (mes: IMessage) => {
+      setMessages((prev) => prev.filter((message) => message.id !== mes.id))
 
       socket.emit(
         "get all chat event",
@@ -137,6 +149,8 @@ export const useChat = () => {
       socket.off("connect_error")
       socket.off("disconnect")
       socket.off(`receive message event`)
+      socket.off(`receive delete message event`)
+      socket.off(`receive read message event`)
       socket.disconnect()
     }
   }, [])
@@ -156,5 +170,6 @@ export const useChat = () => {
     updateMessage,
     deleteMessage,
     getMessageById,
+    readMessage,
   }
 }

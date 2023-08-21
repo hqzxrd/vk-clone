@@ -3,7 +3,7 @@ import UpdatePost from "./UpdatePost/UpdatePost"
 import { PostService } from "@/services/post/post.service"
 import { IPost } from "@/types/post.types"
 import cn from "classnames"
-import React, { FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useQueryClient } from "react-query"
 
 import AvatarMini from "@/components/ui/AvatarMini/AvatarMini"
@@ -15,7 +15,6 @@ import { FilesUrl } from "@/config/api.config"
 
 import { useAuth } from "@/hooks/useAuth"
 import { useComments } from "@/hooks/useComments"
-import { useDate } from "@/hooks/useDate"
 
 import { userLink } from "@/utils/user-link"
 
@@ -23,6 +22,7 @@ import styles from "./Post.module.scss"
 import { NavLink, useParams } from "react-router-dom"
 import OpenModalWrap from "@/components/wrappers/OpenModalWrap/OpenModalWrap"
 import Slider from "@/components/ui/Slider/Slider"
+import { date } from "@/utils/date"
 
 interface props {
   post: IPost
@@ -38,7 +38,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
   const { user } = useAuth()
 
   const { comments } = useComments(post.id, commentsIsHide)
-  const { day, month, year, time } = useDate(post.createDate)
+  const { fullDateWithoutYear, shortDescription } = date(post.createDate)
   const queryClient = useQueryClient()
 
   const likePost = async () => {
@@ -82,7 +82,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
             {post.author.name} {post.author.surname}
           </NavLink>
           <div className={styles.date}>
-            {day}.{month}.{year} в {time}
+            {shortDescription ? shortDescription : fullDateWithoutYear}
             {post.createDate !== post.updateDate ? ` (ред.)` : ``}
           </div>
         </div>
