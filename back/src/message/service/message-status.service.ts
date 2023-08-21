@@ -22,7 +22,7 @@ export class MessageStatusService {
                 message: {id: messageId}
             }
         })
-        if(status.isRead) return status
+        if(status.isRead) return 
         return await this.messageStatusRepository.save({...status, isRead: true})
     }
     
