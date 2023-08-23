@@ -102,6 +102,7 @@ export class ChatEventsService {
                   name: user.name,
                   surname: user.surname,
                   avatar: user.avatar,
+                  checkMark: user.checkMark
                }
             ]
          }

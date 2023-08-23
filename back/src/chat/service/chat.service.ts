@@ -75,6 +75,7 @@ export class ChatService {
       name: true,
       surname: true,
       avatar: true,
+      checkMark: true
     }
     const chatsAndCount = await this.chatRepository.findAndCount({
       where: [ {userA: {id: userId}}, {userB: {id: userId}} ],
