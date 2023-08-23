@@ -14,7 +14,7 @@ export class MessageEntity extends AbstractEntity {
     @ManyToOne(() => UserEntity, author => author.messages)
     author: UserEntity
 
-    @OneToMany(() => MessageStatusEntity, messageStatus => messageStatus.message)
+    @OneToMany(() => MessageStatusEntity, messageStatus => messageStatus.message, {cascade: true})
     statuses: MessageStatusEntity[]
 
     @Column()
