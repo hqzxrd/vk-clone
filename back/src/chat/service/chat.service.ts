@@ -83,8 +83,10 @@ export class ChatService {
         userB: true
       },
       select: {
+        id: true,
+        createDate: true,
         userA: selectUser,
-        userB: selectUser
+        userB: selectUser,
       },
       take: count,
       skip: page * count - count
@@ -96,10 +98,13 @@ export class ChatService {
       chats.push({
         id: chat.id, 
         message,
+        createDate: chat.createDate,
         users: [chat.userA, chat.userB],
       })
     }
-    const chatsSort = chats.sort((a, b) => a.message.createDate - b.message.createDate).reverse()
+    const chatsSort = chats.sort((a, b) => {
+      return (b.message ? b.message.createDate : b.createDate) - ( a.message ? a.message.createDate : a.createDate)
+    })
     return [chatsSort, chatsAndCount[1]] 
   }
 }
