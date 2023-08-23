@@ -1,14 +1,16 @@
 import { IMessage } from "@/types/messages.types"
 import cn from "classnames"
-import { FC, HTMLAttributes } from "react"
+import { FC, HTMLAttributes, useEffect } from "react"
 
 import PencilIcon from "@/components/ui/Icons/PencilIcon"
 
 import { useAuth } from "@/hooks/useAuth"
 
-import { date } from "@/utils/date"
+import { check, date } from "@/utils/date"
 
 import styles from "./Message.module.scss"
+import SendMark from "@/components/ui/Icons/Messanger/SendMark"
+import ReadMark from "@/components/ui/Icons/Messanger/ReadMark"
 
 interface props extends HTMLAttributes<HTMLDivElement> {
   message: IMessage
@@ -20,6 +22,15 @@ const Message: FC<props> = ({ message, activeMessage, ...rest }) => {
   const { time } = date(message.createDate)
 
   const isUserSend = user.id === message.author.id
+  const isRead = message.statuses[0].isRead
+
+  const returnStatesMessage = () => {
+    if (!isUserSend) return ``
+
+    if (isUserSend && isRead === true) return <ReadMark />
+
+    if (isUserSend && isRead === false) return <SendMark />
+  }
 
   return (
     <div
@@ -38,8 +49,12 @@ const Message: FC<props> = ({ message, activeMessage, ...rest }) => {
         }
       >
         {message.text}
-        <div className={styles.dateWrapper}>
+        <div className={styles.messageMeta}>
+          <div className={styles.isChanged}>
+            {message.isChanged ? `(ред.)` : null}
+          </div>
           <div className={styles.date}>{time}</div>
+          <div className={styles.status}>{returnStatesMessage()}</div>
         </div>
       </div>
     </div>
