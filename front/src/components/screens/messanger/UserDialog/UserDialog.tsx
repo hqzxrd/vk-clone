@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { useChat } from "@/hooks/useChat"
 
 import styles from "./UserDialog.module.scss"
+import { compareTwoStringDate, date } from "@/utils/date"
 
 const UserDialog = () => {
   const { user } = useAuth()
@@ -76,14 +77,32 @@ const UserDialog = () => {
           />
         )}
         <div className={styles.messages} ref={messagesBlockRef}>
-          {messages.map((mes) => {
+          {messages.map((mes, i) => {
+            const currentMesDate = mes.createDate
+            const nextMesDate = messages[i + 1]
+              ? messages[i + 1].createDate
+              : ``
+            const { diffHours, diffDays } = compareTwoStringDate(
+              currentMesDate,
+              nextMesDate
+            )
+
+            const { dayAndMonth } = date(currentMesDate)
+
             return (
-              <Message
-                onClick={() => changeMessageClickStatus(mes)}
-                activeMessage={activeMessage}
-                message={mes}
-                key={mes.id}
-              />
+              <>
+                <Message
+                  onClick={() => changeMessageClickStatus(mes)}
+                  activeMessage={activeMessage}
+                  message={mes}
+                  key={mes.id}
+                />
+                {diffDays >= 1 || i === messages.length - 1 ? (
+                  <div className={styles.space}>{dayAndMonth}</div>
+                ) : diffHours >= 1 && !mes.statuses[0].isRead ? (
+                  <div className={styles.space2} />
+                ) : null}
+              </>
             )
           })}
         </div>

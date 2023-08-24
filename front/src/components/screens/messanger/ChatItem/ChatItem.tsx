@@ -22,7 +22,6 @@ const ChatItem: FC<props> = ({ chat }) => {
   const { fullDateWithoutYear } = date(
     chat.message ? chat.message.createDate : chat.createDate
   )
-  console.log(chat)
 
   const [withUser] = chat.users.filter((u) => u.id !== user.id)
 
