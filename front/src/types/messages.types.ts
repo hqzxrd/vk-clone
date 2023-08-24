@@ -25,6 +25,7 @@ export interface IChatItem {
   id: number
   message: IMessage
   users: [IUserChatsInfo, IUserChatsInfo]
+  createDate: string
 }
 
 export interface IChatByUserId {

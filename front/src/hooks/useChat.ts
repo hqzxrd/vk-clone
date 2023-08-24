@@ -18,7 +18,6 @@ export const useChat = () => {
   const [messages, setMessages] = useState<IMessage[]>([])
   const { userId } = useParams()
   const count = 50
-  console.log(messages)
 
   const sendMessage = (text: string) => {
     socket.emit(
@@ -96,7 +95,7 @@ export const useChat = () => {
         setChats(mes[0])
       }
     )
-    userId!
+
     socket.emit(
       "find chat by user key event",
       { userKey: returnStringOrNubmer(userId!) },
@@ -109,6 +108,7 @@ export const useChat = () => {
       "get messages chat event",
       { userKey: userId!, count },
       (mes: [IMessage[], number]) => {
+        console.log(mes)
         setMessages(mes[0])
       }
     )

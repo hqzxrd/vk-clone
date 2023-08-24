@@ -19,10 +19,12 @@ const ChatItem: FC<props> = ({ chat }) => {
   const nav = useNavigate()
   const { user } = useAuth()
 
-  // const { time, day, month, year } = date(chat.message.createDate)
+  const { fullDateWithoutYear } = date(
+    chat.message ? chat.message.createDate : chat.createDate
+  )
+  console.log(chat)
 
   const [withUser] = chat.users.filter((u) => u.id !== user.id)
-  console.log(withUser)
 
   return (
     <div
@@ -37,9 +39,7 @@ const ChatItem: FC<props> = ({ chat }) => {
           <div className={styles.name}>
             {withUser.name} {withUser.surname}
           </div>
-          <div className={styles.lastTime}>
-            {/* {time} {day}.{month}.{year} */}
-          </div>
+          <div className={styles.lastTime}>{fullDateWithoutYear}</div>
         </div>
         <div className={styles.lastMessage}>
           {chat.message ? (
