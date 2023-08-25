@@ -121,6 +121,8 @@ function getShortDescr(parsedDate: Date) {
   const hour24 = 86400000 - 1
 
   const date = new Date(parsedDate)
+  const dateHours = getNumberWithZero(date.getHours())
+  const dateMinutes = getNumberWithZero(date.getMinutes())
 
   const diff = Math.abs(new Date(parsedDate.getTime() - Date.now()).getTime())
   const diffHours = new Date(diff).getUTCHours()
@@ -137,7 +139,7 @@ function getShortDescr(parsedDate: Date) {
       `minutes`
     )} назад`
   } else if (isYesterday(date)) {
-    shortDescription = `Вчера в ${date.getHours()}:${date.getMinutes()}`
+    shortDescription = `Вчера в ${dateHours}:${dateMinutes}`
   } else if (diff > oneHour && diff < hour24) {
     shortDescription = `${diffHours} ${dateMorph(diffHours, `hours`)} назад`
   } else {
@@ -147,7 +149,7 @@ function getShortDescr(parsedDate: Date) {
   return shortDescription
 }
 
-function dateMorph(num: number, word: `minutes` | `hours`) {
+function dateMorph(num: number | string, word: `minutes` | `hours`) {
   const extremeCases: IMorph = {
     minutes: {
       "11": "минут",
@@ -201,5 +203,5 @@ function dateMorph(num: number, word: `minutes` | `hours`) {
 }
 
 function getNumberWithZero(num: number) {
-  return num < 10 ? `0` + num : num
+  return num < 10 ? `0` + num : `${num}`
 }
