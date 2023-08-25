@@ -3,7 +3,7 @@ import ChatItem from "./ChatItem/ChatItem"
 import CrossIcon from "@/components/ui/Icons/CrossIcon"
 import SearchIcon from "@/components/ui/Icons/Messanger/SearchIcon"
 
-import { useChat } from "@/hooks/useChat"
+import { useChat } from "@/hooks/useChat/useChat"
 
 import styles from "./Messanger.module.scss"
 

@@ -6,7 +6,7 @@ import { IMessage } from "@/types/messages.types"
 import { useEffect, useRef, useState } from "react"
 
 import { useAuth } from "@/hooks/useAuth"
-import { useChat } from "@/hooks/useChat"
+import { useChat } from "@/hooks/useChat/useChat"
 
 import styles from "./UserDialog.module.scss"
 import MessageWrapper from "./MessageWrapper/MessageWrapper"
