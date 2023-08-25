@@ -7,6 +7,7 @@ import { MessageStatusEntity } from "src/message/entities/message-status.entity"
 import { MessageEntity } from "src/message/entities/message.entity";
 import { NotificationEntity } from "src/notification/entities/notification.entity";
 import { PostEntity } from "src/post/entities/post.entity";
+import { Roles } from "src/roles/roles.enum";
 import { RoomEntity } from "src/room/entities/room.entity";
 import { AbstractEntity } from "src/utils/base.entity";
 import { transformer } from "src/utils/transformer.date";
@@ -54,6 +55,13 @@ export class UserEntity extends AbstractEntity {
 
     @Column({default: false})
     checkMark: boolean
+    
+    @Column({
+        type: 'enum',
+        enum: Roles,
+        default: Roles.USER
+    })
+    role: Roles
 
     @Column({default: '', type: 'simple-array'})
     socketIds: string[]
