@@ -12,6 +12,7 @@ import { FriendRequestService } from 'src/friend/service/friend-request.service'
 import { Relationship } from '../relationship.enum';
 import { FileService } from 'src/file/file.service';
 import { getUserKey } from 'src/utils/get-user-key';
+import { Roles } from 'src/roles/roles.enum';
 
 @Injectable()
 export class UserService {
@@ -287,6 +288,13 @@ export class UserService {
     if(!user) throw new BadRequestException(USER_NOT_FOUND)
     user.code = code
     await this.userRepository.save(user)
+  }
+
+  async setRole(userId: number, role: Roles) {
+    const user = await this.byId(userId)
+    if(!user) return new NotFoundException()
+    if(user.role === Roles.OWNER) return
+    return await this.userRepository.save({...user, role})
   }
   
 }

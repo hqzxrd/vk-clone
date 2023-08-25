@@ -22,6 +22,7 @@ import { MessageModule } from './message/message.module';
 
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     ChatEventsModule,
     RoomModule,
     MessageModule,
+    RolesModule,
   ],
 })
 export class AppModule {}
