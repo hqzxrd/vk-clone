@@ -10,6 +10,7 @@ import { date } from "@/utils/date"
 import styles from "./Chatitem.module.scss"
 import { useNavigate } from "react-router-dom"
 import { stringLimiter } from "@/utils/charLimiter"
+import { userLink } from "@/utils/user-link"
 
 interface props {
   chat: IChatItem
@@ -28,7 +29,7 @@ const ChatItem: FC<props> = ({ chat }) => {
   return (
     <div
       className={styles.chatItem}
-      onClick={() => nav(`/chat/${withUser.id}`, { replace: true })}
+      onClick={() => nav(`/chat/${userLink(withUser)}`, { replace: true })}
     >
       <div>
         <AvatarMini user={withUser} width={50} height={50} isLink={false} />
