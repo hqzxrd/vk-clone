@@ -54,6 +54,7 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
           placeholder="Что у вас нового?"
           onKeyDown={(e) => pressEnter(e)}
           style={{ fontSize: 16 }}
+          maxLength={3000}
         />
       </div>
       <Preview photos={photos} remove={removePhoto} />
@@ -70,7 +71,7 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
           style={{ display: "none" }}
           type="file"
           accept=".jpg,.jpeg"
-          maxLength={4}
+          maxLength={8}
           multiple
           ref={inputFiles}
         />

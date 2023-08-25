@@ -67,6 +67,7 @@ const UpdatePost: FC<props> = ({
           setText={setText}
           resize={true}
           style={{ fontSize: 16 }}
+          maxLength={3000}
         />
       </div>
 
@@ -79,7 +80,7 @@ const UpdatePost: FC<props> = ({
           style={{ display: "none" }}
           type="file"
           accept=".jpg,.jpeg"
-          maxLength={4}
+          maxLength={8}
           multiple
           ref={inputFiles}
         />

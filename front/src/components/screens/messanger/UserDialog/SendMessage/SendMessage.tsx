@@ -108,6 +108,7 @@ const SendMessage: FC<props> = ({
           resize={true}
           focus={true}
           onKeyDown={(e) => pressEnter(e)}
+          maxLength={3000}
         />
 
         <div className={styles.sendIcon}>

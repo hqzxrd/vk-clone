@@ -38,6 +38,7 @@ const UpdateComment: FC<props> = ({ post, comment, setIsUpdate }) => {
         setText={setText}
         resize={true}
         style={{ height: `fit-content`, overflow: "hidden", width: `100%` }}
+        maxLength={1000}
       />
       <Button onClick={() => updateComment()}>Сохранить</Button>
     </div>

@@ -208,7 +208,7 @@ const ProfileEdit: FC = () => {
                 value: user.nickname,
                 pattern: {
                   value: NICKNAME_REGEX,
-                  message: `Не может начинаться с числа`,
+                  message: `Недопустимый никнейм`,
                 },
               })}
               maxLength={20}

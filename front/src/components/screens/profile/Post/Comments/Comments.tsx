@@ -72,6 +72,7 @@ const Comments: FC<props> = ({ post }) => {
             resize={true}
             placeholder="Написать комментарий..."
             onKeyDown={(e) => pressEnter(e)}
+            maxLength={1000}
           />
         </div>
         <div className={styles.send}>
