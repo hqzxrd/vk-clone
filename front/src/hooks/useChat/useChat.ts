@@ -7,6 +7,7 @@ import { WS_URL } from "@/config/api.config"
 import { useParams } from "react-router-dom"
 import { returnStringOrNubmer } from "@/utils/user-link"
 import { ChatEvent } from "./useChat.enum"
+import { isEpmtyString } from "@/shared/regex"
 
 export const socket = io(WS_URL, {
   auth: { token: `` },
@@ -17,10 +18,11 @@ export const useChat = () => {
   const [chats, setChats] = useState<IChatItem[]>([])
   const [chatInfo, setChatInfo] = useState<IChatByUserId>()
   const [messages, setMessages] = useState<IMessage[]>([])
+  const [page, setPage] = useState<number>(1)
   const { userId } = useParams()
-  const count = 50
 
   const sendMessage = (text: string) => {
+    if (!isEpmtyString(text)) return
     socket.emit(
       ChatEvent.EMIT_SEND_MESSAGE,
       {
@@ -38,6 +40,7 @@ export const useChat = () => {
   }
 
   const updateMessage = (id: number, text: string) => {
+    if (!text) return
     socket.emit(
       ChatEvent.EMIT_UPDATE_MESSAGE,
       {
@@ -77,12 +80,14 @@ export const useChat = () => {
     )
   }
 
-  const getMessages = () => {
+  const getMessages = (count: number = 25) => {
     socket.emit(
       ChatEvent.EMIT_GET_CHAT_MESSAGES,
-      { userKey: userId!, count },
+      { userKey: userId!, count, page },
       (mes: [IMessage[], number]) => {
-        setMessages(mes[0])
+        setMessages((prev) => [...prev, ...mes[0]])
+        const lastPage = Math.ceil(mes[1] / count)
+        if (page <= lastPage) setPage((prev) => prev + 1)
       }
     )
   }
@@ -180,5 +185,6 @@ export const useChat = () => {
     deleteMessage,
     getMessageById,
     readMessage,
+    getMessages,
   }
 }

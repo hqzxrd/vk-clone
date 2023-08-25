@@ -11,6 +11,7 @@ import useSeveralPhotos from "@/hooks/useSeveralPhotos"
 
 import styles from "./CreatePost.module.scss"
 import { useParams } from "react-router-dom"
+import { isEpmtyString } from "@/shared/regex"
 
 interface props {
   getNewsline?: () => Promise<void>
@@ -31,7 +32,7 @@ const CreatePost: FC<props> = ({ getNewsline }) => {
   }
 
   const createPost = async () => {
-    if (!text && !file[0]) {
+    if (!isEpmtyString(text) && !file[0]) {
       return
     }
     clear()

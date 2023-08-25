@@ -12,6 +12,7 @@ import useSeveralPhotos from "@/hooks/useSeveralPhotos"
 
 import styles from "./UpdatePost.module.scss"
 import { useParams } from "react-router-dom"
+import { isEpmtyString } from "@/shared/regex"
 
 interface props {
   post: IPost
@@ -42,6 +43,8 @@ const UpdatePost: FC<props> = ({
   const queryClient = useQueryClient()
 
   const UpdatePost = async () => {
+    if (!isEpmtyString(text) && !oldPhotos[0] && !photos[0]) return
+
     const res = await PostService.updatePost(post.id, text, file, oldPhotos)
 
     if (res?.status === 200) {

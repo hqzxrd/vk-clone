@@ -7,6 +7,7 @@ import Button from "@/components/ui/Form/Button"
 import Textarea from "@/components/ui/Textarea/Textarea"
 
 import styles from "./UpdateComment.module.scss"
+import { isEpmtyString } from "@/shared/regex"
 
 interface props {
   post: IPost
@@ -19,6 +20,8 @@ const UpdateComment: FC<props> = ({ post, comment, setIsUpdate }) => {
   const queryClient = useQueryClient()
 
   const updateComment = async () => {
+    if (!isEpmtyString(text)) return
+
     const res = await PostService.updateComment(comment.id, text)
 
     if (res?.status === 200) {
