@@ -1,15 +1,11 @@
 .user_info_counter {
-	cursor: pointer;
-	user-select: none;
-	text-align: center;
-	padding: 8px;
-	border: 1px solid var(--primary-border);
-	border-radius: var(--primary-border-radius);
-	&:hover {
-		background-color: var(--primary-hover);
-	}
-	> div:first-child {
-		font-size: 100%;
-		font-weight: bolder;
-	}
+  user-select: none;
+  text-align: center;
+  padding: 8px;
+  border: 1px solid var(--primary-border);
+  border-radius: var(--primary-border-radius);
+  > div:first-child {
+    font-size: 100%;
+    font-weight: bolder;
+  }
 }

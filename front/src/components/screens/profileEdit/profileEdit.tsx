@@ -16,7 +16,7 @@ import { useAuth } from "@/hooks/useAuth"
 import usePhotos from "@/hooks/usePhoto"
 import { useProfile } from "@/hooks/useProfile"
 
-import { NAME_REGEX } from "@/shared/regex"
+import { NAME_REGEX, NICKNAME_REGEX } from "@/shared/regex"
 
 import { store } from "@/store/store"
 import { deleteAvatar } from "@/store/user/user.action"
@@ -204,7 +204,13 @@ const ProfileEdit: FC = () => {
             <label>Никнейм</label>
             <Input
               placeholder="Никнейм"
-              {...reg(`nickname`, { value: user.nickname })}
+              {...reg(`nickname`, {
+                value: user.nickname,
+                pattern: {
+                  value: NICKNAME_REGEX,
+                  message: `Недопустимый никнейм`,
+                },
+              })}
               maxLength={20}
               onChange={(e) => setNickname(e.currentTarget.value)}
               error={formState.errors.nickname}

@@ -10,6 +10,7 @@ import { date } from "@/utils/date"
 import styles from "./Chatitem.module.scss"
 import { useNavigate } from "react-router-dom"
 import { stringLimiter } from "@/utils/charLimiter"
+import { userLink } from "@/utils/user-link"
 
 interface props {
   chat: IChatItem
@@ -19,15 +20,16 @@ const ChatItem: FC<props> = ({ chat }) => {
   const nav = useNavigate()
   const { user } = useAuth()
 
-  // const { time, day, month, year } = date(chat.message.createDate)
+  const { fullDateWithoutYear } = date(
+    chat.message ? chat.message.createDate : chat.createDate
+  )
 
   const [withUser] = chat.users.filter((u) => u.id !== user.id)
-  console.log(withUser)
 
   return (
     <div
       className={styles.chatItem}
-      onClick={() => nav(`/chat/${withUser.id}`, { replace: true })}
+      onClick={() => nav(`/chat/${userLink(withUser)}`, { replace: true })}
     >
       <div>
         <AvatarMini user={withUser} width={50} height={50} isLink={false} />
@@ -37,9 +39,7 @@ const ChatItem: FC<props> = ({ chat }) => {
           <div className={styles.name}>
             {withUser.name} {withUser.surname}
           </div>
-          <div className={styles.lastTime}>
-            {/* {time} {day}.{month}.{year} */}
-          </div>
+          <div className={styles.lastTime}>{fullDateWithoutYear}</div>
         </div>
         <div className={styles.lastMessage}>
           {chat.message ? (

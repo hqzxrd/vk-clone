@@ -12,6 +12,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { useComments } from "@/hooks/useComments"
 
 import styles from "./Comments.module.scss"
+import { isEpmtyString } from "@/shared/regex"
 
 interface props {
   post: IPost
@@ -29,10 +30,9 @@ const Comments: FC<props> = ({ post }) => {
       sendComment()
     }
   }
-  console.log(comments)
 
   const sendComment = async () => {
-    if (!text) return
+    if (!isEpmtyString(text)) return
 
     const res = await PostService.createComment(post.id, text)
 
@@ -72,6 +72,7 @@ const Comments: FC<props> = ({ post }) => {
             resize={true}
             placeholder="Написать комментарий..."
             onKeyDown={(e) => pressEnter(e)}
+            maxLength={1000}
           />
         </div>
         <div className={styles.send}>

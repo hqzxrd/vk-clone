@@ -1,15 +1,15 @@
 import Header from "./Header/Header"
 import HeaderOptions from "./HeaderOptions/HeaderOptions"
-import Message from "./Message/Message"
 import SendMessage from "./SendMessage/SendMessage"
 import { IMessage } from "@/types/messages.types"
 
 import { useEffect, useRef, useState } from "react"
 
 import { useAuth } from "@/hooks/useAuth"
-import { useChat } from "@/hooks/useChat"
+import { useChat } from "@/hooks/useChat/useChat"
 
 import styles from "./UserDialog.module.scss"
+import MessageWrapper from "./MessageWrapper/MessageWrapper"
 
 const UserDialog = () => {
   const { user } = useAuth()
@@ -21,6 +21,7 @@ const UserDialog = () => {
     deleteMessage,
     getMessageById,
     readMessage,
+    getMessages,
   } = useChat()
   const [activeMessage, setActiveMessage] = useState<number>(0)
   const [activeUpdate, setActiveUpdate] = useState<number>(0)
@@ -41,6 +42,34 @@ const UserDialog = () => {
       setActiveMessage(0)
     }
   }
+
+  const onScroll = (e: Event) => {
+    const target = e.target as HTMLElement
+    console.log(
+      target.scrollHeight,
+      target.scrollTop,
+      target.getBoundingClientRect().height
+    )
+    if (
+      Math.abs(target.scrollTop) + target.getBoundingClientRect().height ===
+      target.scrollHeight
+    ) {
+      getMessages()
+    }
+  }
+
+  useEffect(() => {
+    console.log(`nereg`)
+    if (!messagesBlockRef.current) return
+    console.log(`reg`)
+
+    messagesBlockRef.current.addEventListener(`scroll`, onScroll)
+
+    return () => {
+      if (!messagesBlockRef.current) return
+      messagesBlockRef.current.removeEventListener(`scroll`, onScroll)
+    }
+  }, [withUser])
 
   useEffect(() => {
     if (!messages || !messages[0]) return
@@ -76,16 +105,11 @@ const UserDialog = () => {
           />
         )}
         <div className={styles.messages} ref={messagesBlockRef}>
-          {messages.map((mes) => {
-            return (
-              <Message
-                onClick={() => changeMessageClickStatus(mes)}
-                activeMessage={activeMessage}
-                message={mes}
-                key={mes.id}
-              />
-            )
-          })}
+          <MessageWrapper
+            messages={messages}
+            activeMessage={activeMessage}
+            change={changeMessageClickStatus}
+          />
         </div>
         <SendMessage
           activeUpdate={activeUpdate}

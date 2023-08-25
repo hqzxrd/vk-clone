@@ -1,59 +1,60 @@
 .sendMessage {
-	position: absolute;
-	left: 0px;
-	bottom: -38px;
-	z-index: 2;
-	display: flex;
-	flex-direction: column;
-	padding: 10px 0px;
-	color: antiquewhite;
-	display: flex;
-	width: 100%;
-	border: 1px solid var(--primary-border);
-	border-top: 1px solid var(--primary-border);
-	border-radius: 0px 0px var(--primary-border-radius)
-		var(--primary-border-radius);
-	background-color: var(--extra-background);
+  position: absolute;
+  left: 0px;
+  bottom: -38px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px;
+  color: antiquewhite;
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--primary-border);
+  border-top: 1px solid var(--primary-border);
+  border-radius: 0px 0px var(--primary-border-radius)
+    var(--primary-border-radius);
+  background-color: var(--extra-background);
 
-	.updateMessage {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0px 44px 10px 50px;
-		font-size: 14px;
-		font-weight: bold;
-		.cross {
-			cursor: pointer;
-			user-select: none;
-			width: 25px;
-			height: 25px;
-		}
-	}
+  .updateMessage {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 44px 10px 50px;
+    font-size: 14px;
+    font-weight: bold;
+    .cross {
+      cursor: pointer;
+      user-select: none;
+      width: 25px;
+      height: 25px;
+    }
+  }
 
-	.main {
-		display: flex;
-		align-items: center;
-		.camIcon {
-			position: relative;
-			bottom: 1px;
-			padding: 0px 10px;
-			display: flex;
-			align-self: flex-end;
+  .main {
+    display: flex;
+    align-items: center;
+    color: var(--primary-button);
+    .camIcon {
+      position: relative;
+      bottom: 1px;
+      padding: 0px 10px;
+      display: flex;
+      align-self: flex-end;
+      color: var(--secondary-color);
+      > svg {
+        cursor: pointer;
+      }
+    }
 
-			svg {
-				cursor: pointer;
-			}
-		}
-
-		.sendIcon {
-			position: relative;
-			bottom: 4px;
-			padding: 0px 10px;
-			display: flex;
-			align-self: flex-end;
-			svg {
-				cursor: pointer;
-			}
-		}
-	}
+    .sendIcon {
+      position: relative;
+      bottom: 4px;
+      padding: 0px 10px;
+      display: flex;
+      align-self: flex-end;
+      > svg {
+        cursor: pointer;
+      }
+    }
+  }
 }
