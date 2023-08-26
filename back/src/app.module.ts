@@ -23,6 +23,7 @@ import { MessageModule } from './message/message.module';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { RolesModule } from './roles/roles.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { RolesModule } from './roles/roles.module';
     RoomModule,
     MessageModule,
     RolesModule,
+    AdminModule,
   ],
 })
 export class AppModule {}
