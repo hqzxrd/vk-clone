@@ -58,14 +58,6 @@ const App = () => {
           </AuthProvider>
         }
       />
-      {/* <Route
-        path="/newsline"
-        element={
-          <AuthProvider>
-            <News />
-          </AuthProvider>
-        }
-      /> */}
       <Route
         path="/messanger"
         element={
