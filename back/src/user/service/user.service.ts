@@ -296,5 +296,11 @@ export class UserService {
     if(user.role === Roles.OWNER) return
     return await this.userRepository.save({...user, role})
   }
+
+  async setCheckMark(userId: number, isCheckMark: boolean) {
+    const user = await this.byId(userId)
+    if(!user) throw new NotFoundException()
+    await this.userRepository.save({...user, checkMark: isCheckMark})
+  }
   
 }
