@@ -9,8 +9,6 @@ import { CheckmarkIcon } from "react-hot-toast"
 const About = () => {
   const { profile } = useProfile()
 
-  console.log(profile)
-
   if (!profile) {
     return <></>
   }

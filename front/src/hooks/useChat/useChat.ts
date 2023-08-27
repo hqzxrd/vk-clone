@@ -81,15 +81,16 @@ export const useChat = () => {
   }
 
   const getMessages = (count: number = 25) => {
-    socket.emit(
-      ChatEvent.EMIT_GET_CHAT_MESSAGES,
-      { userKey: userId!, count, page },
-      (mes: [IMessage[], number]) => {
-        setMessages((prev) => [...prev, ...mes[0]])
-        const lastPage = Math.ceil(mes[1] / count)
-        if (page <= lastPage) setPage((prev) => prev + 1)
-      }
-    )
+    if (userId)
+      socket.emit(
+        ChatEvent.EMIT_GET_CHAT_MESSAGES,
+        { userKey: userId, count, page },
+        (mes: [IMessage[], number]) => {
+          setMessages((prev) => [...prev, ...mes[0]])
+          const lastPage = Math.ceil(mes[1] / count)
+          if (page <= lastPage) setPage((prev) => prev + 1)
+        }
+      )
   }
 
   useEffect(() => {
@@ -117,13 +118,14 @@ export const useChat = () => {
     getChats()
     getMessages()
 
-    socket.emit(
-      ChatEvent.EMIT_GET_CHAT_INFO,
-      { userKey: returnStringOrNubmer(userId!) },
-      (res: IChatByUserId) => {
-        setChatInfo(res)
-      }
-    )
+    if (userId)
+      socket.emit(
+        ChatEvent.EMIT_GET_CHAT_INFO,
+        { userKey: returnStringOrNubmer(userId) },
+        (res: IChatByUserId) => {
+          setChatInfo(res)
+        }
+      )
 
     socket.on(ChatEvent.ON_GET_MESSAGE, (data) => {
       getChats()

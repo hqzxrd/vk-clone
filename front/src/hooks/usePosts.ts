@@ -43,10 +43,6 @@ export const usePosts = () => {
     }
   )
 
-  useEffect(() => {
-    console.log(`page ${page} limitPage ${limitPage} getNewData ${getNewData}`)
-  }, [page, limitPage])
-
   const nextPage = () => {
     setGetNewData(true)
   }

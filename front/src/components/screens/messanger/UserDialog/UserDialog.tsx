@@ -45,11 +45,6 @@ const UserDialog = () => {
 
   const onScroll = (e: Event) => {
     const target = e.target as HTMLElement
-    console.log(
-      target.scrollHeight,
-      target.scrollTop,
-      target.getBoundingClientRect().height
-    )
     if (
       Math.abs(target.scrollTop) + target.getBoundingClientRect().height ===
       target.scrollHeight
@@ -59,9 +54,7 @@ const UserDialog = () => {
   }
 
   useEffect(() => {
-    console.log(`nereg`)
     if (!messagesBlockRef.current) return
-    console.log(`reg`)
 
     messagesBlockRef.current.addEventListener(`scroll`, onScroll)
 

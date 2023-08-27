@@ -15,7 +15,6 @@ const AuthProvider: FC<IChildren> = ({ children }) => {
   const { isAuth } = useAuth()
   const { logout } = useActions()
   const dispatch = useDispatch()
-  console.log(isAuth)
 
   useEffect(() => {
     async function check() {
@@ -23,9 +22,9 @@ const AuthProvider: FC<IChildren> = ({ children }) => {
 
       if (!accessToken) {
         const res = await AuthService.getNewsTokens()
-        console.log(res)
 
         if (res.status === 401) logout()
+        return
       }
       setAuthStore(true)
       dispatch(setAuthIsTrue())

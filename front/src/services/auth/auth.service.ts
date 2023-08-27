@@ -9,6 +9,7 @@ import Cookies from "js-cookie"
 import { AuthUrl } from "@/config/api.config"
 
 import { initialUser } from "@/store/user/user.slice"
+import { setAuthStore } from "@/utils/local-storage"
 
 export const AuthService = {
   async confirmation(email: string) {
@@ -64,6 +65,7 @@ export const AuthService = {
     baseAxios.get(AuthUrl(`/logout`))
     Cookies.remove(`AccessToken`)
     localStorage.removeItem(`user`)
+    setAuthStore(false)
   },
 
   async getNewsTokens() {
