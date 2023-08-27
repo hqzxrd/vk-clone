@@ -4,6 +4,9 @@
   align-items: center;
   width: 100%;
   .about_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     padding-bottom: 10px;
   }
@@ -15,6 +18,8 @@
     }
   }
   .name {
+    word-wrap: break-word;
+    width: 100px;
     display: flex;
     gap: 10px;
     justify-content: center;
@@ -23,6 +28,7 @@
     font-weight: bold;
   }
   .status {
+    word-break: break-all;
     color: var(--secondary-color);
     padding: 10px 0px;
   }

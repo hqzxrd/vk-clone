@@ -3,6 +3,7 @@
   z-index: 1;
   width: 100%;
   max-width: 780px;
+  height: 100%;
 
   .dialogWindow {
     width: 100%;
@@ -29,7 +30,9 @@
       z-index: 2;
       display: flex;
       flex-direction: column-reverse;
-      height: 73vh;
+      // max-height: 900px;
+      // height: 100%;
+      max-height: calc(100vh - 200px);
       overflow: auto;
       scroll-behavior: smooth;
     }
@@ -44,4 +47,21 @@
 }
 .messages::-webkit-scrollbar-thumb {
   background-color: var(--primary-background);
+}
+
+@media (max-width: 786px) {
+  .dialogWrapper {
+    .dialogWindow {
+      background-color: none;
+      border: none;
+      border-radius: 0px;
+      .header {
+        border-bottom: none;
+        background-color: none;
+      }
+
+      .messages {
+      }
+    }
+  }
 }

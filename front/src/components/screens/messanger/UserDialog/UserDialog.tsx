@@ -104,16 +104,16 @@ const UserDialog = () => {
             change={changeMessageClickStatus}
           />
         </div>
-        <SendMessage
-          activeUpdate={activeUpdate}
-          setActiveUpdate={setActiveUpdate}
-          setActiveMessage={setActiveMessage}
-          messagesBlock={messagesBlockRef}
-          send={sendMessage}
-          update={updateMessage}
-          message={getMessageById(activeUpdate)}
-        />
       </div>
+      <SendMessage
+        activeUpdate={activeUpdate}
+        setActiveUpdate={setActiveUpdate}
+        setActiveMessage={setActiveMessage}
+        messagesBlock={messagesBlockRef}
+        send={sendMessage}
+        update={updateMessage}
+        message={getMessageById(activeUpdate)}
+      />
     </div>
   )
 }

@@ -17,8 +17,9 @@ const About = () => {
     <div className={styles.about}>
       <div className={styles.about_header}>
         <div className={styles.name}>
-          <span>{profile.name} </span>
-          <span>{profile.surname} </span>
+          <span>
+            {profile.name} {profile.surname}
+          </span>
           <span>
             {profile.checkMark && (
               <CheckmarkIcon style={{ background: `var(--primary-button)` }} />

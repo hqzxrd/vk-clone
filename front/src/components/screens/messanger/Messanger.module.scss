@@ -1,49 +1,85 @@
 .messangerWrapper {
-	width: 100%;
-	max-width: 780px;
-	.messanger {
-		position: relative;
-		background-color: var(--extra-background);
-		border: 1px solid var(--primary-border);
-		border-radius: var(--primary-border-radius);
-		position: relative;
+  width: 100%;
+  max-width: 780px;
+  margin: 0px 10px;
+  .messanger {
+    position: relative;
+    background-color: var(--extra-background);
+    border: 1px solid var(--primary-border);
+    border-radius: var(--primary-border-radius);
+    position: relative;
 
-		.header {
-			position: sticky;
-			top: 44px;
-			display: flex;
-			gap: 15px;
-			border-bottom: 1px solid var(--primary-border);
-			border-radius: var(--primary-border-radius) var(--primary-border-radius)
-				0px 0px;
-			background-color: var(--extra-background);
-			padding: 15px 15px;
-			svg {
-				width: 24px;
-				height: auto;
-			}
+    .header {
+      position: sticky;
+      top: 44px;
+      display: flex;
+      gap: 15px;
+      border-bottom: 1px solid var(--primary-border);
+      border-radius: var(--primary-border-radius) var(--primary-border-radius)
+        0px 0px;
+      background-color: var(--extra-background);
+      padding: 15px 15px;
+      svg {
+        width: 24px;
+        height: auto;
+      }
 
-			input {
-				width: 100%;
-			}
+      input {
+        width: 100%;
+      }
 
-			:last-child {
-				user-select: none;
-				cursor: pointer;
-			}
-		}
+      :last-child {
+        user-select: none;
+        cursor: pointer;
+      }
+    }
 
-		.allChats {
-			display: flex;
-			flex-direction: column;
-			gap: 10px;
+    .allChats {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
 
-			.epmty {
-				display: flex;
-				justify-content: center;
-				font-size: 24px;
-				color: var(--secondary-color);
-			}
-		}
-	}
+      .epmty {
+        display: flex;
+        justify-content: center;
+        font-size: 24px;
+        color: var(--secondary-color);
+      }
+    }
+  }
+}
+
+@media (max-width: 786px) {
+  .messangerWrapper {
+    height: 100vh;
+    margin: 0px 10px 0px 0px;
+    .messanger {
+      height: 100%;
+      border: none;
+      border-radius: 0px;
+      .header {
+        position: sticky;
+        top: 44px;
+        display: flex;
+        gap: 15px;
+        border-bottom: 1px solid #333;
+        border-radius: 0px;
+        background-color: var(--extra-background);
+        padding: 15px 15px;
+        svg {
+        }
+
+        input {
+        }
+
+        :last-child {
+        }
+      }
+
+      .allChats {
+        .epmty {
+        }
+      }
+    }
+  }
 }

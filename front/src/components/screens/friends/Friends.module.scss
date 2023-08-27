@@ -1,11 +1,13 @@
 .friends_wrapper {
   display: flex;
   justify-content: center;
+  width: 100%;
   .friends {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    min-width: 500px;
+    max-width: 500px;
+    width: 100%;
     background-color: var(--extra-background);
     border: 1px solid var(--primary-border);
     border-radius: var(--primary-border-radius);
@@ -14,6 +16,7 @@
       display: flex;
       gap: 10px;
       .tabItem {
+        font-size: 14px;
         user-select: none;
         cursor: pointer;
         padding: 2px 15px;
@@ -45,4 +48,21 @@
   color: white;
   background-color: var(--notif-count);
   border-radius: 50%;
+}
+
+@media (max-width: 1000px) {
+  .friends_wrapper {
+    margin: 10px 10px 0px 0px !important;
+  }
+}
+
+@media (max-width: 550px) {
+  .friends_wrapper {
+    margin: 0px 10px 0px 0px;
+    .friends {
+      background-color: var(--extra-background);
+      border: none;
+      border-radius: 0px;
+    }
+  }
 }

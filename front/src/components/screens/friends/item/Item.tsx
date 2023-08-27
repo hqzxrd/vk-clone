@@ -11,6 +11,7 @@ import styles from "./Item.module.scss"
 import { NavLink } from "react-router-dom"
 import { CheckmarkIcon } from "react-hot-toast"
 import UserLinkIcon from "@/components/ui/Icons/Profile/UserLinkIcon"
+import { useCheckMobile } from "@/hooks/useCheckMobile"
 
 interface IButtons {
   [index: number]: (user: IUser, qClient: QueryClient) => JSX.Element
@@ -64,10 +65,17 @@ const buttons: IButtons = {
 }
 
 const Item: FC<{ user: IUser; state: number }> = ({ user, state }) => {
+  const isMobile = useCheckMobile()
   const queryClient = useQueryClient()
+
   return (
     <div className={styles.peoples_item}>
-      <AvatarMini user={user} width={90} height={90} isLink={true} />
+      <AvatarMini
+        user={user}
+        width={!isMobile ? 90 : 50}
+        height={!isMobile ? 90 : 50}
+        isLink={true}
+      />
       <div className={styles.info}>
         <NavLink to={`/${userLink(user)}`} className={styles.name}>
           <div>{`${user.name} ${user.surname}`}</div>
