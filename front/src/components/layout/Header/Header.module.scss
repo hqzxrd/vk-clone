@@ -1,119 +1,129 @@
-// @mixin vertical-align($for) {
-// 	> #{$for} {
-// 		padding: 10px 5px;
-// 		display: flex;
-// 		align-items: center;
-// 		gap: 5px;
-// 	}
-// }
-
 .header {
-	position: fixed;
-	z-index: 2;
-	width: 100vw;
-	background-color: var(--extra-background);
-	border-bottom: 1px solid var(--primary-border);
+  position: fixed;
+  z-index: 2;
+  width: 100vw;
+  background-color: var(--extra-background);
+  border-bottom: 1px solid var(--primary-border);
 
-	.wrapper {
-		display: flex;
-		max-width: var(--main-width);
-		margin: 0 auto;
+  .wrapper {
+    display: flex;
+    max-width: var(--main-width);
+    margin: 0 auto;
+    padding: 0px 5px;
+    > div {
+      position: relative;
+    }
 
-		> div {
-			position: relative;
-		}
+    button {
+      cursor: pointer;
+      user-select: none;
 
-		button {
-			cursor: pointer;
-			user-select: none;
+      padding: 10px 10px;
+      display: flex;
+      align-items: center;
+      &:hover {
+        background-color: var(--primary-hover);
+      }
+    }
 
-			padding: 10px 10px;
-			display: flex;
-			align-items: center;
-			&:hover {
-				background-color: var(--primary-hover);
-			}
-		}
+    a {
+      padding: 0px 5px;
+      display: flex;
+      align-items: center;
+      padding: 10px 10px;
+      &:hover {
+        background-color: var(--primary-hover);
+      }
+    }
 
-		a {
-			padding: 0px 5px;
-			display: flex;
-			align-items: center;
-			padding: 10px 10px;
-			&:hover {
-				background-color: var(--primary-hover);
-			}
-		}
+    .signin {
+    }
 
-		.signin {
-		}
+    .register {
+    }
 
-		.register {
-		}
+    .logo {
+      margin-right: auto;
+      img {
+        margin-right: 5px;
+        border-radius: 7px;
+        background-color: white;
+      }
+    }
 
-		.logo {
-			margin-right: auto;
-			img {
-				margin-right: 5px;
-				border-radius: 7px;
-				background-color: white;
-			}
-		}
+    .notification {
+      position: relative;
+      .notifCount {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        width: 14px;
+        height: 14px;
+        padding-right: 1.5px;
+        color: white;
+        background-color: #e52b50;
+        border-radius: 50%;
+        outline: 3px solid var(--extra-background);
+      }
+    }
+    .notifCount {
+      color: white;
+    }
 
-		.notification {
-			position: relative;
-			.notifCount {
-				position: absolute;
-				top: 6px;
-				right: 6px;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 10px;
-				width: 14px;
-				height: 14px;
-				padding-right: 1.5px;
-				color: white;
-				background-color: #e52b50;
-				border-radius: 50%;
-				outline: 3px solid var(--extra-background);
-			}
-		}
-		.notifCount {
-			color: white;
-		}
+    .theme {
+    }
 
-		.theme {
-		}
+    .lastMenu {
+      > button {
+        display: flex;
+        gap: 5px;
+        color: var(--secondary-color);
+      }
 
-		.lastMenu {
-			> button {
-				display: flex;
-				gap: 5px;
-				color: var(--secondary-color);
-			}
+      .lastMenuDropDown {
+        span {
+          color: var(--primary-button);
+        }
 
-			.lastMenuDropDown {
-				span {
-					color: var(--primary-button);
-				}
-				> * {
-					display: flex;
-					align-items: center;
-					gap: 5px;
-					width: 150px;
-					border-radius: var(--primary-border-radius);
-					div {
-						height: 20px;
-					}
-				}
-			}
-		}
+        > * {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          width: 150px;
+          border-radius: var(--primary-border-radius);
+          > svg {
+            color: var(--primary-button);
+          }
+          div {
+            height: 20px;
+            > svg {
+              color: var(--primary-button);
+            }
+          }
+        }
+      }
+    }
 
-		.leave {
-		}
-	}
+    hr {
+      border: none;
+      height: 1px;
+      color: #333;
+      background-color: #333; /* Modern Browsers */
+    }
+
+    .leave {
+      > div {
+        > svg {
+          color: #e52b50 !important;
+        }
+      }
+    }
+  }
 }
 .activeHeaderElem {
-	background-color: var(--primary-hover);
+  background-color: var(--primary-hover);
 }
