@@ -8,6 +8,7 @@
   border-radius: var(--primary-border-radius);
   padding: 20px;
   max-width: 100%;
+  // margin: 0px 0px;
   .postHeader {
     display: flex;
     gap: 15px;
@@ -15,17 +16,23 @@
     .whosePost {
       display: flex;
       flex-direction: column;
+      word-wrap: break-word;
+      // max-width: 250px;
     }
 
     .date {
       color: var(--secondary-color);
       font-size: 12px;
     }
+
+    .space {
+      width: 40px;
+    }
   }
 
   .postMain {
     max-width: 748px;
-    word-wrap: break-word;
+    word-break: break-all;
     white-space: pre-wrap;
   }
 

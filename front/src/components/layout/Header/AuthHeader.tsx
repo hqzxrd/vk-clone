@@ -20,6 +20,13 @@ import { setNotifCount } from "@/store/user/user.slice"
 import styles from "./Header.module.scss"
 import { NavLink } from "react-router-dom"
 import DropDownWrap from "@/components/wrappers/DropDownWrap/DropDownWrap"
+import ProfileIcon from "@/components/ui/Icons/LeftSideMenu/ProfileIcon"
+import { useCheckMobile } from "@/hooks/useCheckMobile"
+import { userLink } from "@/utils/user-link"
+import NewsIcon from "@/components/ui/Icons/LeftSideMenu/NewsIcon"
+import MessangerIcon from "@/components/ui/Icons/LeftSideMenu/MessangerIcon"
+import FriendsIcon from "@/components/ui/Icons/LeftSideMenu/FriendsIcon"
+import PeoplesIcon from "@/components/ui/Icons/LeftSideMenu/PeoplesIcon"
 
 const AuthHeader: FC = () => {
   const { user, isAuth } = useAuth()
@@ -29,6 +36,7 @@ const AuthHeader: FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [notifications, setNotifications] = useState<INotificationDto[]>([])
   const { logout, changeTheme } = useActions()
+  const isMobile = useCheckMobile(1000)
   const dispatch = useDispatch()
 
   const handleClick = async () => {
@@ -96,10 +104,51 @@ const AuthHeader: FC = () => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
         >
+          {isMobile && (
+            <>
+              <NavLink to={`/${userLink(user)}`}>
+                <div>
+                  <ProfileIcon />
+                </div>
+                <div>Моя страница</div>
+              </NavLink>
+
+              <NavLink to={`/`}>
+                <div>
+                  <NewsIcon />
+                </div>
+                <div>Лента</div>
+              </NavLink>
+
+              <NavLink to={`/messanger`}>
+                <div>
+                  <MessangerIcon />
+                </div>
+                <div>Мессенджер</div>
+              </NavLink>
+
+              <NavLink to={`/friends`}>
+                <div>
+                  <FriendsIcon />
+                </div>
+                <div>Друзья</div>
+              </NavLink>
+
+              <NavLink to={`/peoples`}>
+                <div>
+                  <PeoplesIcon />
+                </div>
+                <div>Люди</div>
+              </NavLink>
+              <hr />
+            </>
+          )}
+
           <button onClick={() => changeTheme()}>
             <ThemeIcon /> Тема:{" "}
             <span>{theme === `dark` ? "Тёмная" : "Светлая"}</span>
           </button>
+
           <NavLink
             className={styles.leave}
             to={`/login`}

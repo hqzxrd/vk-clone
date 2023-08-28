@@ -1,34 +1,35 @@
 .input {
-	font-size: 14px;
-	background-color: var(--primary-background);
-	border-radius: var(--primary-border-radius);
-	padding: 8px;
-	&:focus {
-		border: 1px solid var(--primary-hover);
-		padding: 8px;
-		margin: -1px;
-	}
-	&::placeholder {
-		color: var(--secondary-color);
-	}
+  max-width: 100%;
+  font-size: 14px;
+  background-color: var(--primary-background);
+  border-radius: var(--primary-border-radius);
+  padding: 8px;
+  &:focus {
+    border: 1px solid var(--primary-hover);
+    padding: 8px;
+    margin: -1px;
+  }
+  &::placeholder {
+    color: var(--secondary-color);
+  }
 }
 
 .button {
-	cursor: pointer;
-	text-align: center;
-	color: var(--primary-button-color);
-	background-color: var(--primary-button);
-	border-radius: var(--primary-border-radius);
-	padding: 8.5px 0px;
-	font-weight: bold;
-	&:active {
-		position: relative;
-		transform: translateY(1px);
-	}
+  cursor: pointer;
+  text-align: center;
+  color: var(--primary-button-color);
+  background-color: var(--primary-button);
+  border-radius: var(--primary-border-radius);
+  padding: 8.5px 0px;
+  font-weight: bold;
+  &:active {
+    position: relative;
+    transform: translateY(1px);
+  }
 }
 
 .error {
-	text-align: center;
-	height: 15px;
-	font-size: 12px;
+  text-align: center;
+  height: 15px;
+  font-size: 12px;
 }

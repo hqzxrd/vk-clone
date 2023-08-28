@@ -10,7 +10,7 @@
   display: flex;
   width: 100%;
   border: 1px solid var(--primary-border);
-  border-top: 1px solid var(--primary-border);
+  // border-top: 1px solid var(--primary-border);
   border-radius: 0px 0px var(--primary-border-radius)
     var(--primary-border-radius);
   background-color: var(--extra-background);
@@ -54,6 +54,31 @@
       align-self: flex-end;
       > svg {
         cursor: pointer;
+      }
+    }
+  }
+}
+
+@media (max-width: 786px) {
+  .sendMessage {
+    border: none;
+    border-top: 1px solid #333;
+    border-radius: 0px;
+
+    .updateMessage {
+      .cross {
+      }
+    }
+
+    .main {
+      .camIcon {
+        > svg {
+        }
+      }
+
+      .sendIcon {
+        > svg {
+        }
       }
     }
   }

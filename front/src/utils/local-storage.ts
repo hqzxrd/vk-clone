@@ -1,26 +1,26 @@
-import { IUserDto } from '@/types/auth.types'
+import { IUserDto } from "@/types/auth.types"
 
-import { TypeTheme } from '@/store/theme/theme.slice'
+import { TypeTheme } from "@/store/theme/theme.slice"
 
-export const getUserLocalStore = (name: string): IUserDto | null => {
-	const ls = localStorage.getItem(name)
-	return ls ? JSON.parse(ls) : null
-
+export const getUserStore = (): IUserDto | null => {
+  const ls = localStorage.getItem(`user`)
+  return ls ? JSON.parse(ls) : null
 }
 
-export const getAuthStatusLocalStore = (name: string): true | null => {
-	const ls = localStorage.getItem(name)
-	return ls ? JSON.parse(ls) : false
+export const setAuthStore = (boolean: boolean): void => {
+  localStorage.setItem(`Auth`, JSON.stringify(boolean))
+}
 
+export const getAuthStore = (): boolean => {
+  const ls = localStorage.getItem(`Auth`)
+  return ls ? JSON.parse(ls) : false
 }
 
 export const saveTheme = (name: `theme`, theme: TypeTheme): void => {
-	const ls = localStorage.setItem(name, theme)
+  localStorage.setItem(name, theme)
 }
 
-export const getTheme = (name: string): string | null => {
-
-	const ls = localStorage.getItem(name)
-	return ls ? ls : null
-
+export const getTheme = (name: string): TypeTheme | null => {
+  const ls = localStorage.getItem(name) as TypeTheme
+  return ls ? ls : null
 }

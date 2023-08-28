@@ -63,7 +63,7 @@ const CreateUserWrapper = () => {
   const nav = useNavigate()
   const { hash } = useLocation()
   const [state, setState] = useState<string>(``)
-  const { isAuth } = useAuth()
+  const { isAuth, user } = useAuth()
 
   useEffect(() => {
     if (
@@ -92,7 +92,7 @@ const CreateUserWrapper = () => {
     return <Navigate to="/register#email" />
   }
 
-  if (isAuth) return <Navigate to="/newsline" />
+  if (isAuth) return <Navigate to="/" />
 
   return pages[state](reg, handleSubmit, formState, watch)
 }

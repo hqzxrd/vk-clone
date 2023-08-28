@@ -14,13 +14,20 @@ import CityIcon from "@/components/ui/Icons/Profile/CityIcon"
 import { date } from "@/utils/date"
 import BirthdayIcon from "@/components/ui/Icons/Profile/BirthdayIcon"
 import { CheckmarkIcon } from "react-hot-toast"
+import { useCheckMobile } from "@/hooks/useCheckMobile"
 
 const Item: FC<{ user: IUser }> = ({ user }) => {
+  const isMobile = useCheckMobile()
   const { year, month, day } = date(user.birthday)
 
   return (
     <div className={styles.peoples_item}>
-      <AvatarMini user={user} width={90} height={90} isLink={true} />
+      <AvatarMini
+        user={user}
+        width={!isMobile ? 90 : 50}
+        height={!isMobile ? 90 : 50}
+        isLink={true}
+      />
       <div className={styles.info}>
         <NavLink to={`/${userLink(user)}`} className={styles.name}>
           <div>{`${user.name} ${user.surname}`}</div>

@@ -1,75 +1,78 @@
 .comment {
-	position: relative;
-	.comment_actions {
-		position: absolute;
-		z-index: 1;
-		top: 5px;
-		right: 0px;
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		font-size: 24px;
-		font-weight: bold;
-		color: var(--secondary-color);
-		height: 20px;
+  width: 100%;
+  position: relative;
+  .comment_actions {
+    position: absolute;
+    z-index: 1;
+    top: 5px;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--secondary-color);
+    height: 20px;
 
-		.update {
-			user-select: none;
-			cursor: pointer;
-			svg {
-				width: 20px;
-				height: auto;
-			}
-			&:hover {
-				animation: spin 0.3s infinite;
-			}
-		}
+    .update {
+      user-select: none;
+      cursor: pointer;
+      svg {
+        width: 20px;
+        height: auto;
+      }
+      &:hover {
+        animation: spin 0.3s infinite;
+      }
+    }
 
-		.delete {
-			user-select: none;
-			cursor: pointer;
-			&:hover {
-				animation: spin 0.3s infinite;
-			}
-		}
-	}
-	.main {
-		position: relative;
-		display: flex;
-		gap: 10px;
-		padding-top: 10px;
-		max-width: 700px;
-		min-width: 300px;
+    .delete {
+      user-select: none;
+      cursor: pointer;
+      &:hover {
+        animation: spin 0.3s infinite;
+      }
+    }
+  }
+  .main {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    padding-top: 10px;
+    max-width: 748px;
+    min-width: 300px;
 
-		.content {
-			width: 100%;
-			font-size: 14px;
-			.name {
-				font-weight: bold;
-			}
-			.text {
-				word-wrap: break-word;
-				white-space: pre-wrap;
-			}
+    .content {
+      width: 100%;
+      max-width: 95%;
+      font-size: 14px;
+      .name {
+        font-weight: bold;
+      }
+      .text {
+        width: 100%;
+        word-break: break-all;
+        white-space: pre-wrap;
+      }
 
-			.reactions {
-				margin-top: 5px;
-				.isLiked {
-					color: #e32636;
-				}
-				.like {
-					user-select: none;
-					cursor: pointer;
-					display: flex;
-					gap: 5px;
-					width: fit-content;
+      .reactions {
+        margin-top: 5px;
+        .isLiked {
+          color: #e32636;
+        }
+        .like {
+          user-select: none;
+          cursor: pointer;
+          display: flex;
+          gap: 5px;
+          width: fit-content;
 
-					> svg {
-						width: 16px;
-						height: 16px;
-					}
-				}
-			}
-		}
-	}
+          > svg {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+  }
 }

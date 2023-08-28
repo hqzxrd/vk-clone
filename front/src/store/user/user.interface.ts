@@ -1,13 +1,13 @@
-import { IUserDto } from '@/types/auth.types'
+import { IUserDto } from "@/types/auth.types"
 
 export interface IInitialState {
-	user: IUserDto
-	isAuth: true | null
-	isLoading: boolean
-	notifications: INotifications
+  user: IUserDto
+  isAuth: boolean
+  isLoading: boolean
+  notifications: INotifications
 }
 
 export interface INotifications {
-	notificationCount: number
-	notificationIncomingCount: number
+  notificationCount: number
+  notificationIncomingCount: number
 }

@@ -19,10 +19,8 @@
       .center {
         display: flex;
         justify-content: center;
-        margin: 0px 20px;
         max-width: var(--center-width);
         width: 100%;
-        min-width: 530px;
         height: 100%;
       }
     }
@@ -37,7 +35,8 @@
       .main {
         display: flex;
         justify-content: center;
-
+        margin-top: 45px;
+        margin-bottom: 0px;
         .left {
           display: none;
         }

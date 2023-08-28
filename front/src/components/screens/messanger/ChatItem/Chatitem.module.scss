@@ -4,6 +4,7 @@
   gap: 15px;
   padding: 15px 35px;
   border-radius: var(--primary-border-radius);
+  border-bottom: 1px solid #333;
   &:hover {
     background-color: var(--primary-hover);
   }
@@ -12,21 +13,28 @@
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    gap: 5px;
     width: 100%;
     .upperBlock {
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
+
+      > div {
+        width: 50%;
+      }
 
       .name {
       }
 
       .lastTime {
+        text-align: right;
         color: var(--secondary-color);
         padding-right: 10px;
       }
     }
 
     .lastMessage {
+      font-size: 12px;
       display: flex;
       align-items: center;
       gap: 5px;

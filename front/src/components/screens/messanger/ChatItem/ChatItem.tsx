@@ -11,12 +11,14 @@ import styles from "./Chatitem.module.scss"
 import { useNavigate } from "react-router-dom"
 import { stringLimiter } from "@/utils/charLimiter"
 import { userLink } from "@/utils/user-link"
+import { useCheckMobile } from "@/hooks/useCheckMobile"
 
 interface props {
   chat: IChatItem
 }
 
 const ChatItem: FC<props> = ({ chat }) => {
+  const isMobile = useCheckMobile()
   const nav = useNavigate()
   const { user } = useAuth()
 
@@ -32,7 +34,12 @@ const ChatItem: FC<props> = ({ chat }) => {
       onClick={() => nav(`/chat/${userLink(withUser)}`, { replace: true })}
     >
       <div>
-        <AvatarMini user={withUser} width={50} height={50} isLink={false} />
+        <AvatarMini
+          user={withUser}
+          width={isMobile ? 40 : 50}
+          height={isMobile ? 40 : 50}
+          isLink={false}
+        />
       </div>
       <div className={styles.chatInfo}>
         <div className={styles.upperBlock}>

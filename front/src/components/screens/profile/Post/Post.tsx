@@ -86,6 +86,7 @@ const Post: FC<props> = ({ post, getNewsline }) => {
             {post.createDate !== post.updateDate ? ` (ред.)` : ``}
           </div>
         </div>
+        <div className={styles.space}></div>
       </div>
       {isUpdate ? (
         <UpdatePost

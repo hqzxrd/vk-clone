@@ -38,6 +38,8 @@
     }
 
     .status {
+      padding: 5px 0px;
+      word-break: break-all;
       color: var(--secondary-color);
     }
     > a {
@@ -54,6 +56,38 @@
       display: flex;
       align-items: flex-end;
       gap: 5px;
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .peoples_item {
+    padding: 10px 0px;
+
+    .info {
+      .name {
+        .checkMark {
+          .checkMarkIcon {
+            &::after {
+            }
+          }
+        }
+
+        .nickname {
+          > svg {
+          }
+        }
+      }
+
+      .status {
+      }
+      > a {
+      }
+    }
+
+    .addInfo {
+      > div {
+      }
     }
   }
 }
