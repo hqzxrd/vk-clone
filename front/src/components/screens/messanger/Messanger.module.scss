@@ -37,7 +37,6 @@
     .allChats {
       display: flex;
       flex-direction: column;
-      gap: 10px;
 
       .epmty {
         display: flex;
@@ -46,6 +45,12 @@
         color: var(--secondary-color);
       }
     }
+  }
+}
+
+@media (max-width: 1000px) {
+  .messangerWrapper {
+    margin: 10px 10px 0px 0px;
   }
 }
 

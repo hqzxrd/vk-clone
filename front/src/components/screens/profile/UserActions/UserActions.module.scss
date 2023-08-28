@@ -1,22 +1,42 @@
 .actions {
-	display: flex;
-	gap: 10px;
-	> div,
-	a {
-		display: flex;
-		align-items: center;
-		user-select: none;
-		cursor: pointer;
-		font-weight: bold;
-		background-color: var(--primary-button);
-		padding: 10px 15px;
-		border-radius: 12px;
-		color: var(--primary-button-color);
-		> svg {
-			display: flex;
-			stroke: var(--primary-color);
-			width: 30px;
-			height: auto;
-		}
-	}
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  > div,
+  a {
+    display: flex;
+    align-items: center;
+    user-select: none;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: var(--primary-button);
+    padding: 10px 15px;
+    border-radius: 12px;
+    color: var(--primary-button-color);
+    > svg {
+      display: flex;
+      stroke: var(--primary-color);
+      width: 30px;
+      height: auto;
+    }
+  }
+}
+
+@media (max-width: 786px) {
+  .actions {
+    display: flex;
+    gap: 10px;
+    > div,
+    a {
+      border-radius: 12px;
+      color: var(--primary-button-color);
+      > svg {
+        display: flex;
+        stroke: var(--primary-color);
+        width: 30px;
+        height: auto;
+      }
+    }
+  }
 }

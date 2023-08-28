@@ -37,6 +37,7 @@ const About = () => {
       </div>
 
       <div className={styles.info}>
+        <hr />
         <div className={styles.userActions}>
           <UserActions />
         </div>

@@ -16,11 +16,17 @@
     .whosePost {
       display: flex;
       flex-direction: column;
+      word-wrap: break-word;
+      // max-width: 250px;
     }
 
     .date {
       color: var(--secondary-color);
       font-size: 12px;
+    }
+
+    .space {
+      width: 40px;
     }
   }
 

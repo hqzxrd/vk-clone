@@ -53,7 +53,9 @@ const UserActions = () => {
   return (
     <div className={styles.actions}>
       {user.id === profile?.id ? (
-        <div onClick={() => nav(`/edit`, { replace: true })}>Редактировать</div>
+        <div onClick={() => nav(`/edit`, { replace: true })}>
+          Редактировать профиль
+        </div>
       ) : (
         <>
           {stateRequestFriend === "none" && (

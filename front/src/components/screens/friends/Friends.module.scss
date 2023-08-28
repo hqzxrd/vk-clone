@@ -16,6 +16,8 @@
       display: flex;
       gap: 10px;
       .tabItem {
+        display: flex;
+        align-items: center;
         font-size: 14px;
         user-select: none;
         cursor: pointer;
@@ -33,6 +35,11 @@
         color: white;
         background-color: var(--primary-button);
       }
+    }
+
+    .placeholder {
+      text-align: center;
+      color: var(--secondary-color);
     }
   }
 }
@@ -52,7 +59,7 @@
 
 @media (max-width: 1000px) {
   .friends_wrapper {
-    margin: 10px 10px 0px 0px !important;
+    margin: 10px 10px 0px 0px;
   }
 }
 

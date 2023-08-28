@@ -70,27 +70,33 @@ const Friends = () => {
         </div>
         <div>
           {friends && activeTab === 0 ? (
-            <div>
-              {friends[0].map((user) => {
+            friends[0].length ? (
+              friends[0].map((user: IUser) => {
                 return <Item user={user} key={user.id} state={activeTab} />
-              })}
-            </div>
+              })
+            ) : (
+              <div className={styles.placeholder}>У вас нет друзей</div>
+            )
           ) : null}
 
           {incoming && activeTab === 1 ? (
-            <div>
-              {incoming[0].map((user) => {
+            incoming[0].length ? (
+              incoming[0].map((user: IUser) => {
                 return <Item user={user} key={user.id} state={activeTab} />
-              })}
-            </div>
+              })
+            ) : (
+              <div className={styles.placeholder}>Нет входящих запросов</div>
+            )
           ) : null}
 
           {outgoing && activeTab === 2 ? (
-            <div>
-              {outgoing[0].map((user) => {
+            outgoing[0].length ? (
+              outgoing[0].map((user: IUser) => {
                 return <Item user={user} key={user.id} state={activeTab} />
-              })}
-            </div>
+              })
+            ) : (
+              <div className={styles.placeholder}>Нет исходящих запросов</div>
+            )
           ) : null}
         </div>
       </div>
