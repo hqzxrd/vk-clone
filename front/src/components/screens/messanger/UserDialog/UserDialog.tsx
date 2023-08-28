@@ -46,8 +46,9 @@ const UserDialog = () => {
   const onScroll = (e: Event) => {
     const target = e.target as HTMLElement
     if (
-      Math.abs(target.scrollTop) + target.getBoundingClientRect().height ===
-      target.scrollHeight
+      target.scrollHeight -
+        (Math.abs(target.scrollTop) + target.getBoundingClientRect().height) <
+      50
     ) {
       getMessages()
     }

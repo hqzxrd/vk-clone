@@ -19,6 +19,7 @@ export const useChat = () => {
   const [chatInfo, setChatInfo] = useState<IChatByUserId>()
   const [messages, setMessages] = useState<IMessage[]>([])
   const [page, setPage] = useState<number>(1)
+  const [isFetching, setIsFetching] = useState<boolean>(false)
   const { userId } = useParams()
 
   const sendMessage = (text: string) => {
@@ -81,16 +82,19 @@ export const useChat = () => {
   }
 
   const getMessages = (count: number = 25) => {
-    if (userId)
+    if (userId && !isFetching) {
+      setIsFetching(true)
       socket.emit(
         ChatEvent.EMIT_GET_CHAT_MESSAGES,
         { userKey: userId, count, page },
         (mes: [IMessage[], number]) => {
           setMessages((prev) => [...prev, ...mes[0]])
+          setIsFetching(false)
           const lastPage = Math.ceil(mes[1] / count)
           if (page <= lastPage) setPage((prev) => prev + 1)
         }
       )
+    }
   }
 
   useEffect(() => {
