@@ -3,13 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ChatEntity } from '../entities/chat.entity';
 import { In, Repository } from 'typeorm';
 import { MessageService } from 'src/message/service/message.service';
+import { MessageStatusService } from 'src/message/service/message-status.service';
 
 @Injectable()
 export class ChatService {
   constructor(
     @InjectRepository(ChatEntity)
     private readonly chatRepository: Repository<ChatEntity>,
-    private readonly messageService: MessageService
+    private readonly messageService: MessageService,
+    private readonly messageStatusService: MessageStatusService
   ) {}
 
   async createOrFind(ids: number[]) {
@@ -96,11 +98,13 @@ export class ChatService {
 
     for(const chat of chatsAndCount[0]) {
       const message = await this.messageService.getLastMessageByChatId(chat.id)
+      const count = await this.messageStatusService.countNotRead(chat.id)
       chats.push({
         id: chat.id, 
         message,
         createDate: chat.createDate,
         users: [chat.userA, chat.userB],
+        countNoRead: count
       })
     }
     const chatsSort = chats.sort((a, b) => {

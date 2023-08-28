@@ -99,13 +99,18 @@ export class MessageService {
       order: {
         createDate: 'DESC'
       },
-      relations: {author: true},
+      relations: {author: true, statuses: true},
       select: {
         author: {
           id: true,
           name: true,
           surname: true,
-          avatar: true
+          avatar: true,
+          checkMark: true
+        },
+        statuses: {
+          isRead: true,
+          id: true
         }
       }
     })

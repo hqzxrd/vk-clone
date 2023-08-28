@@ -22,7 +22,7 @@ export class MessageStatusService {
                 message: {id: messageId}
             }
         })
-        if(status.isRead) return 
+        if(status?.isRead) return 
         return await this.messageStatusRepository.save({...status, isRead: true})
     }
     
@@ -51,5 +51,15 @@ export class MessageStatusService {
             status.isRead = true
         }
         await this.messageStatusRepository.save(statuses)
+    }
+
+    async countNotRead(chatId: number) {
+        const count = await this.messageStatusRepository.count({
+            where: {
+                message: {chat: {id: chatId}}, 
+                isRead: false
+            }
+        })
+        return count
     }
 }
