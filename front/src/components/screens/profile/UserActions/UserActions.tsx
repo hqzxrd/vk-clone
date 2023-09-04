@@ -28,22 +28,22 @@ const UserActions = () => {
 
   const sendRequest = async () => {
     const res = await FriendService.sendRequest(profile!.id)
-    res?.status === 200 && queryClient.invalidateQueries(userId)
+    res?.status === 200 && queryClient.invalidateQueries([`profile`])
   }
 
   const cancelRequest = async () => {
     const res = await FriendService.cancelRequest(profile!.id)
-    res?.status === 204 && queryClient.invalidateQueries(userId)
+    res?.status === 204 && queryClient.invalidateQueries([`profile`])
   }
 
   const resOnFriendRequest = async (bool: boolean) => {
     const res = await FriendService.resOnFriendRequest(profile!.id, bool)
-    res?.status === 204 && queryClient.invalidateQueries(userId)
+    res?.status === 204 && queryClient.invalidateQueries([`profile`])
   }
 
   const removeFriend = async () => {
     const res = await FriendService.removeFriend(profile!.id)
-    res?.status === 204 && queryClient.invalidateQueries(userId)
+    res?.status === 204 && queryClient.invalidateQueries([`profile`])
   }
 
   if (!profile) {

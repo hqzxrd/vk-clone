@@ -1,9 +1,8 @@
 import { IUpdateFields, IUpdateFieldsDto } from "./profileEdit.interface"
 import { UserService } from "@/services/user/user.service"
 import { TypeGender } from "@/types/auth.types"
-import { FC, MouseEvent, useRef, useState } from "react"
+import { FC, MouseEvent, useEffect, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { toast } from "react-hot-toast"
 import { useQueryClient } from "react-query"
 
 import AvatarMini from "@/components/ui/AvatarMini/AvatarMini"
@@ -23,14 +22,16 @@ import { deleteAvatar } from "@/store/user/user.action"
 
 import styles from "./profileEdit.module.scss"
 import { useNavigate } from "react-router-dom"
+import Error from "@/components/ui/CustomToast/ErrorToast"
+import Success from "@/components/ui/CustomToast/SuccessToast"
 
 const ProfileEdit: FC = () => {
   const [nickname, setNickname] = useState<string>()
   const inputFiles = useRef<HTMLInputElement>(null)
   const nav = useNavigate()
   const { user } = useAuth()
-  const { profile } = useProfile(user.id)
-  const [gender, setGender] = useState<TypeGender>(profile?.gender || `male`)
+
+  const [gender, setGender] = useState<TypeGender>(user.gender || `male`)
   const { file, avatar, setAvatar, handleChange } = usePhotos()
   const queryClient = useQueryClient()
 
@@ -40,6 +41,13 @@ const ProfileEdit: FC = () => {
     formState,
   } = useForm<IUpdateFields>({
     mode: `onChange`,
+    defaultValues: {
+      name: user.name,
+      surname: user.surname,
+      status: user.status !== `null` ? user.status : ``,
+      city: user.city !== `null` ? user.city : ``,
+      nickname: +user.nickname === user.id ? `` : user.nickname,
+    },
   })
 
   const onSubmit: SubmitHandler<IUpdateFields> = async (data) => {
@@ -71,27 +79,29 @@ const ProfileEdit: FC = () => {
     const result = await store.dispatch(deleteAvatar())
 
     if (result.meta.requestStatus === "fulfilled") {
-      queryClient.invalidateQueries(`${user.id}`)
+      queryClient.invalidateQueries([`profile`, user.id])
     }
   }
 
   const copy = (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
     const text = e.currentTarget.textContent
+
     if (!text) {
       return
     }
+
+    if (!navigator.clipboard) {
+      Error(`Ошибка копирования`)
+    }
+
     navigator.clipboard
       .writeText(text)
       .then(() => {
-        toast(`Скопировано`)
+        Success(`Скопировано`)
       })
       .catch(() => {
-        toast(`Ошибка копирования`)
+        Error(`Ошибка копирования`)
       })
-  }
-
-  if (!profile) {
-    return <>йцуйцу</>
   }
 
   return (
@@ -101,7 +111,7 @@ const ProfileEdit: FC = () => {
         <div className={styles.line1}>
           <div className={styles.avatar}>
             <AvatarMini
-              user={profile}
+              user={user}
               width={140}
               height={140}
               isLink={false}
@@ -135,7 +145,6 @@ const ProfileEdit: FC = () => {
             <Input
               placeholder="Имя"
               {...reg(`name`, {
-                value: profile.name,
                 pattern: {
                   value: NAME_REGEX,
                   message: `Только ru или en буквы`,
@@ -153,7 +162,6 @@ const ProfileEdit: FC = () => {
             <Input
               placeholder="Фамилия"
               {...reg(`surname`, {
-                value: profile.surname,
                 pattern: {
                   value: NAME_REGEX,
                   message: `Только ru или en буквы`,
@@ -172,12 +180,7 @@ const ProfileEdit: FC = () => {
           <div className={styles.line4Wrap}>
             <Input
               placeholder="Статус"
-              {...reg(`status`, {
-                value:
-                  profile.status && profile.status !== `null`
-                    ? profile.status
-                    : ``,
-              })}
+              {...reg(`status`)}
               maxLength={64}
               error={formState.errors.status}
             />
@@ -189,10 +192,7 @@ const ProfileEdit: FC = () => {
             <label>Город</label>
             <Input
               placeholder="Город"
-              {...reg(`city`, {
-                value:
-                  profile.city && profile.city !== `null` ? profile.city : ``,
-              })}
+              {...reg(`city`)}
               maxLength={20}
               error={formState.errors.city}
             />
@@ -205,7 +205,6 @@ const ProfileEdit: FC = () => {
             <Input
               placeholder="Никнейм"
               {...reg(`nickname`, {
-                value: user.nickname,
                 pattern: {
                   value: NICKNAME_REGEX,
                   message: `Недопустимый никнейм`,
