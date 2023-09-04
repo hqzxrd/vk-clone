@@ -12,6 +12,9 @@ import { useNavigate } from "react-router-dom"
 import { stringLimiter } from "@/utils/charLimiter"
 import { userLink } from "@/utils/user-link"
 import { useCheckMobile } from "@/hooks/useCheckMobile"
+import ReadMark from "@/components/ui/Icons/Messanger/ReadMark"
+import SendMark from "@/components/ui/Icons/Messanger/SendMark"
+import { CheckmarkIcon } from "react-hot-toast"
 
 interface props {
   chat: IChatItem
@@ -28,10 +31,26 @@ const ChatItem: FC<props> = ({ chat }) => {
 
   const [withUser] = chat.users.filter((u) => u.id !== user.id)
 
+  const returnCountNoRead = () => {
+    if (chat.message.author.id === user.id || chat.countNoRead === 0) return ``
+
+    return <div className={styles.count}>{chat.countNoRead}</div>
+  }
+
+  const returnStatusMessage = () => {
+    if (chat.message.author.id !== user.id) return ``
+
+    const isRead = chat.message.statuses[0].isRead
+
+    if (isRead === true) return <ReadMark />
+
+    if (isRead === false) return <SendMark />
+  }
+
   return (
     <div
       className={styles.chatItem}
-      onClick={() => nav(`/chat/${userLink(withUser)}`, { replace: true })}
+      onClick={() => nav(`/chat/${userLink(withUser)}`)}
     >
       <div>
         <AvatarMini
@@ -45,6 +64,11 @@ const ChatItem: FC<props> = ({ chat }) => {
         <div className={styles.upperBlock}>
           <div className={styles.name}>
             {withUser.name} {withUser.surname}
+            <div className={styles.checkMark}>
+              {withUser.checkMark && (
+                <CheckmarkIcon className={styles.checkMarkIcon} />
+              )}
+            </div>
           </div>
           <div className={styles.lastTime}>{fullDateWithoutYear}</div>
         </div>
@@ -57,7 +81,8 @@ const ChatItem: FC<props> = ({ chat }) => {
                 height={20}
                 isLink={false}
               />
-              <div>{stringLimiter(chat.message.text, 45)}</div>
+              {stringLimiter(chat.message.text, 45)} {returnStatusMessage()}
+              {returnCountNoRead()}
             </>
           ) : (
             <div className={styles.epmty}>Сообщений нет</div>

@@ -1,7 +1,7 @@
 import { IUpdateFields, IUpdateFieldsDto } from "./profileEdit.interface"
 import { UserService } from "@/services/user/user.service"
 import { TypeGender } from "@/types/auth.types"
-import { FC, MouseEvent, useEffect, useRef, useState } from "react"
+import { FC, MouseEvent, useRef, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useQueryClient } from "react-query"
 
@@ -13,7 +13,6 @@ import GenderSelector from "@/components/ui/GenderSelector/GenderSelector"
 
 import { useAuth } from "@/hooks/useAuth"
 import usePhotos from "@/hooks/usePhoto"
-import { useProfile } from "@/hooks/useProfile"
 
 import { NAME_REGEX, NICKNAME_REGEX } from "@/shared/regex"
 

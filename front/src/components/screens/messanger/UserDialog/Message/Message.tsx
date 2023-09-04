@@ -24,7 +24,7 @@ const Message: FC<props> = ({ message, activeMessage, ...rest }) => {
   const isUserSend = user.id === message.author.id
   const isRead = message.statuses[0].isRead
 
-  const returnStatesMessage = () => {
+  const returnStatusMessage = () => {
     if (!isUserSend) return ``
 
     if (isUserSend && isRead === true) return <ReadMark />
@@ -54,7 +54,7 @@ const Message: FC<props> = ({ message, activeMessage, ...rest }) => {
             {message.isChanged ? `(ред.)` : null}
           </div>
           <div className={styles.date}>{time}</div>
-          <div className={styles.status}>{returnStatesMessage()}</div>
+          <div className={styles.status}>{returnStatusMessage()}</div>
         </div>
       </div>
     </div>
