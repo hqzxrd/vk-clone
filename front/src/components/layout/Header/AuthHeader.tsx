@@ -18,7 +18,7 @@ import { useTypedSelector } from "@/hooks/useTypedSelector"
 import { setNotifCount } from "@/store/user/user.slice"
 
 import styles from "./Header.module.scss"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import DropDownWrap from "@/components/wrappers/DropDownWrap/DropDownWrap"
 import ProfileIcon from "@/components/ui/Icons/LeftSideMenu/ProfileIcon"
 import { useCheckMobile } from "@/hooks/useCheckMobile"
@@ -38,6 +38,7 @@ const AuthHeader: FC = () => {
   const { logout, changeTheme } = useActions()
   const isMobile = useCheckMobile(1000)
   const dispatch = useDispatch()
+  const nav = useNavigate()
 
   const handleClick = async () => {
     setIsOpenNotification(!isOpenNotification)
@@ -63,7 +64,7 @@ const AuthHeader: FC = () => {
               ? cn(styles.notification, styles.activeHeaderElem)
               : cn(styles.notification, styles.headerHover)
           }
-          onClick={() => handleClick()}
+          onClick={!isMobile ? () => handleClick() : () => nav(`/notice`)}
         >
           {notif.notificationCount !== 0 && (
             <div className={styles.notifCount}>{notif.notificationCount}</div>
@@ -75,6 +76,7 @@ const AuthHeader: FC = () => {
         <DropDownWrap
           isOpen={isOpenNotification}
           setIsOpen={setIsOpenNotification}
+          width={400}
         >
           {notifications.length ? (
             notifications.map((notif) => {
