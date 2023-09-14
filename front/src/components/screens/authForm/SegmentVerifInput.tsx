@@ -31,12 +31,8 @@ const SegmentVerifInput: FC<props> = ({ code, setCode }) => {
   }
 
   const hanlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    codeInputRefs.forEach((ref, i) => {
-      if (!ref.current) return
-      const num = e.clipboardData.getData(`text`)[i]
-      ref.current.value = num ? num : ``
-      num && ref.current.focus()
-    })
+    const code = e.clipboardData.getData(`text`).substring(0, 6)
+    setCode(code)
   }
 
   const handleKeyDown = (
