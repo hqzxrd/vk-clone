@@ -8,11 +8,11 @@ import { IUpdateFields } from "@/components/screens/profileEdit/profileEdit.inte
 import Input from "@/components/ui/Form/Input"
 
 import { useAuth } from "@/hooks/useAuth"
-import { useDate } from "@/hooks/useDate"
 
 import { YEAR_REGEX } from "@/shared/regex"
 
 import styles from "./BirthDate.module.scss"
+import { date } from "@/utils/date"
 
 interface IPropsRegister
   extends Omit<IPropsHookForm<IRegisterFields>, `watch` | `handleSubmit`> {}
@@ -25,7 +25,7 @@ const BirthDateFields: FC<IPropsRegister | IPropsUpdate> = ({
 }) => {
   const { user } = useAuth()
 
-  const { day, month, year } = useDate(user ? user.birthday : ``)
+  const { day, month, year } = date(user ? user.birthday : ``)
 
   const [dayInput, setDayInput] = useState(day)
   const [monthInput, setMonthInput] = useState(month)

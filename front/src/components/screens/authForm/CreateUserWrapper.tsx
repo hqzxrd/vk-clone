@@ -87,6 +87,7 @@ const CreateUserWrapper = () => {
   } = useForm<IRegisterFields>({
     mode: `onChange`,
   })
+  console.log(state)
 
   if (!state) {
     return <Navigate to="/register#email" />
