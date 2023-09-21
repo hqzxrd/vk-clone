@@ -5,8 +5,10 @@ import { IPost } from "@/types/post.types"
 import React, { useEffect, useState } from "react"
 
 import styles from "./News.module.scss"
+import useTabTitle from "@/hooks/useTabTitle"
 
 const News = () => {
+  useTabTitle(`Лента`)
   const [posts, setPosts] = useState<IPost[]>([])
 
   const getNewsline = async () => {

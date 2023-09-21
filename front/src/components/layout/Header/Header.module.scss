@@ -26,6 +26,13 @@
       }
     }
 
+    > :first-child {
+      padding: 0;
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
     a {
       padding: 0px 5px;
       display: flex;
@@ -44,7 +51,13 @@
 
     .logo {
       margin-right: auto;
+
       img {
+        max-height: 24px;
+      }
+
+      > svg {
+        background-color: var(--extra-background);
         margin-right: 5px;
         border-radius: 7px;
         background-color: white;

@@ -97,10 +97,6 @@ const SendMessage: FC<props> = ({
       ) : null}
 
       <div className={styles.main}>
-        <div className={styles.camIcon}>
-          <CamIcon />
-        </div>
-
         <Textarea
           style={{ maxHeight: 150, width: `100%` }}
           text={activeUpdate ? updateText : text}

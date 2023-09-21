@@ -11,11 +11,13 @@
   .main_wrapper {
     margin: 0 auto;
     min-width: var(--main-width);
+
     .main {
       display: flex;
       justify-content: center;
       margin-top: 55px;
       margin-bottom: 15px;
+
       .center {
         display: flex;
         justify-content: center;

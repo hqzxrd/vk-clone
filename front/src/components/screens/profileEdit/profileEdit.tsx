@@ -23,8 +23,10 @@ import styles from "./profileEdit.module.scss"
 import { useNavigate } from "react-router-dom"
 import Error from "@/components/ui/CustomToast/ErrorToast"
 import Success from "@/components/ui/CustomToast/SuccessToast"
+import useTabTitle from "@/hooks/useTabTitle"
 
 const ProfileEdit: FC = () => {
+  useTabTitle(`Редактировать`)
   const [nickname, setNickname] = useState<string>()
   const inputFiles = useRef<HTMLInputElement>(null)
   const nav = useNavigate()

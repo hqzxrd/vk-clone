@@ -10,8 +10,10 @@ import { useChat } from "@/hooks/useChat/useChat"
 
 import styles from "./UserDialog.module.scss"
 import MessageWrapper from "./MessageWrapper/MessageWrapper"
+import useTabTitle from "@/hooks/useTabTitle"
 
 const UserDialog = () => {
+  useTabTitle(`Мессенджер`)
   const { user } = useAuth()
   const {
     chatInfo,

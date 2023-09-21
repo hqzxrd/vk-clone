@@ -3,8 +3,10 @@ import { UserService } from "@/services/user/user.service"
 import { useQuery } from "react-query"
 
 import styles from "./Peoples.module.scss"
+import useTabTitle from "@/hooks/useTabTitle"
 
 const Peoples = () => {
+  useTabTitle(`Люди`)
   const { isLoading, data } = useQuery(`get_all`, () => UserService.getAll(), {
     select: ({ data }) => data,
   })

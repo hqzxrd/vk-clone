@@ -34,17 +34,7 @@
     display: flex;
     align-items: center;
     color: var(--primary-button);
-    .camIcon {
-      position: relative;
-      bottom: 1px;
-      padding: 0px 10px;
-      display: flex;
-      align-self: flex-end;
-      color: var(--secondary-color);
-      > svg {
-        cursor: pointer;
-      }
-    }
+    padding-left: 10px;
 
     .sendIcon {
       position: relative;
