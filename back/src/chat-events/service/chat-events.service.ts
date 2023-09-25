@@ -116,7 +116,11 @@ export class ChatEventsService {
    }
 
    async handleGetAllChat(userId: number, page: number, count: number) {
-      return await this.chatService.getChats(userId, page, count)
+      return await this.chatService.getChatsAndLastMessage(userId, page, count)
+   }
+
+   async handleCountNoReadChats(userId: number) {
+      const chats = await this.chatService.getChatsByUserIdNoRead(userId)
    }
 
    private async sendPrivateMessage(event: string, toUserId: number, message: MessageEntity | unknown) {

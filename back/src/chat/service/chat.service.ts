@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ChatEntity } from '../entities/chat.entity';
-import { In, Repository } from 'typeorm';
+import { In, Not, Repository } from 'typeorm';
 import { MessageService } from 'src/message/service/message.service';
 import { MessageStatusService } from 'src/message/service/message-status.service';
 
@@ -70,7 +70,7 @@ export class ChatService {
     return false;
   }
 
-  async getChats(userId: number, page: number, count: number) {
+  async getChatsAndLastMessage(userId: number, page: number, count: number) {
     const selectUser = {
       id: true,
       nickname: true,
@@ -112,4 +112,18 @@ export class ChatService {
     })
     return [chatsSort, chatsAndCount[1]] 
   }
+
+  async getChatsByUserIdNoRead(userId: number) {
+    const options = {
+      messages: {statuses: {isRead: false, author: {id: userId}}}
+    }
+
+    const chats = await this.chatRepository.count({
+      where: [ 
+        {userA: {id: userId}, ...options}, 
+        {userB: {id: userId}, ...options} 
+      ]
+    })
+    return chats
+  } 
 }
