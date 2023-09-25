@@ -10,12 +10,14 @@ import { useProfile } from "@/hooks/useProfile"
 import styles from "./Profile.module.scss"
 import { useParams } from "react-router-dom"
 import { useEffect } from "react"
+import useTabTitle from "@/hooks/useTabTitle"
 
 const Profile = () => {
   const { user } = useAuth()
   const { profile } = useProfile()
   const { userId } = useParams()
   const { posts, nextPage } = usePosts()
+  useTabTitle(profile ? `${profile?.name} ${profile?.surname}` : ``)
 
   const onScroll = (e: Event) => {
     const target = e.target as HTMLElement

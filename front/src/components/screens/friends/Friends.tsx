@@ -9,6 +9,7 @@ import { useQuery, useQueryClient } from "react-query"
 import { useAuth } from "@/hooks/useAuth"
 
 import styles from "./Friends.module.scss"
+import useTabTitle from "@/hooks/useTabTitle"
 
 const tabs = [
   <div>Все друзья</div>,
@@ -19,6 +20,7 @@ const tabs = [
 ]
 
 const Friends = () => {
+  useTabTitle(`Друзья`)
   const [activeTab, setActiveTab] = useState<number>(0)
   const { user } = useAuth()
   const { data: friends } = useQuery(

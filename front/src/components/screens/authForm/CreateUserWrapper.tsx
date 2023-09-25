@@ -63,7 +63,7 @@ const CreateUserWrapper = () => {
   const nav = useNavigate()
   const { hash } = useLocation()
   const [state, setState] = useState<string>(``)
-  const { isAuth, user } = useAuth()
+  const { isAuth } = useAuth()
 
   useEffect(() => {
     if (
@@ -87,6 +87,7 @@ const CreateUserWrapper = () => {
   } = useForm<IRegisterFields>({
     mode: `onChange`,
   })
+  console.log(state)
 
   if (!state) {
     return <Navigate to="/register#email" />

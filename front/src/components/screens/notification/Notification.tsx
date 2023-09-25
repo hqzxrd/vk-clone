@@ -1,6 +1,5 @@
 import { INotificationDto } from "./Notification.interface"
 import { FC } from "react"
-import { text } from "stream/consumers"
 
 import AvatarMini from "@/components/ui/AvatarMini/AvatarMini"
 
@@ -9,7 +8,6 @@ import { userLink } from "@/utils/user-link"
 
 import styles from "./Notification.module.scss"
 import { NavLink } from "react-router-dom"
-import OpenModalWrap from "@/components/wrappers/OpenModalWrap/OpenModalWrap"
 
 interface props {
   notif: INotificationDto

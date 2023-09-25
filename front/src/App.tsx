@@ -12,6 +12,7 @@ import NotFound from "./components/screens/errors/404/404Component"
 import ProfileEdit from "./components/screens/profileEdit/profileEdit"
 import { useTypedSelector } from "./hooks/useTypedSelector"
 import { useEffect } from "react"
+import Notice from "./components/screens/notification/notice/Notice"
 
 const App = () => {
   const { theme } = useTypedSelector((state) => state.theme)
@@ -54,6 +55,14 @@ const App = () => {
         element={
           <AuthProvider>
             <ProfileEdit />
+          </AuthProvider>
+        }
+      />
+      <Route
+        path="/notice"
+        element={
+          <AuthProvider>
+            <Notice />
           </AuthProvider>
         }
       />

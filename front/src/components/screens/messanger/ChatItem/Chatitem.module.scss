@@ -2,9 +2,9 @@
   cursor: pointer;
   display: flex;
   gap: 15px;
-  padding: 15px 35px;
+  padding: 15px 10px;
   border-radius: var(--primary-border-radius);
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--secondary-border);
   &:hover {
     background-color: var(--primary-hover);
   }
@@ -17,13 +17,28 @@
     width: 100%;
     .upperBlock {
       display: flex;
-      // justify-content: space-between;
 
       > div {
         width: 50%;
       }
 
       .name {
+        display: flex;
+        gap: 5px;
+
+        .checkMark {
+          display: flex;
+          align-items: center;
+          .checkMarkIcon {
+            background-color: var(--primary-button);
+            width: 16px;
+            height: 16px;
+            &::after {
+              bottom: 4px;
+              left: 4px;
+            }
+          }
+        }
       }
 
       .lastTime {
@@ -34,10 +49,28 @@
     }
 
     .lastMessage {
+      position: relative;
       font-size: 12px;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
+
+      > svg {
+        width: 15px;
+        color: var(--secondary-color);
+      }
+
+      .count {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: var(--secondary-color);
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        right: 10px;
+      }
 
       .epmty {
         color: var(--secondary-color);

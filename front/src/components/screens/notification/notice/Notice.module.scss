@@ -1,0 +1,26 @@
+.notice {
+  padding: 10px;
+  background-color: var(--extra-background);
+
+  .head {
+    font-size: 20px;
+    border-bottom: 1px solid var(--primary-border);
+    padding: 10px 0px;
+    margin-bottom: 10px;
+  }
+
+  hr {
+    border: none;
+    height: 1px;
+    color: #333;
+    background-color: #333;
+  }
+
+  > a {
+    padding: 10px;
+  }
+
+  > a:hover {
+    background-color: var(--primary-hover);
+  }
+}
