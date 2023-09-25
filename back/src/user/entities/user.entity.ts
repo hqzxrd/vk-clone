@@ -8,7 +8,6 @@ import { MessageEntity } from "src/message/entities/message.entity";
 import { NotificationEntity } from "src/notification/entities/notification.entity";
 import { PostEntity } from "src/post/entities/post.entity";
 import { Roles } from "src/roles/roles.enum";
-import { RoomEntity } from "src/room/entities/room.entity";
 import { AbstractEntity } from "src/utils/base.entity";
 import { transformer } from "src/utils/transformer.date";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
@@ -92,9 +91,6 @@ export class UserEntity extends AbstractEntity {
 
     @OneToMany(() => ChatEntity, chat => chat.userB)
     _privateChatB: ChatEntity[] 
-
-    @OneToMany(() => RoomEntity, room => room.owner) 
-    ownerRooms: RoomEntity[]
 
     @OneToMany(() => MessageEntity, message => message.author)
     messages: MessageEntity[]

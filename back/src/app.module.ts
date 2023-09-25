@@ -17,7 +17,6 @@ import { FriendModule } from './friend/friend.module';
 import { NotificationModule } from './notification/notification.module';
 import { ChatModule } from './chat/chat.module';
 import { ChatEventsModule } from './chat-events/chat-events.module';
-import { RoomModule } from './room/room.module';
 import { MessageModule } from './message/message.module';
 
 import { join } from 'path';
@@ -50,7 +49,6 @@ import { AdminModule } from './admin/admin.module';
     NotificationModule,
     ChatModule,
     ChatEventsModule,
-    RoomModule,
     MessageModule,
     RolesModule,
     AdminModule,
