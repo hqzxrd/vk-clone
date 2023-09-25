@@ -8,7 +8,7 @@ export class AdminService {
     private readonly userService: UserService
   ){}
 
-  async setCheckMarkDto({userId, isCheckMark}: CheckMarkDto) {
+  async setCheckMark({userId, isCheckMark}: CheckMarkDto) {
     await this.userService.setCheckMark(userId, isCheckMark)
   }
 }
